@@ -147,7 +147,7 @@
 
   /* Proof */
   .proof { display: grid; gap: 32px; }
-  @media (min-width: 860px) { .proof { grid-template-columns: 1.2fr 1fr 1fr; } }
+  @media (min-width: 860px) { .proof { grid-template-columns: 1fr 1fr; column-gap: 48px; } }
   .figure { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin: 8px 0 10px; }
   .figure .from { color: var(--deny); }
   .figure .to { color: var(--allow); }
@@ -283,6 +283,12 @@
       <h2 id="proof-h">Work you can inspect</h2>
       <p class="intro">Open-source projects behind these packages, including the results that didn’t go my way.</p>
       <div class="proof">
+        <div>
+          <h3><a href="https://github.com/basartuncay/firebreak">Firebreak</a></h3>
+          <p class="figure"><span class="to">63</span><span style="font-size:1.1rem;color:var(--muted);font-weight:500"> of 73 attacks</span></p>
+          <p class="tight">An open-source security gateway for MCP that checks where every tool argument came from and holds risky calls for your approval.</p>
+          <p>Approval dashboard with the source of each value highlighted, hash-chained audit log, tool pinning, and an attack suite that runs in CI. The ten attacks it misses are documented.</p>
+        </div>
         <div>
           <h3><a href="https://github.com/basartuncay/Cordon">Cordon</a></h3>
           <p class="figure"><span class="from">22</span> → <span class="to">33</span><span style="font-size:1.1rem;color:var(--muted);font-weight:500"> of 37</span></p>
