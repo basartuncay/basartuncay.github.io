@@ -138,6 +138,12 @@
   .pkg li { margin: 6px 0; }
   .pkg .fit { color: var(--muted); font-size: .95rem; margin: auto 0 18px; }
   .pkg .btn { align-self: flex-start; }
+  .starter {
+    margin-top: 24px; padding: 22px 28px; border: 1px dashed var(--muted); border-radius: 16px;
+    display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; justify-content: space-between;
+  }
+  .starter > div { flex: 1 1 420px; }
+  .starter p { color: var(--muted); margin: 0; max-width: 62ch; }
 
   /* Proof */
   .proof { display: grid; gap: 32px; }
@@ -233,12 +239,12 @@
     </section>
 
     <section id="packages" aria-labelledby="pk-h">
-      <h2 id="pk-h">Two fixed-price packages</h2>
-      <p class="intro">Clear scope up front, so you can approve it without a procurement cycle. Prices in USD; EUR invoicing available.</p>
+      <h2 id="pk-h">Fixed-price packages</h2>
+      <p class="intro">Clear scope up front, so you can approve it without a procurement cycle. Launch prices for my first three clients, in exchange for a short case study I can share. Prices in USD; EUR invoicing available.</p>
       <div class="packages">
         <article class="pkg lead">
           <h3>Agent Security Review</h3>
-          <p class="price">$2,900</p>
+          <p class="price">$1,900</p>
           <p class="terms">5 business days · one agent, MCP server or Claude Code setup</p>
           <ul>
             <li>Threat model of every tool your agent can call and every input it reads</li>
@@ -252,7 +258,7 @@
         </article>
         <article class="pkg">
           <h3>Claude Integration Sprint</h3>
-          <p class="price">$4,800</p>
+          <p class="price">$3,900</p>
           <p class="terms">2 weeks · one workflow from prototype to production</p>
           <ul>
             <li>Claude API or MCP integration into your existing stack (Laravel, Python or TypeScript)</li>
@@ -263,6 +269,13 @@
           <p class="fit">For teams with a working demo that now has to be reliable, safe and affordable.</p>
           <a class="btn ghost" href="#contact">Plan a sprint</a>
         </article>
+      </div>
+      <div class="starter">
+        <div>
+          <h3>Not sure yet? Start with a risk check</h3>
+          <p>$450, one business day. I read your agent’s tools and prompts and send back the five biggest risks with fixes. The fee is credited in full if you book a review within 30 days.</p>
+        </div>
+        <a class="btn ghost" href="mailto:b.tcay12@gmail.com?subject=Agent%20risk%20check">Ask for a risk check</a>
       </div>
     </section>
 
