@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basar Tuncay · Automation engineer</title>
+<meta name="description" content="I build back-office automations that run unattended: AI support inboxes, competitor price tracking, invoice processing, and the integrations between your tools. Every project tested end to end.">
+<meta property="og:title" content="Basar Tuncay: automation that runs your back office">
+<meta property="og:description" content="AI support inbox, competitor price tracking, invoice automation. Real systems, each with a 1-minute demo.">
+<meta property="og:image" content="https://basartuncay.github.io/automation/media/support-desk.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #eef1ec;      /* ledger paper */
+  --sheet: #f8faf6;      /* raised surfaces */
+  --ink: #1b2421;
+  --ink-soft: #4d5a55;
+  --rule: #cfd6cf;
+  --signal: #d99a00;     /* the one accent: things that need a person's attention */
+  --ok: #2f7d5b;
+  --flag: #b5402f;
+  --console: #17201d;
+  --console-ink: #d8e2dc;
+  --display: "Bricolage Grotesque", "Avenir Next", sans-serif;
+  --text: "Instrument Sans", "Helvetica Neue", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--text); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--ok); }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+
+/* top bar */
+.top { display: flex; justify-content: space-between; align-items: baseline; padding: 26px 0; }
+.top .name { font: 700 19px var(--display); text-decoration: none; letter-spacing: -.01em; }
+.top nav { display: flex; gap: 26px; font-size: 15px; }
+.top nav a { text-decoration: none; color: var(--ink-soft); }
+.top nav a:hover { color: var(--ink); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; padding: 48px 0 88px; }
+.hero h1 { font: 800 clamp(40px, 5.6vw, 72px)/1.02 var(--display); letter-spacing: -.035em; margin: 0 0 26px; max-width: 13ch; }
+.hero p { font-size: 19px; color: var(--ink-soft); max-width: 46ch; margin: 0 0 32px; }
+.actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn { display: inline-block; padding: 13px 22px; border-radius: 6px; font: 600 16px var(--text); text-decoration: none; border: 1.5px solid var(--ink); }
+.btn.solid { background: var(--ink); color: var(--paper); }
+.btn.solid:hover { background: var(--ok); border-color: var(--ok); color: #fff; }
+.btn.line:hover { background: var(--ink); color: var(--paper); }
+
+/* the operations log: the one memorable element */
+.log { background: var(--console); color: var(--console-ink); border-radius: 10px; padding: 18px 0 14px; font: 13px/1.55 var(--mono);
+       box-shadow: 0 30px 60px -30px rgba(23, 32, 29, .55); min-height: 432px; }
+.log .bar { display: flex; justify-content: space-between; padding: 0 20px 12px; color: #8a9a93; border-bottom: 1px solid #2a3531; }
+.log .live::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); margin-right: 7px; vertical-align: 1px; }
+.log ol { list-style: none; margin: 0; padding: 10px 0 0; }
+.log li { display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 5px 20px; }
+.log li.on { animation: tick .35s ease-out both; }
+.log time { color: #6f807a; }
+.log .sys { color: #8fb3a4; }
+.log .need { color: var(--signal); }
+.log .bad { color: #e48a7b; }
+.log .done { color: #7fcca6; }
+@keyframes tick { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.log .note { padding: 12px 20px 0; color: #6f807a; font: 12px var(--text); }
+
+/* sections */
+section { padding: 84px 0; border-top: 1px solid var(--rule); }
+h2 { font: 700 clamp(30px, 3.4vw, 42px)/1.1 var(--display); letter-spacing: -.025em; margin: 0 0 14px; }
+.lede { color: var(--ink-soft); max-width: 60ch; margin: 0 0 48px; font-size: 18px; }
+
+/* case studies */
+.case { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: start; padding: 0 0 72px; }
+.case:last-child { padding-bottom: 0; }
+.case:nth-child(even) .media { order: 2; }
+.media video { width: 100%; display: block; border-radius: 8px; background: var(--console); aspect-ratio: 16 / 9; box-shadow: 0 24px 48px -28px rgba(27, 36, 33, .45); }
+.media .cap { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
+.case h3 { font: 700 30px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 10px; }
+.case .for { color: var(--ink-soft); margin: 0 0 22px; font-size: 18px; }
+.case dl { margin: 0 0 22px; }
+.case dt { font-weight: 600; margin-top: 14px; }
+.case dd { margin: 3px 0 0; color: var(--ink-soft); }
+.case .proof { font-size: 15px; padding: 12px 14px; background: var(--sheet); border-left: 3px solid var(--ok); border-radius: 0 6px 6px 0; margin-bottom: 16px; }
+.case .links a { margin-right: 18px; font-weight: 600; font-size: 15px; }
+
+/* services: plain rows, not cards */
+.services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 56px; }
+.service { padding: 22px 0; border-top: 1px solid var(--rule); }
+.service h3 { font: 700 21px var(--display); margin: 0 0 6px; letter-spacing: -.01em; }
+.service p { margin: 0; color: var(--ink-soft); }
+.service .ex { font-size: 15px; margin-top: 8px; }
+
+/* other work table */
+table { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+th { text-align: left; font: 600 14px var(--text); color: var(--ink-soft); padding: 0 14px 10px 0; border-bottom: 1.5px solid var(--ink); }
+td { padding: 13px 14px 13px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+td.stack { color: var(--ink-soft); font-size: 14.5px; }
+
+/* process: a real sequence, so it's numbered */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: s; }
+.steps li { counter-increment: s; }
+.steps li::before { content: counter(s); display: block; font: 800 44px/1 var(--display); color: var(--signal); margin-bottom: 12px; }
+.steps b { display: block; font: 700 19px var(--display); margin-bottom: 6px; }
+.steps span { color: var(--ink-soft); font-size: 16px; }
+
+/* contact */
+.contact { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
+.contact h2 { color: #fff; max-width: 18ch; }
+.contact p { color: #b8c4bf; margin: 0; max-width: 48ch; }
+.contact .actions { justify-content: flex-end; }
+.contact .btn { border-color: var(--paper); color: var(--paper); }
+.contact .btn.solid { background: var(--signal); border-color: var(--signal); color: var(--ink); }
+.contact .btn:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .hero, .case, .contact { grid-template-columns: 1fr; }
+  .case:nth-child(even) .media { order: 0; }
+  .services { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .contact { padding: 36px 24px; } .contact .actions { justify-content: flex-start; }
+  .log { min-height: 0; }
+}
+@media (max-width: 600px) {
+  .wrap { padding: 0 16px; }
+  .top nav { display: none; }
+  .steps { grid-template-columns: 1fr; }
+  td.stack, th.stack { display: none; }
+  td:first-child { white-space: normal; }
+  .log li { grid-template-columns: 1fr; gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .log li.on { animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="name" href="/automation/">Basar Tuncay</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="#contact">Contact</a><a href="/">Agent security reviews</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1>Automation for the work your team does by hand.</h1>
+        <p>I build systems that read your inbox, watch your competitors, process your invoices and keep your tools in sync. They run unattended and ask a person only when it matters.</p>
+        <div class="actions">
+          <a class="btn solid" href="#work">Watch the 1-minute demos</a>
+          <a class="btn line" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
+        </div>
+      </div>
+      <div class="log" aria-label="Example events from the systems below">
+        <div class="bar"><span class="live">ops log</span><span>3 systems</span></div>
+        <ol id="log">
+          <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
+          <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
+          <li><time>09:00:04</time><span><span class="sys">support</span> "Order 5521" <span class="bad">prompt injection: no AI draft</span></span></li>
+          <li><time>09:00:05</time><span><span class="sys">support</span> "Can I pay with PayPal?" <span class="need">not in the docs: needs a person</span></span></li>
+          <li><time>09:02:11</time><span><span class="sys">invoices</span> INV-01042 scanned PDF <span class="need">read by OCR: check the numbers</span></span></li>
+          <li><time>09:02:12</time><span><span class="sys">invoices</span> NP/7781 €6,751.25 <span class="done">ready to approve</span></span></li>
+          <li><time>09:05:40</time><span><span class="sys">prices</span> VoltMart undercuts you on Headphones X200: €119.00 vs €128.99 <span class="need">sent to Slack</span></span></li>
+          <li><time>09:05:41</time><span><span class="sys">prices</span> GadgetHub: USB-C Charger 65W <span class="done">out of stock</span></span></li>
+          <li><time>09:14:02</time><span><span class="sys">support</span> reply approved by Sam <span class="done">sent in thread</span></span></li>
+          <li><time>09:20:17</time><span><span class="sys">invoices</span> INV-01042 approved by Alex, paid by Pat <span class="done">four-eyes rule kept</span></span></li>
+        </ol>
+        <div class="note">Real events from the automated tests of the three systems below.</div>
+      </div>
+    </div>
+
+    <section id="work">
+      <h2>Three systems, recorded running</h2>
+      <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
+          <div class="cap">64 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Support Desk</h3>
+          <p class="for">For teams answering the same customer questions every day.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Sorts incoming support email, drafts a reply from your own help docs and shows the source of every sentence. An agent reviews it and sends it in the same thread.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Emails that try to manipulate the AI never get a draft. Urgent replies need a team lead. Questions your docs can't answer become a list of what to write next.</dd>
+          </dl>
+          <div class="proof">Verified on every change: real email in, the reply lands in the customer's mailbox as a threaded answer.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/support-desk">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/price-watch.jpg" aria-label="Price Watch demo"><source src="media/price-watch.mp4" type="video/mp4"></video>
+          <div class="cap">56 seconds, no sound. <a href="media/price-watch-live.jpg">See it running on a real website</a>.</div>
+        </div>
+        <div>
+          <h3>Price Watch</h3>
+          <p class="for">For shops that need to know when a competitor goes cheaper.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Checks competitor sites on a schedule and keeps a price history for each product. It alerts Slack or Telegram when someone undercuts you, cuts a price sharply or runs out of stock, and emails a weekly summary.</dd>
+            <dt>Where it's careful</dt>
+            <dd>When a competitor redesigns their site, most scrapers report every product as removed. This one notices, changes nothing, and sends a single "check the scraper" alert.</dd>
+          </dl>
+          <div class="proof">Verified on every change, and tried on a real public catalogue: 11 products, 0 errors.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/price-watch">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/invoice-platform.jpg" aria-label="Invoice Platform demo"><source src="media/invoice-platform.mp4" type="video/mp4"></video>
+          <div class="cap">58 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Invoice Platform</h3>
+          <p class="for">For finance teams typing supplier invoices into a system by hand.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Picks up invoices emailed as PDFs, including scanned ones, reads them, checks the totals add up and files them in an approval panel. Anything doubtful waits for review with the reason.</dd>
+            <dt>Where it's careful</dt>
+            <dd>The person who approves an invoice can't also pay it. Every change is kept in a history no one can edit. If a service is down, nothing is lost: it retries.</dd>
+          </dl>
+          <div class="proof">Verified on every change: five real emails in, each invoice filed with the right status.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/invoice-platform">Code and design notes</a></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="services">
+      <h2>What I can build for you</h2>
+      <p class="lede">Usually a fixed-scope project of one to four weeks, delivered with tests and a short handover video.</p>
+      <div class="services">
+        <div class="service"><h3>AI on your inbox and documents</h3><p>Email triage, reply drafts grounded in your docs, data pulled out of PDFs and web pages. A person stays in control of what goes out.</p><p class="ex">Like <a href="#work">Support Desk</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ai-extractor">AI Web Extractor</a></p></div>
+        <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
+        <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/filament-ops-panel">Invoice Desk</a></p></div>
+        <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stripe-fulfillment">Stripe Fulfillment</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/shopify-sheets-sync">Shopify to Sheets</a></p></div>
+      </div>
+    </section>
+
+    <section id="more">
+      <h2>All projects</h2>
+      <p class="lede">Smaller pieces, several of which the systems above are built from. All open source and tested automatically.</p>
+      <table>
+        <thead><tr><th scope="col">Project</th><th scope="col">What it does</th><th scope="col" class="stack">Built with</th></tr></thead>
+        <tbody id="projects"></tbody>
+      </table>
+    </section>
+
+    <section id="process">
+      <h2>How a project runs</h2>
+      <p class="lede">You see working software from the first week, not at the end.</p>
+      <ol class="steps">
+        <li><b>A short call</b><span>We pin down the one workflow to automate first and what "done" looks like.</span></li>
+        <li><b>Fixed scope and price</b><span>A written plan with milestones, so you know the cost before work starts.</span></li>
+        <li><b>Weekly demos</b><span>A short video of the real thing working with your data, every week.</span></li>
+        <li><b>Handover</b><span>Code, tests, setup notes and a walkthrough video. It runs without me.</span></li>
+      </ol>
+    </section>
+
+    <section id="contact" style="border-top:0">
+      <div class="contact">
+        <div>
+          <h2>Have a task your team does by hand every week?</h2>
+          <p>Send me a short description. I'll reply with how I'd automate it and a fixed price.</p>
+        </div>
+        <div class="actions">
+          <!-- Fill in the profile links, then remove "hidden". -->
+          <a class="btn solid" href="#" hidden data-link="upwork">Hire me on Upwork</a>
+          <a class="btn" href="#" hidden data-link="fiverr">Fiverr</a>
+          <a class="btn" href="https://github.com/basartuncay">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Basar Tuncay. Every system on this page was recorded from real running software. I also review and harden Claude agents: <a href="/">agent security reviews</a>.</footer>
+</div>
+
+<script>
+const GH = "https://github.com/basartuncay/automation-portfolio/tree/main/projects/";
+const projects = [
+  ["Invoice Desk", "filament-ops-panel", "Approval panel for supplier invoices: roles, four-eyes payments, audit history, an API for intake", "Laravel, Filament"],
+  ["Invoice Extractor", "invoice-extractor", "Turns PDF invoices, scanned ones too, into clean data and checks the arithmetic", "Python, OCR, FastAPI"],
+  ["n8n Invoice Flow", "n8n-invoice-flow", "An n8n workflow that calls a custom extraction API and routes by the result", "n8n, Python"],
+  ["AI Email Triage", "email-triage", "Sorts incoming email and pulls out the key fields, flagging manipulation attempts", "Python, Claude API"],
+  ["Document Q&A", "doc-qa", "Answers questions from company docs with sources, and says so when the answer isn't there", "Python, Claude API"],
+  ["Stripe Fulfillment", "stripe-fulfillment", "Issues license keys from verified Stripe payments, exactly once", "FastAPI, Stripe"],
+  ["Shopify to Sheets", "shopify-sheets-sync", "Live order sync from Shopify to Google Sheets without duplicates", "FastAPI, Google Sheets"],
+  ["Spreadsheet to Airtable", "sheet-to-crm", "Cleans, validates and de-duplicates spreadsheet rows, then loads them into Airtable", "Python, Airtable"],
+  ["Price Monitor", "price-monitor", "Daily catalogue crawl with validation and change detection", "Python, httpx"],
+  ["JS-Site Scraper", "js-scraper", "Scrapes JavaScript-heavy sites by rendering them or by using their hidden API", "Playwright, Python"],
+  ["Keyword Alert Bot", "alert-bot", "Watches feeds and sends one Slack or Telegram alert per new matching item", "Python, Slack, Telegram"],
+  ["Weekly KPI Report", "kpi-report", "Week-over-week numbers with anomaly flags, emailed with a chart", "Python, Google Sheets"],
+  ["AI Web Extractor", "ai-extractor", "Any web page plus a list of fields in, clean JSON out, with no selectors to maintain", "Python, Claude API"],
+  ["AI Extractor on Apify", "ai-extractor-actor", "The extractor packaged as a pay-per-use Apify actor", "Apify, Docker"],
+];
+document.getElementById("projects").innerHTML = projects.map(([name, dir, what, stack]) =>
+  `<tr><td><a href="${GH}${dir}">${name}</a></td><td>${what}</td><td class="stack">${stack}</td></tr>`).join("");
+
+// The one orchestrated moment: the log lines arrive one after another, then the log stays still.
+const lines = [...document.querySelectorAll("#log li")];
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  lines.forEach(li => (li.style.visibility = "hidden"));
+  lines.forEach((li, i) => setTimeout(() => { li.style.visibility = ""; li.classList.add("on"); }, 350 + i * 420));
+}
+</script>
+</body>
+</html>
