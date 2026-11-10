@@ -6,7 +6,7 @@
 <title>Basar Tuncay · Automation engineer</title>
 <meta name="description" content="I build back-office automations that run unattended: AI support inboxes, competitor price tracking, invoice processing, and the integrations between your tools. Every project tested end to end.">
 <meta property="og:title" content="Basar Tuncay: automation that runs your back office">
-<meta property="og:description" content="AI support inbox, competitor price tracking, invoice automation. Real systems, each with a 1-minute demo.">
+<meta property="og:description" content="Back-office AI agent, AI support inbox, competitor price tracking, invoice automation. Real systems, each with a 1-minute demo.">
 <meta property="og:image" content="https://basartuncay.github.io/automation/media/support-desk.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,7 +158,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </div>
       <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>3 systems</span></div>
+        <div class="bar"><span class="live">ops log</span><span>4 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -168,16 +168,35 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
           <li><time>09:02:12</time><span><span class="sys">invoices</span> NP/7781 €6,751.25 <span class="done">ready to approve</span></span></li>
           <li><time>09:05:40</time><span><span class="sys">prices</span> VoltMart undercuts you on Headphones X200: €119.00 vs €128.99 <span class="need">sent to Slack</span></span></li>
           <li><time>09:05:41</time><span><span class="sys">prices</span> GadgetHub: USB-C Charger 65W <span class="done">out of stock</span></span></li>
-          <li><time>09:14:02</time><span><span class="sys">support</span> reply approved by Sam <span class="done">sent in thread</span></span></li>
+          <li><time>09:14:02</time><span><span class="sys">agent</span> refund €120 on order 1012 <span class="need">over €50: held for a manager</span></span></li>
           <li><time>09:20:17</time><span><span class="sys">invoices</span> INV-01042 approved by Alex, paid by Pat <span class="done">four-eyes rule kept</span></span></li>
         </ol>
-        <div class="note">Real events from the automated tests of the three systems below.</div>
+        <div class="note">Real events from the automated tests of the systems below.</div>
       </div>
     </div>
 
     <section id="work">
-      <h2>Three systems, recorded running</h2>
+      <h2>Four systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/ops-agent.jpg" aria-label="Ops Agent demo"><source src="media/ops-agent.mp4" type="video/mp4"></video>
+          <div class="cap">70 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Ops Agent</h3>
+          <p class="for">For teams that want an AI agent to do real work in their systems, safely.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Staff give it back-office tasks in plain words: refunds, cancellations, address changes, restocks. It checks the facts through tools, acts, emails the customer and reports back. The same tools are available to Claude Desktop through an MCP server.</dd>
+            <dt>Where it's careful</dt>
+            <dd>The limits are in code, not in the prompt. Refunds over €50 and every cancellation wait for a manager, and the run resumes on its own afterwards. Impossible actions are refused, every step is kept in a trace, and text written by customers is treated as data.</dd>
+          </dl>
+          <div class="proof">Verified on every change: 14 evaluation cases check what changed in the data after each run, not the wording of the reply.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ops-agent">Code and design notes</a></div>
+        </div>
+      </article>
 
       <article class="case">
         <div class="media">
@@ -241,7 +260,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
       <h2>What I can build for you</h2>
       <p class="lede">Usually a fixed-scope project of one to four weeks, delivered with tests and a short handover video.</p>
       <div class="services">
-        <div class="service"><h3>AI on your inbox and documents</h3><p>Email triage, reply drafts grounded in your docs, data pulled out of PDFs and web pages. A person stays in control of what goes out.</p><p class="ex">Like <a href="#work">Support Desk</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ai-extractor">AI Web Extractor</a></p></div>
+        <div class="service"><h3>AI agents and AI on your inbox</h3><p>Agents that act in your systems within limits you set, email triage, reply drafts grounded in your docs, data pulled out of PDFs. A person stays in control of what matters.</p><p class="ex">Like <a href="#work">Ops Agent</a>, <a href="#work">Support Desk</a></p></div>
         <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
         <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/filament-ops-panel">Invoice Desk</a></p></div>
         <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stripe-fulfillment">Stripe Fulfillment</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/shopify-sheets-sync">Shopify to Sheets</a></p></div>
