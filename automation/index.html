@@ -158,7 +158,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </div>
       <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>13 systems</span></div>
+        <div class="bar"><span class="live">ops log</span><span>14 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -180,7 +180,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
     </div>
 
     <section id="work">
-      <h2>Thirteen systems, recorded running</h2>
+      <h2>Fourteen systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
 
       <article class="case">
@@ -375,6 +375,25 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
 
       <article class="case">
         <div class="media">
+          <video controls preload="none" poster="media/meter.jpg" aria-label="Meter demo"><source src="media/meter.mp4" type="video/mp4"></video>
+          <div class="cap">63 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Meter</h3>
+          <p class="for">For SaaS teams charging per API call, document or minute.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Counts your product's usage, reports it to Stripe Billing and shows each customer's next invoice as it grows. Plans include a set amount of usage; beyond it, overage is billed per 1,000.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Retried batches are never billed twice. Customers are emailed at 80% and 100% of what's included and can set a spend cap. A declined card starts a grace period instead of cutting a paying customer off, and our count is reconciled against Stripe's.</dd>
+          </dl>
+          <div class="proof">Verified on every change: usage counted once, matched against Stripe, a failed payment through grace and restriction, then paid and restored.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/meter">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
           <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
           <div class="cap">64 seconds, no sound.</div>
         </div>
@@ -440,7 +459,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
         <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="#work">Paymatch</a></p></div>
         <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="#work">Stock Sync</a>, <a href="#work">Accessflow</a></p></div>
-        <div class="service"><h3>Sales, onboarding and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Table Desk</a></p></div>
+        <div class="service"><h3>Sales, billing and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, usage billed through Stripe, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Meter</a>, <a href="#work">Table Desk</a></p></div>
       </div>
     </section>
 
