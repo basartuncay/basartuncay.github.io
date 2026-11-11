@@ -158,7 +158,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </div>
       <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>6 systems</span></div>
+        <div class="bar"><span class="live">ops log</span><span>11 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -169,6 +169,9 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
           <li><time>09:05:40</time><span><span class="sys">prices</span> VoltMart undercuts you on Headphones X200: €119.00 vs €128.99 <span class="need">sent to Slack</span></span></li>
           <li><time>09:05:41</time><span><span class="sys">sync</span> phone changed in store and CRM <span class="need">conflict: a person decides</span></span></li>
           <li><time>09:14:02</time><span><span class="sys">agent</span> refund €120 on order 1012 <span class="need">over €50: held for a manager</span></span></li>
+          <li><time>09:16:30</time><span><span class="sys">stock</span> last 3 kettles sold on Shopify <span class="done">Amazon at 0 in 0.8 s</span></span></li>
+          <li><time>09:18:02</time><span><span class="sys">bank</span> €2,332.40 "Rechnung 2026 0102 abzgl. 2% Skonto" <span class="done">matched, discount booked</span></span></li>
+          <li><time>09:18:02</time><span><span class="sys">bank</span> €560.00 "Danke!" from a private account <span class="need">two invoices fit: a person decides</span></span></li>
           <li><time>09:20:17</time><span><span class="sys">invoices</span> INV-01042 approved by Alex, paid by Pat <span class="done">four-eyes rule kept</span></span></li>
         </ol>
         <div class="note">Real events from the automated tests of the systems below.</div>
@@ -176,7 +179,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
     </div>
 
     <section id="work">
-      <h2>Six systems, recorded running</h2>
+      <h2>Eleven systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
 
       <article class="case">
@@ -233,6 +236,101 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
           </dl>
           <div class="proof">Verified on every change: the warehouse matches the sources' own totals to the cent, and bad data, a renamed column and a late refund are each handled.</div>
           <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/revenue-pipeline">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/stock-sync.jpg" aria-label="Stock Sync demo"><source src="media/stock-sync.mp4" type="video/mp4"></video>
+          <div class="cap">55 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Stock Sync</h3>
+          <p class="for">For shops selling the same stock on their own site and on Amazon.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Keeps one stock count for Shopify, Amazon and the warehouse. Every order, shipment and delivery updates it, and each channel is told what it may still sell, with a safety margin and bundles worked out from their parts.</dd>
+            <dt>Where it's careful</dt>
+            <dd>When the last units sell on one channel, the other shows zero about a second later. If two channels still sell the same item, the order is flagged with exactly what's missing instead of being half-filled. A stock count is only corrected when the difference shows up twice.</dd>
+          </dl>
+          <div class="proof">Verified on every change: a sell-out, an oversell, a late webhook, Amazon throttling and a hand-edited quantity, end to end.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stock-sync">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/paymatch.jpg" aria-label="Paymatch demo"><source src="media/paymatch.mp4" type="video/mp4"></video>
+          <div class="cap">48 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Paymatch</h3>
+          <p class="for">For finance teams matching bank payments to invoices every morning.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Reads the bank statement (CAMT.053 or the bank's CSV), matches each payment to open invoices and books it in the accounting system. Then it sends reminders for what's really overdue.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Every match says why. Discounts, bank fees, part payments and one transfer for two invoices are recognised. A payment is only booked on its own when the match is clear; the rest waits for a person. Nobody gets a reminder for money that may already have arrived.</dd>
+          </dl>
+          <div class="proof">Verified on every change: two statements in, six payments booked through an outage, two decided by a person, reminders to the right two customers only.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/paymatch">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/kickoff.jpg" aria-label="Kickoff demo"><source src="media/kickoff.mp4" type="video/mp4"></video>
+          <div class="cap">61 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Kickoff</h3>
+          <p class="for">For agencies and freelancers losing days between "yes" and the first working hour.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Turns an enquiry into a proposal, lets the client sign it online and pay the deposit with Stripe, then sets up the project board, a shared folder and the welcome email by itself.</dd>
+            <dt>Where it's careful</dt>
+            <dd>The signature is tied to a fingerprint of the exact text that was signed, and the client gets a signed PDF. Payments count only when Stripe confirms them. Reminders stop the moment they no longer fit, and setup steps can be retried without creating duplicates.</dd>
+          </dl>
+          <div class="proof">Verified on every change: enquiry to onboarded client by real email, through two outages, with forged and replayed payment messages refused.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kickoff">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/lead-engine.jpg" aria-label="Lead Engine demo"><source src="media/lead-engine.mp4" type="video/mp4"></video>
+          <div class="cap">62 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Lead Engine</h3>
+          <p class="for">For sales teams turning exported lead lists into conversations.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Imports lead exports, removes duplicates, checks each address, looks up the company and scores the lead with reasons. Good leads get a short, personal email sequence, replies are read and sorted, and interested people go to the CRM.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Sending stays in office hours and under a daily limit. Anyone who replies, is out of office, asks to stop or bounces is handled correctly, and every email has a one-click unsubscribe. Nobody who said no is contacted again.</dd>
+          </dl>
+          <div class="proof">Verified on every change: two exports, real emails out, five kinds of reply in, and only the interested lead in the CRM.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/lead-engine">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
+          <video controls preload="none" poster="media/table-desk.jpg" aria-label="Table Desk demo"><source src="media/table-desk.mp4" type="video/mp4"></video>
+          <div class="cap">57 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Table Desk</h3>
+          <p class="for">For restaurants losing bookings between the phone, the website and paper.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>One reservation book for an AI phone agent, the website, text messages and the staff. Guests get a confirmation and a reminder, can cancel by replying STORNO, and freed tables are offered to the waitlist.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Two guests can never get the same table, even at the same second. Tables are joined for bigger groups, a retried phone-agent call never books twice, and guests' details are removed 30 days after the visit.</dd>
+          </dl>
+          <div class="proof">Verified on every change: a web booking, a phone-agent booking, a cancellation by text and a waitlist table taken with "JA", end to end.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/table-desk">Code and design notes</a></div>
         </div>
       </article>
 
@@ -301,8 +399,9 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         <div class="service"><h3>AI agents and AI on your inbox</h3><p>Agents that act in your systems within limits you set, email triage, reply drafts grounded in your docs, data pulled out of PDFs. A person stays in control of what matters.</p><p class="ex">Like <a href="#work">Ops Agent</a>, <a href="#work">Support Desk</a></p></div>
         <div class="service"><h3>Data pipelines and dashboards</h3><p>Orders, payments, ad spend and CRM data in one warehouse built with dbt, with tests that stop bad numbers before anyone sees them, and a dashboard your team reads every morning.</p><p class="ex">Like <a href="#work">Revenue Pipeline</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kpi-report">Weekly KPI Report</a></p></div>
         <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
-        <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/filament-ops-panel">Invoice Desk</a></p></div>
-        <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stripe-fulfillment">Stripe Fulfillment</a></p></div>
+        <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="#work">Paymatch</a></p></div>
+        <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="#work">Stock Sync</a></p></div>
+        <div class="service"><h3>Sales, onboarding and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Table Desk</a></p></div>
       </div>
     </section>
 
