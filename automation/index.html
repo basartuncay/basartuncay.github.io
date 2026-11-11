@@ -158,7 +158,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </div>
       <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>15 systems</span></div>
+        <div class="bar"><span class="live">ops log</span><span>16 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -180,7 +180,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
     </div>
 
     <section id="work">
-      <h2>Fifteen systems, recorded running</h2>
+      <h2>Sixteen systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
 
       <article class="case">
@@ -413,6 +413,25 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
 
       <article class="case">
         <div class="media">
+          <video controls preload="none" poster="media/reviewdesk.jpg" aria-label="Reviewdesk demo"><source src="media/reviewdesk.mp4" type="video/mp4"></video>
+          <div class="cap">48 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Reviewdesk</h3>
+          <p class="for">For restaurants and shops that mean to answer every Google review.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Reads new reviews for every location and drafts a reply in the reviewer's language that answers what they wrote. Praise is answered by itself; criticism waits for the manager to approve or edit.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Anything about health, safety or legal threats triggers a Slack alert, and the draft takes it to a private conversation instead of discussing it in public. Reviews already answered in the Google app are left alone.</dd>
+          </dl>
+          <div class="proof">Verified on every change: eight reviews across two locations, four answered on their own, a food-poisoning claim held with an alert, an edited reply posted.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/reviewdesk">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
           <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
           <div class="cap">64 seconds, no sound.</div>
         </div>
@@ -478,7 +497,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
         <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="#work">Paymatch</a></p></div>
         <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="#work">Stock Sync</a>, <a href="#work">Shipflow</a>, <a href="#work">Accessflow</a></p></div>
-        <div class="service"><h3>Sales, billing and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, usage billed through Stripe, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Meter</a>, <a href="#work">Table Desk</a></p></div>
+        <div class="service"><h3>Sales, billing and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, usage billed through Stripe, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Meter</a>, <a href="#work">Table Desk</a>, <a href="#work">Reviewdesk</a></p></div>
       </div>
     </section>
 
