@@ -158,7 +158,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </div>
       <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>11 systems</span></div>
+        <div class="bar"><span class="live">ops log</span><span>12 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -179,7 +179,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
     </div>
 
     <section id="work">
-      <h2>Eleven systems, recorded running</h2>
+      <h2>Twelve systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
 
       <article class="case">
@@ -336,6 +336,25 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
 
       <article class="case">
         <div class="media">
+          <video controls preload="none" poster="media/chatline.jpg" aria-label="Chatline demo"><source src="media/chatline.mp4" type="video/mp4"></video>
+          <div class="cap">65 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Chatline</h3>
+          <p class="for">For shops answering "where is my order?" on WhatsApp all day.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Answers order tracking and return requests on WhatsApp with buttons and lists, registers returns with the shop and sends the label. Everything else goes to a team inbox, where a person replies on the same chat.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Order details go only to the phone number the order belongs to. The bot stays quiet while a person has the chat. It follows WhatsApp's rules: free replies only within 24 hours of the customer's last message, then approved templates, and shipping updates only for customers who opted in.</dd>
+          </dl>
+          <div class="proof">Verified on every change: tracking, a return, a handoff, the 24-hour rule, opt-in updates and a forged webhook, end to end.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/chatline">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
           <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
           <div class="cap">64 seconds, no sound.</div>
         </div>
@@ -396,7 +415,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
       <h2>What I can build for you</h2>
       <p class="lede">Usually a fixed-scope project of one to four weeks, delivered with tests and a short handover video.</p>
       <div class="services">
-        <div class="service"><h3>AI agents and AI on your inbox</h3><p>Agents that act in your systems within limits you set, email triage, reply drafts grounded in your docs, data pulled out of PDFs. A person stays in control of what matters.</p><p class="ex">Like <a href="#work">Ops Agent</a>, <a href="#work">Support Desk</a></p></div>
+        <div class="service"><h3>AI agents and AI on your inbox</h3><p>Agents that act in your systems within limits you set, email triage, reply drafts grounded in your docs, data pulled out of PDFs. A person stays in control of what matters.</p><p class="ex">Like <a href="#work">Ops Agent</a>, <a href="#work">Support Desk</a>, <a href="#work">Chatline</a></p></div>
         <div class="service"><h3>Data pipelines and dashboards</h3><p>Orders, payments, ad spend and CRM data in one warehouse built with dbt, with tests that stop bad numbers before anyone sees them, and a dashboard your team reads every morning.</p><p class="ex">Like <a href="#work">Revenue Pipeline</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kpi-report">Weekly KPI Report</a></p></div>
         <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
         <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="#work">Paymatch</a></p></div>
