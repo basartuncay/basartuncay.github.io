@@ -158,7 +158,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </div>
       <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>12 systems</span></div>
+        <div class="bar"><span class="live">ops log</span><span>13 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -172,6 +172,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
           <li><time>09:16:30</time><span><span class="sys">stock</span> last 3 kettles sold on Shopify <span class="done">Amazon at 0 in 0.8 s</span></span></li>
           <li><time>09:18:02</time><span><span class="sys">bank</span> €2,332.40 "Rechnung 2026 0102 abzgl. 2% Skonto" <span class="done">matched, discount booked</span></span></li>
           <li><time>09:18:02</time><span><span class="sys">bank</span> €560.00 "Danke!" from a private account <span class="need">two invoices fit: a person decides</span></span></li>
+          <li><time>09:19:40</time><span><span class="sys">access</span> Jonas K. left, immediate <span class="done">removed from Google, Slack, GitHub in 2.1 s</span></span></li>
           <li><time>09:20:17</time><span><span class="sys">invoices</span> INV-01042 approved by Alex, paid by Pat <span class="done">four-eyes rule kept</span></span></li>
         </ol>
         <div class="note">Real events from the automated tests of the systems below.</div>
@@ -179,7 +180,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
     </div>
 
     <section id="work">
-      <h2>Twelve systems, recorded running</h2>
+      <h2>Thirteen systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
 
       <article class="case">
@@ -355,6 +356,25 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
 
       <article class="case">
         <div class="media">
+          <video controls preload="none" poster="media/accessflow.jpg" aria-label="Accessflow demo"><source src="media/accessflow.mp4" type="video/mp4"></video>
+          <div class="cap">58 seconds, no sound.</div>
+        </div>
+        <div>
+          <h3>Accessflow</h3>
+          <p class="for">For companies whose leavers still have a Slack account three months later.</p>
+          <dl>
+            <dt>What it does</dt>
+            <dd>Reads joiners, team changes and leavers from the HR system and keeps Google Workspace, Slack and GitHub in line: accounts ready the day before someone starts, groups moved when they change teams, everything removed after their last day.</dd>
+            <dt>Where it's careful</dt>
+            <dd>Admin rights are never given automatically: only the person's manager can approve them, from a signed link in Slack. Leavers' files go to their manager and their sessions end. A scan finds accounts nobody planned, and every change is in an audit export.</dd>
+          </dl>
+          <div class="proof">Verified on every change: a joiner, a mover, an approval, an immediate leaver removed everywhere in about 2 seconds, and drift found and fixed.</div>
+          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/accessflow">Code and design notes</a></div>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="media">
           <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
           <div class="cap">64 seconds, no sound.</div>
         </div>
@@ -419,7 +439,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         <div class="service"><h3>Data pipelines and dashboards</h3><p>Orders, payments, ad spend and CRM data in one warehouse built with dbt, with tests that stop bad numbers before anyone sees them, and a dashboard your team reads every morning.</p><p class="ex">Like <a href="#work">Revenue Pipeline</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kpi-report">Weekly KPI Report</a></p></div>
         <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
         <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="#work">Paymatch</a></p></div>
-        <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="#work">Stock Sync</a></p></div>
+        <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="#work">Stock Sync</a>, <a href="#work">Accessflow</a></p></div>
         <div class="service"><h3>Sales, onboarding and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Table Desk</a></p></div>
       </div>
     </section>
