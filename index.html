@@ -4,42 +4,54 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Basar Tuncay · Secure Claude agents</title>
-<meta name="description" content="Fixed-price security reviews and integration sprints for teams shipping Claude agents, MCP servers and tool-using LLM features.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231B2430'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='%23F2B33D' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="description" content="Fixed-scope security reviews and integration sprints for teams shipping Claude agents, MCP servers and tool-using LLM features.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5FD8'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='%23F2B33D' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  /* Palette: Blue Kyanite (liquid-glass skill, palettes.css). */
   :root {
-    --paper: #EEF1F4;
+    --paper: #EEF4FF;
     --panel: #FFFFFF;
-    --ink: #1B2430;
-    --muted: #556173;
-    --line: #D3D9E1;
-    --steel: #2F5D8A;
+    --ink: #0B1B3A;
+    --muted: #4A5873;
+    --line: #CFDCF2;
+    --steel: #1A50B8;
+    --accent: #1E5FD8;
+    --on-accent: #FFFFFF;
+    --deep: #0B3D91;
     --allow: #2E7D5B;
     --confirm: #A86A12;
     --deny: #B42318;
-    --trace-bg: #1B2430;
-    --trace-ink: #DCE3EC;
-    --trace-dim: #8A97A8;
+    --trace-bg: #0B1B3A;
+    --trace-ink: #DCE6F7;
+    --trace-dim: #8C9BB8;
     --amber: #F2B33D;
+    --glass: rgb(255 255 255 / .62);
+    --rim: rgb(255 255 255 / .8);
+    /* Spring easings from the liquid-glass skill (motion.css). */
+    --spring-snappy: linear(0, 0.027, 0.096, 0.191, 0.297, 0.407, 0.513, 0.611, 0.698, 0.774, 0.838, 0.89, 0.932, 0.964, 0.988, 1.005, 1.017, 1.024, 1.027, 1.028, 1.028, 1.026, 1.023, 1.02, 1.017, 1.014, 1.011, 1.009, 1.007, 1.005, 1.003, 1.002, 1);
+    --spring-bouncy: linear(0, 0.098, 0.329, 0.605, 0.859, 1.053, 1.172, 1.218, 1.208, 1.164, 1.104, 1.046, 0.999, 0.968, 0.954, 0.953, 0.961, 0.973, 0.986, 0.998, 1.005, 1.01, 1.011, 1.009, 1.007, 1.004, 1.001, 0.999, 0.998, 0.998, 0.998, 0.998, 1);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #121821; --panel: #1A222D; --ink: #E6EBF1; --muted: #9AA6B6; --line: #2A3442;
-      --steel: #7FA9D6; --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
-      --trace-bg: #0C1118; color-scheme: dark;
+      --paper: #07142E; --panel: #0E1F42; --ink: #EEF4FF; --muted: #A3B3CF; --line: #1E3463;
+      --steel: #7FAEFF; --accent: #4C8DF6; --on-accent: #06142E; --deep: #0B3D91;
+      --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
+      --trace-bg: #040B1C; --glass: rgb(14 31 66 / .62); --rim: rgb(255 255 255 / .14); color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #121821; --panel: #1A222D; --ink: #E6EBF1; --muted: #9AA6B6; --line: #2A3442;
-    --steel: #7FA9D6; --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
-    --trace-bg: #0C1118; color-scheme: dark;
+    --paper: #07142E; --panel: #0E1F42; --ink: #EEF4FF; --muted: #A3B3CF; --line: #1E3463;
+    --steel: #7FAEFF; --accent: #4C8DF6; --on-accent: #06142E; --deep: #0B3D91;
+    --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
+    --trace-bg: #040B1C; --glass: rgb(14 31 66 / .62); --rim: rgb(255 255 255 / .14); color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
+  html, body { overflow-x: clip; } /* the hero glow is wider than the page */
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0; background: var(--paper); color: var(--ink);
@@ -52,14 +64,26 @@
   @media (min-width: 720px) { .wrap { padding: 0 32px; } }
 
   /* Top bar */
-  .top { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
+  .top {
+    position: sticky; top: 12px; z-index: 10; margin-top: 12px;
+    display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-radius: 999px;
+    background: var(--glass); -webkit-backdrop-filter: blur(18px) saturate(175%); backdrop-filter: blur(18px) saturate(175%);
+    box-shadow: inset 0 1px 0 var(--rim), 0 8px 32px rgb(11 27 58 / .10);
+  }
+  @media (prefers-reduced-transparency: reduce) { .top { background: var(--panel); } }
   .brand { font-weight: 700; text-decoration: none; color: var(--ink); }
   .top nav a { margin-left: 20px; color: var(--muted); text-decoration: none; font-weight: 500; }
   .top nav a:hover { color: var(--ink); }
   @media (max-width: 560px) { .top nav a:not(.go) { display: none; } }
 
   /* Hero */
-  .hero { display: grid; gap: 40px; padding: 40px 0 72px; align-items: center; }
+  .hero { position: relative; display: grid; gap: 40px; padding: 40px 0 72px; align-items: center; }
+  .hero::before { /* kyanite glow: gives the glass something to refract */
+    content: ""; position: absolute; z-index: -1; inset: -120px -20% auto 30%; height: 640px; border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 34%, transparent), transparent 70%),
+                radial-gradient(closest-side at 70% 60%, color-mix(in srgb, #A9C8FF 45%, transparent), transparent 70%);
+    filter: blur(20px); pointer-events: none;
+  }
   @media (min-width: 900px) { .hero { grid-template-columns: 1.05fr 1fr; padding-top: 64px; } }
   .hero > * { min-width: 0; } /* let the trace shrink instead of widening the page */
   h1 {
@@ -69,11 +93,17 @@
   .lede { font-size: 1.2rem; color: var(--muted); max-width: 46ch; margin: 0 0 30px; }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
   .btn {
-    display: inline-block; padding: 13px 20px; border-radius: 10px; font-weight: 700;
+    display: inline-block; padding: 13px 22px; border-radius: 999px; font-weight: 700;
     text-decoration: none; border: 2px solid var(--ink);
   }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .btn.primary:hover { background: var(--steel); border-color: var(--steel); color: #fff; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn.primary:hover { background: var(--deep); border-color: var(--deep); color: #fff; }
+  /* Tap feedback: everything you can press gives way, then springs back. */
+  @media (prefers-reduced-motion: no-preference) {
+    .btn, .switch button, summary, .top nav a { transition: scale 400ms var(--spring-snappy), background-color .2s, color .2s; }
+    .btn:active, .switch button:active, summary:active, .top nav a:active { scale: .95; transition-duration: 90ms; }
+    .top nav a, .switch button { display: inline-block; }
+  }
   .btn.ghost { color: var(--ink); }
   .btn.ghost:hover { background: var(--panel); }
   .assure { color: var(--muted); font-size: .95rem; margin: 16px 0 0; }
@@ -105,13 +135,24 @@
   /* Rows appear one after another, like a log tailing (driven by the script below). */
   .trace .row.pending { visibility: hidden; }
 
-  .switch { display: inline-flex; padding: 4px; margin-bottom: 12px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); }
-  .switch button {
-    font: 600 .9rem/1 "Schibsted Grotesk", system-ui, sans-serif; color: var(--muted);
-    background: none; border: 0; padding: 9px 14px; border-radius: 8px; cursor: pointer;
+  /* Lens switch: the selection slides on a spring and squashes along its travel (liquid-glass lens-tabs recipe). */
+  .switch {
+    position: relative; display: inline-flex; padding: 4px; margin-bottom: 12px; border-radius: 999px;
+    background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(170%); backdrop-filter: blur(14px) saturate(170%);
+    box-shadow: inset 0 1px 0 var(--rim), 0 1px 0 var(--line), 0 6px 20px rgb(11 27 58 / .08);
   }
-  .switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-  .switch button[data-mode="open"][aria-pressed="true"] { background: var(--deny); color: #fff; }
+  .switch button {
+    position: relative; z-index: 1; font: 600 .9rem/1 "Schibsted Grotesk", system-ui, sans-serif; color: var(--muted);
+    background: none; border: 0; padding: 10px 16px; border-radius: 999px; cursor: pointer; min-height: 40px;
+  }
+  .switch button[aria-pressed="true"] { color: var(--paper); }
+  .switch button[data-mode="open"][aria-pressed="true"] { color: var(--paper); } /* AA on --deny in both themes */
+  .lens {
+    position: absolute; top: 4px; bottom: 4px; left: 0; width: var(--w, 0); translate: var(--x, 0) 0;
+    border-radius: 999px; background: var(--ink); box-shadow: inset 0 1px 0 rgb(255 255 255 / .25), 0 4px 14px rgb(11 27 58 / .25);
+  }
+  .switch[data-on="open"] .lens { background: var(--deny); }
+  @media (prefers-reduced-motion: no-preference) { .lens { transition: translate 950ms var(--spring-bouncy), width 950ms var(--spring-bouncy), background-color .3s; } }
   .trace-cap { color: var(--muted); font-size: .9rem; margin: 12px 4px 0; }
 
   /* Sections */
@@ -132,7 +173,6 @@
   @media (min-width: 860px) { .packages { grid-template-columns: 1fr 1fr; } }
   .pkg { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 28px; display: flex; flex-direction: column; }
   .pkg.lead { border: 2px solid var(--ink); }
-  .price { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; margin: 10px 0 0; }
   .terms { color: var(--muted); margin: 0 0 18px; }
   .pkg ul { margin: 0 0 22px; padding-left: 1.1em; }
   .pkg li { margin: 6px 0; }
@@ -170,14 +210,35 @@
   details p { color: var(--muted); margin: 10px 0 0; }
 
   /* Contact */
-  .contact { background: var(--ink); color: var(--paper); border-radius: 20px; padding: 44px 28px; margin: 64px 0; }
-  .contact h2 { color: var(--paper); }
-  .contact p { color: color-mix(in srgb, var(--paper) 75%, transparent); max-width: 56ch; }
-  .contact .btn.primary { background: var(--amber); border-color: var(--amber); color: #1B2430; }
+  .contact {
+    background: radial-gradient(120% 140% at 85% 0%, #1E5FD8 0%, #0B3D91 45%, #0B1B3A 100%);
+    color: #EEF4FF; border-radius: 28px; padding: 44px 28px; margin: 64px 0;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .18), 0 30px 80px -40px rgb(11 61 145 / .7);
+  }
+  .contact h2 { color: #fff; }
+  .contact p { color: #EEF4FF; max-width: 56ch; } /* full strength: AA even over the bright corner of the gradient */
+  .contact .btn.primary { background: var(--amber); border-color: var(--amber); color: #0B1B3A; }
   .contact .btn.primary:hover { background: #fff; border-color: #fff; }
-  .contact .btn.ghost { color: var(--paper); border-color: var(--paper); }
+  .contact .btn.ghost { color: #EEF4FF; border-color: #EEF4FF; }
   .contact .btn.ghost:hover { background: transparent; color: var(--amber); border-color: var(--amber); }
   footer { color: var(--muted); font-size: .9rem; padding: 0 0 40px; }
+
+  .rolling { font-variant-numeric: tabular-nums; } /* digits keep their width while rolling; off at rest (it widens the comma) */
+  .pkg.lead { border-color: var(--accent); box-shadow: 0 24px 60px -36px color-mix(in srgb, var(--accent) 70%, transparent); }
+
+  /* FAQ opens smoothly instead of snapping (Chromium 131+; others snap as before). */
+  details { interpolate-size: allow-keywords; }
+  details::details-content { block-size: 0; overflow-y: clip; transition: block-size 450ms var(--spring-snappy), content-visibility 450ms allow-discrete; }
+  details[open]::details-content { block-size: auto; }
+  @media (prefers-reduced-motion: reduce) { details::details-content { transition: none; } }
+
+  /* Sections rise in as they scroll into view (CSS only). */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      main section > * { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
+    }
+  }
+  @keyframes rise { from { opacity: 0; translate: 0 32px; } }
 </style>
 </head>
 <body>
@@ -196,7 +257,7 @@
     <div class="hero">
       <div>
         <h1>Ship Claude agents that can’t be talked into things.</h1>
-        <p class="lede">I review and build tool-using LLM features, MCP servers and Claude Code setups so untrusted content can’t decide what your agent does. Fixed scope, fixed price, findings you can reproduce.</p>
+        <p class="lede">I review and build tool-using LLM features, MCP servers and Claude Code setups so untrusted content can’t decide what your agent does. Fixed scope, clear deliverables, findings you can reproduce.</p>
         <div class="ctas">
           <a class="btn primary" href="#contact">Book a 20-minute call</a>
           <a class="btn ghost" href="#packages">See packages</a>
@@ -204,7 +265,8 @@
         <p class="assure">Reply within one business day. Happy to sign your NDA first.</p>
       </div>
       <figure style="margin:0">
-        <div class="switch" role="group" aria-label="Show the same attack">
+        <div class="switch" role="group" aria-label="Show the same attack" data-on="guarded">
+          <span class="lens" aria-hidden="true"></span>
           <button type="button" data-mode="open" aria-pressed="false">Without a guard</button>
           <button type="button" data-mode="guarded" aria-pressed="true">With a policy engine</button>
         </div>
@@ -239,12 +301,11 @@
     </section>
 
     <section id="packages" aria-labelledby="pk-h">
-      <h2 id="pk-h">Fixed-price packages</h2>
-      <p class="intro">Clear scope up front, so you can approve it without a procurement cycle. Launch prices for my first three clients, in exchange for a short case study I can share. Prices in USD; EUR invoicing available.</p>
+      <h2 id="pk-h">Packages</h2>
+      <p class="intro">Clear scope up front, so you can approve it without a procurement cycle.</p>
       <div class="packages">
         <article class="pkg lead">
           <h3>Agent Security Review</h3>
-          <p class="price">$1,900</p>
           <p class="terms">5 business days · one agent, MCP server or Claude Code setup</p>
           <ul>
             <li>Threat model of every tool your agent can call and every input it reads</li>
@@ -258,7 +319,6 @@
         </article>
         <article class="pkg">
           <h3>Claude Integration Sprint</h3>
-          <p class="price">$3,900</p>
           <p class="terms">2 weeks · one workflow from prototype to production</p>
           <ul>
             <li>Claude API or MCP integration into your existing stack (Laravel, Python or TypeScript)</li>
@@ -273,7 +333,7 @@
       <div class="starter">
         <div>
           <h3>Not sure yet? Start with a risk check</h3>
-          <p>$450, one business day. I read your agent’s tools and prompts and send back the five biggest risks with fixes. The fee is credited in full if you book a review within 30 days.</p>
+          <p>One business day. I read your agent’s tools and prompts and send back the five biggest risks with fixes.</p>
         </div>
         <a class="btn ghost" href="mailto:b.tcay12@gmail.com?subject=Agent%20risk%20check">Ask for a risk check</a>
       </div>
@@ -323,7 +383,7 @@
       <details><summary>Do you only work with Claude?</summary><p>Claude is where I work every day, but the review covers any tool-using LLM: the attacks target the tools and data flow, not a specific model.</p></details>
       <details><summary>Can you guarantee the agent can’t be injected?</summary><p>No one honestly can. You get a measured result: which attacks your setup stops, which it doesn’t, and what each remaining risk costs to close.</p></details>
       <details><summary>What do you need from us?</summary><p>A staging environment or repository, a list of the agent’s tools, and one technical contact for questions during the week.</p></details>
-      <details><summary>How do invoicing and contracts work?</summary><p>Fixed-price invoice with half up front and half on delivery. I’m happy to sign your NDA or use a short standard services agreement.</p></details>
+      <details><summary>How do invoicing and contracts work?</summary><p>One invoice per package, half up front and half on delivery. I’m happy to sign your NDA or use a short standard services agreement.</p></details>
     </section>
   </main>
 
@@ -349,12 +409,47 @@
     rows.forEach((r) => r.classList.toggle('pending', !calm));
     if (!calm) timers = rows.map((r, i) => setTimeout(() => r.classList.remove('pending'), 150 + i * 300));
   }
+  const sw = document.querySelector('.switch'), lens = sw.querySelector('.lens');
+  function placeLens(instant) {
+    const b = sw.querySelector('[aria-pressed="true"]');
+    if (instant === true) lens.style.transition = 'none';
+    lens.style.setProperty('--x', b.offsetLeft + 'px');
+    lens.style.setProperty('--w', b.offsetWidth + 'px');
+    if (instant === true) { lens.offsetWidth; lens.style.transition = ''; } // flush so only user moves spring
+  }
   function show(mode) {
+    const moved = trace.dataset.mode !== mode;
     trace.dataset.mode = mode;
+    sw.dataset.on = mode;
     buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    placeLens();
+    if (moved && !calm) lens.animate([{ scale: '1 1' }, { scale: '1.12 .84' }, { scale: '.97 1.05' }, { scale: '1 1' }], { duration: 520, easing: 'ease-out' });
     play();
   }
   buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.mode)));
+  placeLens(true);
+  addEventListener('resize', () => placeLens(true));
+  document.fonts.ready.then(() => placeLens(true)); // button widths change once the web font loads
+
+  // Numbers roll up from zero the first time they scroll into view; the final text is in the HTML for no-JS and screen readers.
+  document.querySelectorAll('.figure .from, .figure .to').forEach((el) => {
+    const final = el.textContent, end = Number(final.replace(/[^\d]/g, ''));
+    if (calm || !end) return;
+    const fmt = (n) => final.replace(/[\d,]+/, n.toLocaleString('en-US'));
+    new IntersectionObserver(([e], io) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now(), ms = 1200;
+      const step = (t) => {
+        const p = Math.min(1, (t - t0) / ms);
+        el.textContent = p < 1 ? fmt(Math.round(end * (1 - (1 - p) ** 4))) : final;
+        if (p < 1) requestAnimationFrame(step); else el.classList.remove('rolling');
+      };
+      el.classList.add('rolling');
+      el.textContent = fmt(0);
+      requestAnimationFrame(step);
+    }, { threshold: 0.6 }).observe(el);
+  });
   // First playback waits until the trace is on screen (it sits below the fold on phones).
   new IntersectionObserver((entries, obs) => {
     if (entries[0].isIntersecting) { play(); obs.disconnect(); }
