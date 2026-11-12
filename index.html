@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Basar Tuncay · Claude agent security projects</title>
 <meta name="description" content="Open-source projects on keeping Claude agents, MCP servers and tool-using LLM features safe from untrusted content.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231B2430'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='%23F2B33D' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5FD8'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='%23F2B33D' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -126,33 +126,40 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
 <style>
   @view-transition { navigation: auto; }
   :root {
-    --paper: #EEF1F4;
+    /* Blue Kyanite palette (liquid-glass skill, palettes.css) */
+    --paper: #EEF4FF;
     --panel: #FFFFFF;
-    --ink: #1B2430;
-    --muted: #556173;
-    --line: #D3D9E1;
-    --steel: #2F5D8A;
+    --ink: #0B1B3A;
+    --muted: #4A5873;
+    --line: #CFDCF2;
+    --steel: #1A50B8;
+    --accent: #1E5FD8;
+    --on-accent: #FFFFFF;
+    --deep: #0B3D91;
     --allow: #2E7D5B;
     --confirm: #A86A12;
     --deny: #B42318;
-    --trace-bg: #1B2430;
-    --trace-ink: #DCE3EC;
-    --trace-dim: #8A97A8;
+    --trace-bg: #0B1B3A;
+    --trace-ink: #DCE6F7;
+    --trace-dim: #8C9BB8;
     --amber: #F2B33D;
-    --paper-rgb: 238 241 244;
+    --paper-rgb: 238 244 255;
+    --spring-bouncy: linear(0, 0.098, 0.329, 0.605, 0.859, 1.053, 1.172, 1.218, 1.208, 1.164, 1.104, 1.046, 0.999, 0.968, 0.954, 0.953, 0.961, 0.973, 0.986, 0.998, 1.005, 1.01, 1.011, 1.009, 1.007, 1.004, 1.001, 0.999, 0.998, 0.998, 0.998, 0.998, 1);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #121821; --panel: #1A222D; --ink: #E6EBF1; --muted: #9AA6B6; --line: #2A3442;
-      --steel: #7FA9D6; --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
-      --trace-bg: #0C1118; --paper-rgb: 18 24 33; color-scheme: dark;
+      --paper: #07142E; --panel: #0E1F42; --ink: #EEF4FF; --muted: #A3B3CF; --line: #1E3463;
+      --steel: #7FAEFF; --accent: #4C8DF6; --on-accent: #06142E; --deep: #0B3D91;
+      --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
+      --trace-bg: #040B1C; --paper-rgb: 7 20 46; color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #121821; --panel: #1A222D; --ink: #E6EBF1; --muted: #9AA6B6; --line: #2A3442;
-    --steel: #7FA9D6; --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
-    --trace-bg: #0C1118; --paper-rgb: 18 24 33; color-scheme: dark;
+    --paper: #07142E; --panel: #0E1F42; --ink: #EEF4FF; --muted: #A3B3CF; --line: #1E3463;
+    --steel: #7FAEFF; --accent: #4C8DF6; --on-accent: #06142E; --deep: #0B3D91;
+    --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
+    --trace-bg: #040B1C; --paper-rgb: 7 20 46; color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
@@ -179,8 +186,8 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   /* links stay ink on glass: muted grey fails AA over the darkest content that scrolls under the bar */
   .top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 500; }
   .top nav a:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
-  .top nav a.go { background: var(--ink); color: var(--paper); font-weight: 700; }
-  .top nav a.go:hover { background: var(--steel); color: #fff; }
+  .top nav a.go { background: var(--accent); color: var(--on-accent); font-weight: 700; }
+  .top nav a.go:hover { background: var(--deep); color: #fff; }
   @media (max-width: 760px) { .top nav a:not(.go) { display: none; } }
 
   /* Hero */
@@ -188,8 +195,8 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   /* soft light behind the hero so the glass has something to bend; static, no filter */
   .hero::before {
     content: ""; position: absolute; z-index: -1; pointer-events: none; top: -160px; right: calc((100% - 100vw) / 2 + 16px); width: min(820px, 90vw); height: 680px;
-    background: radial-gradient(closest-side at 62% 40%, rgb(47 93 138 / .30), transparent),
-                radial-gradient(closest-side at 30% 62%, rgb(242 179 61 / .34), transparent);
+    background: radial-gradient(closest-side at 62% 40%, rgb(30 95 216 / .32), transparent),
+                radial-gradient(closest-side at 30% 62%, rgb(169 200 255 / .45), transparent);
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero::before { opacity: .55; } }
   :root[data-theme="dark"] .hero::before { opacity: .55; }
@@ -203,11 +210,11 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   .lede { font-size: 1.2rem; color: var(--muted); max-width: 46ch; margin: 0 0 30px; }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
   .btn {
-    display: inline-block; padding: 13px 20px; border-radius: 10px; font-weight: 700;
+    display: inline-block; padding: 13px 22px; border-radius: 999px; font-weight: 700;
     text-decoration: none; border: 2px solid var(--ink);
   }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .btn.primary:hover { background: var(--steel); border-color: var(--steel); color: #fff; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn.primary:hover { background: var(--deep); border-color: var(--deep); color: #fff; }
   .btn.ghost { color: var(--ink); }
   .btn.ghost:hover { background: var(--panel); }
   .assure { color: var(--muted); font-size: .95rem; margin: 16px 0 0; }
@@ -239,13 +246,28 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   /* Rows appear one after another, like a log tailing (driven by the script below). */
   .trace .row.pending { visibility: hidden; }
 
-  .switch { display: inline-flex; padding: 4px; margin-bottom: 12px; --glass-radius: 14px; --glass-tint-rgb: var(--paper-rgb); --glass-tint-a: .72; }
+  /* Lens switch: the selection slides on a spring and squashes along its travel (liquid-glass lens-tabs recipe) */
+  .switch { display: inline-flex; padding: 4px; margin-bottom: 12px; --glass-radius: 999px; --glass-tint-rgb: var(--paper-rgb); --glass-tint-a: .72; }
   .switch button {
-    font: 600 .9rem/1 "Schibsted Grotesk", system-ui, sans-serif; color: var(--ink); min-height: 44px;
-    background: none; border: 0; padding: 9px 14px; border-radius: 8px; cursor: pointer;
+    position: relative; z-index: 1; font: 600 .9rem/1 "Schibsted Grotesk", system-ui, sans-serif; color: var(--ink); min-height: 44px;
+    background: none; border: 0; padding: 9px 16px; border-radius: 999px; cursor: pointer;
   }
-  .switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-  .switch button[data-mode="open"][aria-pressed="true"] { background: var(--deny); color: #fff; }
+  .switch button[aria-pressed="true"] { color: var(--paper); transition: color .2s; }
+  .lens {
+    position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 0; width: var(--w, 0); translate: var(--x, 0) 0;
+    border-radius: 999px; background: var(--ink); box-shadow: inset 0 1px 0 rgb(255 255 255 / .25), 0 4px 14px rgb(11 27 58 / .25);
+  }
+  .switch[data-on="open"] .lens { background: var(--deny); } /* --paper text on --deny passes AA in both themes */
+  @media (prefers-reduced-motion: no-preference) {
+    .lens { transition: translate 950ms var(--spring-bouncy), width 950ms var(--spring-bouncy), background-color .3s; }
+    /* tap feedback: everything pressable gives way, then springs back */
+    .switch button, .top nav a { transition: scale var(--spring-snappy-ms) var(--spring-snappy), background-color .2s, color .2s; }
+    .switch button:active, .top nav a:active { scale: .95; transition-duration: 90ms; }
+    @supports (animation-timeline: view()) {
+      main section > * { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
+      @keyframes rise { from { opacity: 0; translate: 0 32px; } }
+    }
+  }
   .trace-cap { color: var(--muted); font-size: .9rem; margin: 12px 4px 0; }
 
   /* Sections */
@@ -313,12 +335,16 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   details p { color: var(--muted); margin: 10px 0 0; }
 
   /* Contact */
-  .contact { background: var(--ink); color: var(--paper); border-radius: 20px; padding: 44px 28px; margin: 64px 0; }
-  .contact h2 { color: var(--paper); }
-  .contact p { color: color-mix(in srgb, var(--paper) 75%, transparent); max-width: 56ch; }
-  .contact .btn.primary { background: var(--amber); border-color: var(--amber); color: #1B2430; }
+  .contact {
+    background: radial-gradient(120% 140% at 85% 0%, #1E5FD8 0%, #0B3D91 45%, #0B1B3A 100%);
+    color: #EEF4FF; border-radius: 28px; padding: 44px 28px; margin: 64px 0;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .18), 0 30px 80px -40px rgb(11 61 145 / .7);
+  }
+  .contact h2 { color: #fff; }
+  .contact p { color: #EEF4FF; max-width: 56ch; } /* full strength: AA even over the bright corner */
+  .contact .btn.primary { background: var(--amber); border-color: var(--amber); color: #0B1B3A; }
   .contact .btn.primary:hover { background: #fff; border-color: #fff; }
-  .contact .btn.ghost { color: var(--paper); border-color: var(--paper); }
+  .contact .btn.ghost { color: #EEF4FF; border-color: #EEF4FF; }
   .contact .btn.ghost:hover { background: transparent; color: var(--amber); border-color: var(--amber); }
   footer { color: var(--muted); font-size: .9rem; padding: 0 0 40px; }
 </style>
@@ -346,7 +372,8 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
         </div>
       </div>
       <figure class="fx-drop" style="margin:0;--i:4">
-        <div class="switch glass--hero" role="group" aria-label="Show the same attack">
+        <div class="switch glass--hero" role="group" aria-label="Show the same attack" data-on="guarded">
+          <span class="lens" aria-hidden="true"></span>
           <button type="button" data-mode="open" aria-pressed="false">Without a guard</button>
           <button type="button" data-mode="guarded" aria-pressed="true">With a policy engine</button>
         </div>
@@ -434,12 +461,27 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
     rows.forEach((r) => r.classList.toggle('pending', !calm));
     if (!calm) timers = rows.map((r, i) => setTimeout(() => r.classList.remove('pending'), 150 + i * 300));
   }
+  const sw = document.querySelector('.switch'), lens = sw.querySelector('.lens');
+  function placeLens(instant) {
+    const b = sw.querySelector('[aria-pressed="true"]');
+    if (instant === true) lens.style.transition = 'none';
+    lens.style.setProperty('--x', b.offsetLeft + 'px');
+    lens.style.setProperty('--w', b.offsetWidth + 'px');
+    if (instant === true) { lens.offsetWidth; lens.style.transition = ''; } // flush so only user moves spring
+  }
   function show(mode) {
+    const moved = trace.dataset.mode !== mode;
     trace.dataset.mode = mode;
+    sw.dataset.on = mode;
     buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    placeLens();
+    if (moved && !calm) lens.animate([{ scale: '1 1' }, { scale: '1.12 .84' }, { scale: '.97 1.05' }, { scale: '1 1' }], { duration: 520, easing: 'ease-out' });
     play();
   }
   buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.mode)));
+  placeLens(true);
+  addEventListener('resize', () => placeLens(true));
+  document.fonts.ready.then(() => placeLens(true)); // button widths change once the web font loads
   // First playback waits until the trace is on screen (it sits below the fold on phones).
   new IntersectionObserver((entries, obs) => {
     if (entries[0].isIntersecting) { play(); obs.disconnect(); }
