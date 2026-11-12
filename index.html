@@ -478,11 +478,6 @@
     if (entries[0].isIntersecting) { play(); obs.disconnect(); }
   }, { threshold: 0.4 }).observe(trace);
 </script>
-<script type="module">
-  import { LiquidGlass } from '/assets/glass/glass.js';
-  // Refraction is built off the critical path; Safari/Firefox keep the frosted fallback.
-  (window.requestIdleCallback || setTimeout)(() =>
-    document.querySelectorAll('.glass--hero').forEach((el) => LiquidGlass.attach(el, { bezel: 14, scale: 36 })));
-</script>
+<script type="module" src="/assets/glass/enhance.js"></script>
 </body>
 </html>

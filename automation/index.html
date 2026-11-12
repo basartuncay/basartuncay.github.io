@@ -662,22 +662,6 @@ const projects = [
 document.getElementById("projects").innerHTML = projects.map(([name, dir, what, stack]) =>
   `<tr><td><a href="${GH}${dir}">${name}</a></td><td>${what}</td><td class="stack">${stack}</td></tr>`).join("");
 
-// Glass play pill over each poster; the native controls appear once the video plays.
-for (const v of document.querySelectorAll(".media video")) {
-  const secs = (v.closest(".media").querySelector(".cap")?.textContent.match(/(\d+) seconds/) || [])[1];
-  const frame = document.createElement("div");
-  frame.className = "frame";
-  const b = document.createElement("button");
-  b.type = "button";
-  b.className = "play glass--thin glass-pill";
-  b.setAttribute("aria-label", `Play ${v.getAttribute("aria-label")}${secs ? `, ${secs} seconds` : ""}`);
-  b.innerHTML = `<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5z"/></svg>Play demo${secs ? ` · ${secs} s` : ""}`;
-  b.addEventListener("click", () => { v.controls = true; b.hidden = true; v.play().catch(() => {}); v.focus(); });
-  v.before(frame);
-  frame.append(v, b);
-  v.controls = false;
-}
-
 // The one orchestrated moment: the log lines arrive one after another, then the log stays still.
 const lines = [...document.querySelectorAll("#log li")];
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -685,11 +669,6 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
   lines.forEach((li, i) => setTimeout(() => { li.style.visibility = ""; li.classList.add("on"); }, 350 + i * 420));
 }
 </script>
-<script type="module">
-import { LiquidGlass } from "/assets/glass/glass.js";
-// Refraction is built off the critical path; Safari/Firefox keep the frosted fallback.
-(window.requestIdleCallback || setTimeout)(() =>
-  document.querySelectorAll(".glass--hero").forEach((el) => LiquidGlass.attach(el, { bezel: 14, scale: 36 })));
-</script>
+<script type="module" src="/assets/glass/enhance.js"></script>
 </body>
 </html>
