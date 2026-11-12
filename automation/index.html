@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,143 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* Liquid Glass material + motion (from the liquid-glass skill), inlined to avoid two render-blocking requests */
+/* Liquid Glass material. Keep the project's palette: only set --glass-tint-rgb / ink tokens to fit it. */
+:root {
+  --glass-tint-rgb: 255 255 255;
+  --glass-tint-a: .55;          /* raise until text on glass passes WCAG AA over the worst backdrop */
+  --glass-blur: 18px;
+  --glass-sat: 175%;
+  --glass-radius: 22px;
+  --glass-rim-top: rgb(255 255 255 / .75);
+  --glass-rim-bottom: rgb(255 255 255 / .18);
+  --glass-shadow: 0 1px 1px rgb(0 0 0 / .04), 0 8px 32px rgb(0 0 0 / .12);
+  --glass-shadow-float: 0 2px 4px rgb(0 0 0 / .06), 0 24px 64px rgb(0 0 0 / .22);
+  --glass-ink: rgb(0 0 0 / .88);
+  --glass-ink-2: rgb(0 0 0 / .56);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --glass-tint-rgb: 28 28 32; --glass-tint-a: .5;
+    --glass-rim-top: rgb(255 255 255 / .22); --glass-rim-bottom: rgb(255 255 255 / .06);
+    --glass-shadow: 0 1px 1px rgb(0 0 0 / .3), 0 8px 32px rgb(0 0 0 / .45);
+    --glass-ink: rgb(255 255 255 / .92); --glass-ink-2: rgb(255 255 255 / .6);
+  }
+}
+:root[data-theme="dark"] {
+  --glass-tint-rgb: 28 28 32; --glass-tint-a: .5;
+  --glass-rim-top: rgb(255 255 255 / .22); --glass-rim-bottom: rgb(255 255 255 / .06);
+  --glass-shadow: 0 1px 1px rgb(0 0 0 / .3), 0 8px 32px rgb(0 0 0 / .45);
+  --glass-ink: rgb(255 255 255 / .92); --glass-ink-2: rgb(255 255 255 / .6);
+}
+
+.glass, .glass--hero, .glass--thin {
+  position: relative;
+  color: var(--glass-ink);
+  background: rgb(var(--glass-tint-rgb) / var(--glass-tint-a));
+  border-radius: var(--glass-radius);
+  box-shadow: inset 0 1px 0 var(--glass-rim-top), inset 0 -1px 0 var(--glass-rim-bottom), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  isolation: isolate;
+}
+/* gradient rim: brighter where light hits (top-left) */
+.glass::before, .glass--hero::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(135deg, var(--glass-rim-top), transparent 40%, transparent 60%, var(--glass-rim-bottom));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+/* optional pointer sheen, hero only: glass.js sets --mx/--my */
+.glass--hero::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: radial-gradient(120% 80% at var(--mx, 30%) var(--my, 0%), rgb(255 255 255 / .35), transparent 55%);
+  transition: opacity .4s;
+}
+.glass--hero:hover::after { opacity: 1; }
+.glass--hero { box-shadow: inset 0 1px 0 var(--glass-rim-top), inset 0 -1px 0 var(--glass-rim-bottom), var(--glass-shadow-float); }
+/* glass.js sets data-refract once the refraction filter is attached (Chromium) */
+.glass--hero[data-refract] {
+  -webkit-backdrop-filter: var(--glass-refract) blur(calc(var(--glass-blur) * .4)) saturate(var(--glass-sat));
+  backdrop-filter: var(--glass-refract) blur(calc(var(--glass-blur) * .4)) saturate(var(--glass-sat));
+}
+.glass--thin { --glass-blur: 6px; box-shadow: inset 0 1px 0 var(--glass-rim-top), 0 1px 2px rgb(0 0 0 / .06); }
+
+/* fallbacks */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .glass--hero, .glass--thin { background: rgb(var(--glass-tint-rgb) / .92); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass--hero, .glass--thin { background: rgb(var(--glass-tint-rgb) / .96); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+:root[data-glass="fallback"] .glass--hero[data-refract] {
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+}
+
+/* components */
+.glass-bar { position: sticky; top: 0; z-index: 10; border-radius: 0; padding: 12px max(16px, env(safe-area-inset-left)); }
+.glass-tabbar { position: fixed; left: 50%; bottom: max(12px, env(safe-area-inset-bottom)); translate: -50% 0; display: flex; gap: 4px; padding: 6px; border-radius: 999px; }
+.glass-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; font: inherit; color: inherit; cursor: pointer; }
+.glass-card { padding: 20px; }
+.glass-sheet { border-radius: 28px 28px 0 0; padding: 8px 20px max(20px, env(safe-area-inset-bottom)); }
+.glass-segmented { display: inline-grid; grid-auto-flow: column; padding: 3px; border-radius: 12px; }
+.glass-segmented > [aria-pressed="true"], .glass-segmented > [aria-selected="true"] {
+  background: rgb(var(--glass-tint-rgb) / .9); border-radius: 9px; box-shadow: 0 1px 3px rgb(0 0 0 / .12);
+}
+:where(.glass, .glass--hero, .glass--thin) :focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+/* Spring easings generated with glass.js springEasing(); regenerate if you change the feel. */
+:root {
+  /* snappy: stiffness 400, damping 30 → 400 ms; presses, toggles, segmented controls */
+  --spring-snappy: linear(0, 0.027, 0.096, 0.191, 0.297, 0.407, 0.513, 0.611, 0.698, 0.774, 0.838, 0.89, 0.932, 0.964, 0.988, 1.005, 1.017, 1.024, 1.027, 1.028, 1.028, 1.026, 1.023, 1.02, 1.017, 1.014, 1.011, 1.009, 1.007, 1.005, 1.003, 1.002, 1);
+  --spring-snappy-ms: 400ms;
+  /* smooth: stiffness 170, damping 26 → 700 ms; sheets, navigation, cards */
+  --spring-smooth: linear(0, 0.034, 0.113, 0.212, 0.317, 0.419, 0.512, 0.595, 0.667, 0.728, 0.78, 0.822, 0.858, 0.886, 0.909, 0.928, 0.943, 0.955, 0.965, 0.972, 0.978, 0.983, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.999, 1);
+  --spring-smooth-ms: 700ms;
+  /* bouncy: stiffness 260, damping 14 → 950 ms; rare delight moments (success, first load) */
+  --spring-bouncy: linear(0, 0.098, 0.329, 0.605, 0.859, 1.053, 1.172, 1.218, 1.208, 1.164, 1.104, 1.046, 0.999, 0.968, 0.954, 0.953, 0.961, 0.973, 0.986, 0.998, 1.005, 1.01, 1.011, 1.009, 1.007, 1.004, 1.001, 0.999, 0.998, 0.998, 0.998, 0.998, 1);
+  --spring-bouncy-ms: 950ms;
+  --ease-out-soft: cubic-bezier(.22, 1, .36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* press feedback */
+  .press { transition: scale var(--spring-snappy-ms) var(--spring-snappy); }
+  .press:active { scale: .97; transition-duration: 90ms; }
+
+  /* entrance: elements settle in when inserted or shown */
+  .enter {
+    transition: opacity .35s var(--ease-out-soft), translate var(--spring-smooth-ms) var(--spring-smooth),
+                scale var(--spring-smooth-ms) var(--spring-smooth), filter .35s var(--ease-out-soft);
+  }
+  @starting-style { .enter { opacity: 0; translate: 0 12px; scale: .98; filter: blur(6px); } }
+
+  /* sheets / dialogs: rise from below; allow-discrete enables the exit animation */
+  dialog.glass-sheet {
+    transition: translate var(--spring-smooth-ms) var(--spring-smooth), opacity .25s,
+                display var(--spring-smooth-ms) allow-discrete, overlay var(--spring-smooth-ms) allow-discrete;
+  }
+  dialog.glass-sheet:not([open]) { translate: 0 100%; opacity: 0; }
+  @starting-style { dialog.glass-sheet[open] { translate: 0 100%; opacity: 0; } }
+
+  /* view transitions: shared-element morphs between states/pages */
+  ::view-transition-group(*) { animation-duration: var(--spring-smooth-ms); animation-timing-function: var(--spring-smooth); }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; }
+
+  /* scroll-driven reveal (progressive enhancement) */
+  @supports (animation-timeline: view()) {
+    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+  }
+  @keyframes reveal { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .15s !important; }
+  ::view-transition-group(*) { animation-duration: .15s; }
+}
+</style>
+<style>
+@view-transition { navigation: auto; }
 :root {
   --paper: #eef1ec;      /* ledger paper */
   --sheet: #f8faf6;      /* raised surfaces */
@@ -37,14 +174,26 @@ a:hover { color: var(--ok); }
 .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
 
 /* top bar */
-.top { display: flex; justify-content: space-between; align-items: baseline; padding: 26px 0; }
-.top .name { font: 700 19px var(--display); text-decoration: none; letter-spacing: -.01em; }
-.top nav { display: flex; gap: 26px; font-size: 15px; }
-.top nav a { text-decoration: none; color: var(--ink-soft); }
-.top nav a:hover { color: var(--ink); }
+/* top bar: a floating glass capsule (refraction in Chromium, frost elsewhere) */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: sticky; top: 12px; z-index: 10;
+       margin-top: 12px; padding: 4px 4px 4px 22px; --glass-radius: 999px; --glass-tint-rgb: 238 241 236; --glass-tint-a: .72; color: var(--ink);
+       view-transition-name: site-nav; }
+.top .name { font: 700 19px var(--display); text-decoration: none; letter-spacing: -.01em; view-transition-name: brand; }
+.top nav { display: flex; gap: 2px; font-size: 15px; }
+/* links stay ink on glass: the softer grey fails AA over the dark consoles and video posters that scroll under the bar */
+.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 13px; border-radius: 999px; text-decoration: none; color: var(--ink); }
+.top nav a:hover { background: rgb(27 36 33 / .08); color: var(--ink); }
+.top nav a.go { background: var(--ink); color: var(--paper); font-weight: 600; }
+.top nav a.go:hover { background: var(--ok); color: #fff; }
+@media (max-width: 760px) { .top nav a:not(.go) { display: none; } }
+.glass--hero::after { z-index: -1; } /* pointer sheen stays under the text */
 
 /* hero */
-.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; padding: 48px 0 88px; }
+.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; padding: 48px 0 88px; position: relative; }
+/* soft light behind the hero so the glass bar has something to bend; static, no filter */
+.hero::before { content: ""; position: absolute; z-index: -1; pointer-events: none; top: -170px; right: calc((100% - 100vw) / 2 + 16px); width: min(860px, 92vw); height: 700px;
+  background: radial-gradient(closest-side at 64% 38%, rgb(47 125 91 / .28), transparent),
+              radial-gradient(closest-side at 32% 64%, rgb(217 154 0 / .30), transparent); }
 .hero h1 { font: 800 clamp(40px, 5.6vw, 72px)/1.02 var(--display); letter-spacing: -.035em; margin: 0 0 26px; max-width: 13ch; }
 .hero p { font-size: 19px; color: var(--ink-soft); max-width: 46ch; margin: 0 0 32px; }
 .actions { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -80,6 +229,10 @@ h2 { font: 700 clamp(30px, 3.4vw, 42px)/1.1 var(--display); letter-spacing: -.02
 .case:nth-child(even) .media { order: 2; }
 .media video { width: 100%; display: block; border-radius: 8px; background: var(--console); aspect-ratio: 16 / 9; box-shadow: 0 24px 48px -28px rgba(27, 36, 33, .45); }
 .media .cap { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
+/* glass play pill over the poster (added by the script; without JS the native controls stay) */
+.frame { position: relative; border-radius: 8px; }
+.play { position: absolute; left: 14px; bottom: 14px; --glass-tint-a: .72; --glass-radius: 999px; font-weight: 600; font-size: 15px; color: var(--ink); }
+.play svg { width: 14px; height: 14px; fill: currentColor; }
 .case h3 { font: 700 30px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 10px; }
 .case .for { color: var(--ink-soft); margin: 0 0 22px; font-size: 18px; }
 .case dl { margin: 0 0 22px; }
@@ -129,21 +282,31 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
 }
 @media (max-width: 600px) {
   .wrap { padding: 0 16px; }
-  .top nav { display: none; }
   .steps { grid-template-columns: 1fr; }
   td.stack, th.stack { display: none; }
   td:first-child { white-space: normal; }
   .log li { grid-template-columns: 1fr; gap: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .log li.on { animation: none; } html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: no-preference) {
+  .frame { transition: translate var(--spring-smooth-ms) var(--spring-smooth); }
+  .frame:hover { translate: 0 -4px; }
+  .play { transition: scale var(--spring-snappy-ms) var(--spring-snappy); }
+  .play:hover { scale: 1.04; }
+  .play:active, .btn:active { scale: .97; transition-duration: 90ms; }
+  .btn { transition: scale var(--spring-snappy-ms) var(--spring-snappy), background-color .2s, color .2s, border-color .2s; }
+  /* the one load moment: the ops log settles in, then its lines arrive */
+  .log { animation: settle var(--spring-smooth-ms) var(--spring-smooth) .1s both; }
+  @keyframes settle { from { opacity: 0; translate: 0 18px; scale: .97; } }
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top">
+  <header class="top glass--hero">
     <a class="name" href="/automation/">Basar Tuncay</a>
     <nav aria-label="Sections">
-      <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="#contact">Contact</a><a href="/">Agent security reviews</a>
+      <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="/">Agent security reviews</a><a class="go" href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -183,7 +346,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
       <h2>Sixteen systems, recorded running</h2>
       <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/ops-agent.jpg" aria-label="Ops Agent demo"><source src="media/ops-agent.mp4" type="video/mp4"></video>
           <div class="cap">70 seconds, no sound.</div>
@@ -202,7 +365,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/sync-hub.jpg" aria-label="Sync Hub demo"><source src="media/sync-hub.mp4" type="video/mp4"></video>
           <div class="cap">68 seconds, no sound.</div>
@@ -221,7 +384,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/revenue-pipeline.jpg" aria-label="Revenue Pipeline demo"><source src="media/revenue-pipeline.mp4" type="video/mp4"></video>
           <div class="cap">64 seconds, no sound.</div>
@@ -240,7 +403,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/stock-sync.jpg" aria-label="Stock Sync demo"><source src="media/stock-sync.mp4" type="video/mp4"></video>
           <div class="cap">55 seconds, no sound.</div>
@@ -259,7 +422,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/paymatch.jpg" aria-label="Paymatch demo"><source src="media/paymatch.mp4" type="video/mp4"></video>
           <div class="cap">48 seconds, no sound.</div>
@@ -278,7 +441,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/kickoff.jpg" aria-label="Kickoff demo"><source src="media/kickoff.mp4" type="video/mp4"></video>
           <div class="cap">61 seconds, no sound.</div>
@@ -297,7 +460,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/lead-engine.jpg" aria-label="Lead Engine demo"><source src="media/lead-engine.mp4" type="video/mp4"></video>
           <div class="cap">62 seconds, no sound.</div>
@@ -316,7 +479,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/table-desk.jpg" aria-label="Table Desk demo"><source src="media/table-desk.mp4" type="video/mp4"></video>
           <div class="cap">57 seconds, no sound.</div>
@@ -335,7 +498,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/chatline.jpg" aria-label="Chatline demo"><source src="media/chatline.mp4" type="video/mp4"></video>
           <div class="cap">65 seconds, no sound.</div>
@@ -354,7 +517,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/accessflow.jpg" aria-label="Accessflow demo"><source src="media/accessflow.mp4" type="video/mp4"></video>
           <div class="cap">58 seconds, no sound.</div>
@@ -373,7 +536,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/meter.jpg" aria-label="Meter demo"><source src="media/meter.mp4" type="video/mp4"></video>
           <div class="cap">63 seconds, no sound.</div>
@@ -392,7 +555,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/shipflow.jpg" aria-label="Shipflow demo"><source src="media/shipflow.mp4" type="video/mp4"></video>
           <div class="cap">50 seconds, no sound.</div>
@@ -411,7 +574,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/reviewdesk.jpg" aria-label="Reviewdesk demo"><source src="media/reviewdesk.mp4" type="video/mp4"></video>
           <div class="cap">48 seconds, no sound.</div>
@@ -430,7 +593,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
           <div class="cap">64 seconds, no sound.</div>
@@ -449,7 +612,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/price-watch.jpg" aria-label="Price Watch demo"><source src="media/price-watch.mp4" type="video/mp4"></video>
           <div class="cap">56 seconds, no sound. <a href="media/price-watch-live.jpg">See it running on a real website</a>.</div>
@@ -468,7 +631,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
         </div>
       </article>
 
-      <article class="case">
+      <article class="case reveal">
         <div class="media">
           <video controls preload="none" poster="media/invoice-platform.jpg" aria-label="Invoice Platform demo"><source src="media/invoice-platform.mp4" type="video/mp4"></video>
           <div class="cap">58 seconds, no sound.</div>
@@ -561,12 +724,34 @@ const projects = [
 document.getElementById("projects").innerHTML = projects.map(([name, dir, what, stack]) =>
   `<tr><td><a href="${GH}${dir}">${name}</a></td><td>${what}</td><td class="stack">${stack}</td></tr>`).join("");
 
+// Glass play pill over each poster; the native controls appear once the video plays.
+for (const v of document.querySelectorAll(".media video")) {
+  const secs = (v.closest(".media").querySelector(".cap")?.textContent.match(/(\d+) seconds/) || [])[1];
+  const frame = document.createElement("div");
+  frame.className = "frame";
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "play glass--thin glass-pill";
+  b.setAttribute("aria-label", `Play ${v.getAttribute("aria-label")}${secs ? `, ${secs} seconds` : ""}`);
+  b.innerHTML = `<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9.5-5.5z"/></svg>Play demo${secs ? ` · ${secs} s` : ""}`;
+  b.addEventListener("click", () => { v.controls = true; b.hidden = true; v.play().catch(() => {}); v.focus(); });
+  v.before(frame);
+  frame.append(v, b);
+  v.controls = false;
+}
+
 // The one orchestrated moment: the log lines arrive one after another, then the log stays still.
 const lines = [...document.querySelectorAll("#log li")];
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
   lines.forEach(li => (li.style.visibility = "hidden"));
   lines.forEach((li, i) => setTimeout(() => { li.style.visibility = ""; li.classList.add("on"); }, 350 + i * 420));
 }
+</script>
+<script type="module">
+import { LiquidGlass } from "/assets/glass/glass.js";
+// Refraction is built off the critical path; Safari/Firefox keep the frosted fallback.
+(window.requestIdleCallback || setTimeout)(() =>
+  document.querySelectorAll(".glass--hero").forEach((el) => LiquidGlass.attach(el, { bezel: 14, scale: 36 })));
 </script>
 </body>
 </html>
