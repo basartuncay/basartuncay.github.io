@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Basar Tuncay · Automation engineer</title>
-<meta name="description" content="I build back-office automations that run unattended: AI support inboxes, competitor price tracking, invoice processing, and the integrations between your tools. Every project tested end to end.">
+<meta name="description" content="Back-office automations that run unattended: AI support inboxes, competitor price tracking, invoice processing and integrations between tools. Every project tested end to end.">
 <meta property="og:title" content="Basar Tuncay: automation that runs your back office">
 <meta property="og:description" content="Back-office AI agent, AI support inbox, competitor price tracking, invoice automation. Real systems, each with a 1-minute demo.">
 <meta property="og:image" content="https://basartuncay.github.io/automation/media/support-desk.jpg">
@@ -244,7 +244,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
   <header class="top glass--hero">
     <a class="name" href="/automation/">Basar Tuncay</a>
     <nav aria-label="Sections">
-      <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="/">Agent security reviews</a><a class="go" href="#contact">Contact</a>
+      <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="/">Agent security</a><a class="go" href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -611,34 +611,21 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
       </table>
     </section>
 
-    <section id="process">
-      <h2>How a project runs</h2>
-      <p class="lede">You see working software from the first week, not at the end.</p>
-      <ol class="steps">
-        <li><b>A short call</b><span>We pin down the one workflow to automate first and what "done" looks like.</span></li>
-        <li><b>Fixed scope and price</b><span>A written plan with milestones, so you know the cost before work starts.</span></li>
-        <li><b>Weekly demos</b><span>A short video of the real thing working with your data, every week.</span></li>
-        <li><b>Handover</b><span>Code, tests, setup notes and a walkthrough video. It runs without me.</span></li>
-      </ol>
-    </section>
-
     <section id="contact" style="border-top:0">
       <div class="contact">
         <div>
-          <h2>Have a task your team does by hand every week?</h2>
-          <p>Send me a short description. I'll reply with how I'd automate it and a fixed price.</p>
+          <h2>Questions about a project?</h2>
+          <p>Every system here is open source. Read the code or write to me about how it works.</p>
         </div>
         <div class="actions">
-          <!-- Fill in the profile links, then remove "hidden". -->
-          <a class="btn solid" href="#" hidden data-link="upwork">Hire me on Upwork</a>
-          <a class="btn" href="#" hidden data-link="fiverr">Fiverr</a>
+          <a class="btn solid" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
           <a class="btn" href="https://github.com/basartuncay">GitHub</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>© 2026 Basar Tuncay. Every system on this page was recorded from real running software. I also review and harden Claude agents: <a href="/">agent security reviews</a>.</footer>
+  <footer>© 2026 Basar Tuncay. Every system on this page was recorded from real running software. I also work on Claude agent security: <a href="/">agent security projects</a>.</footer>
 </div>
 
 <script>
@@ -657,7 +644,7 @@ const projects = [
   ["Keyword Alert Bot", "alert-bot", "Watches feeds and sends one Slack or Telegram alert per new matching item", "Python, Slack, Telegram"],
   ["Weekly KPI Report", "kpi-report", "Week-over-week numbers with anomaly flags, emailed with a chart", "Python, Google Sheets"],
   ["AI Web Extractor", "ai-extractor", "Any web page plus a list of fields in, clean JSON out, with no selectors to maintain", "Python, Claude API"],
-  ["AI Extractor on Apify", "ai-extractor-actor", "The extractor packaged as a pay-per-use Apify actor", "Apify, Docker"],
+  ["AI Extractor on Apify", "ai-extractor-actor", "The extractor packaged as an Apify actor", "Apify, Docker"],
 ];
 document.getElementById("projects").innerHTML = projects.map(([name, dir, what, stack]) =>
   `<tr><td><a href="${GH}${dir}">${name}</a></td><td>${what}</td><td class="stack">${stack}</td></tr>`).join("");

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Basar Tuncay · Secure Claude agents</title>
-<meta name="description" content="Fixed-price security reviews and integration sprints for teams shipping Claude agents, MCP servers and tool-using LLM features.">
+<title>Basar Tuncay · Claude agent security projects</title>
+<meta name="description" content="Open-source projects on keeping Claude agents, MCP servers and tool-using LLM features safe from untrusted content.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231B2430'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='%23F2B33D' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -301,9 +301,7 @@
   <header class="top glass--hero">
     <a class="brand" href="#">Basar Tuncay</a>
     <nav aria-label="Main">
-      <a href="#packages">Packages</a>
       <a href="#proof">Work</a>
-      <a href="#faq">FAQ</a>
       <a href="/automation/">Automation work</a>
       <a class="go" href="#contact">Contact</a>
     </nav>
@@ -313,12 +311,11 @@
     <div class="hero">
       <div>
         <h1>Ship Claude agents that can’t be talked into things.</h1>
-        <p class="lede">I review and build tool-using LLM features, MCP servers and Claude Code setups so untrusted content can’t decide what your agent does. Fixed scope, fixed price, findings you can reproduce.</p>
+        <p class="lede">I build and test tool-using LLM features, MCP servers and Claude Code setups so untrusted content can’t decide what your agent does. Every result is measured and reproducible, including the attacks that still get through.</p>
         <div class="ctas">
-          <a class="btn primary" href="#contact">Book a 20-minute call</a>
-          <a class="btn ghost" href="#packages">See packages</a>
+          <a class="btn primary" href="#proof">See the projects</a>
+          <a class="btn ghost" href="https://github.com/basartuncay">GitHub</a>
         </div>
-        <p class="assure">Reply within one business day. Happy to sign your NDA first.</p>
       </div>
       <figure style="margin:0">
         <div class="switch glass--hero" role="group" aria-label="Show the same attack">
@@ -355,50 +352,9 @@
       </ul>
     </section>
 
-    <section id="packages" aria-labelledby="pk-h">
-      <h2 id="pk-h">Fixed-price packages</h2>
-      <p class="intro">Clear scope up front, so you can approve it without a procurement cycle. Launch prices for my first three clients, in exchange for a short case study I can share. Prices in USD; EUR invoicing available.</p>
-      <div class="packages reveal">
-        <article class="pkg lead">
-          <h3>Agent Security Review</h3>
-          <p class="price">$1,900</p>
-          <p class="terms">5 business days · one agent, MCP server or Claude Code setup</p>
-          <ul>
-            <li>Threat model of every tool your agent can call and every input it reads</li>
-            <li>Hands-on prompt-injection and data-exfiltration testing, including non-English payloads</li>
-            <li>Written report: each finding with a reproduction, severity and a concrete fix</li>
-            <li>Your attack cases as an automated test suite you keep in CI</li>
-            <li>One re-test after you’ve fixed the findings</li>
-          </ul>
-          <p class="fit">For teams about to put an agent in front of customers, or with an enterprise buyer asking about AI security.</p>
-          <a class="btn primary" href="#contact">Book a review</a>
-        </article>
-        <article class="pkg">
-          <h3>Claude Integration Sprint</h3>
-          <p class="price">$3,900</p>
-          <p class="terms">2 weeks · one workflow from prototype to production</p>
-          <ul>
-            <li>Claude API or MCP integration into your existing stack (Laravel, Python or TypeScript)</li>
-            <li>Tool design with least privilege and confirmation for side effects</li>
-            <li>Evals and regression tests in CI, cost and token tracking</li>
-            <li>Deployment, handover docs and a recorded walkthrough</li>
-          </ul>
-          <p class="fit">For teams with a working demo that now has to be reliable, safe and affordable.</p>
-          <a class="btn ghost" href="#contact">Plan a sprint</a>
-        </article>
-      </div>
-      <div class="starter">
-        <div>
-          <h3>Not sure yet? Start with a risk check</h3>
-          <p>$450, one business day. I read your agent’s tools and prompts and send back the five biggest risks with fixes. The fee is credited in full if you book a review within 30 days.</p>
-        </div>
-        <a class="btn ghost" href="mailto:b.tcay12@gmail.com?subject=Agent%20risk%20check">Ask for a risk check</a>
-      </div>
-    </section>
-
     <section id="proof" aria-labelledby="proof-h">
       <h2 id="proof-h">Work you can inspect</h2>
-      <p class="intro">Open-source projects behind these packages, including the results that didn’t go my way.</p>
+      <p class="intro">Open-source projects, including the results that didn’t go my way.</p>
       <div class="proof">
         <div>
           <h3><a href="https://github.com/basartuncay/firebreak">Firebreak</a></h3>
@@ -426,30 +382,13 @@
       <p class="intro">I also build the automations themselves: an AI support inbox, competitor price tracking and invoice processing, each with a one-minute demo. <a href="/automation/">See the automation work</a>.</p>
     </section>
 
-    <section aria-labelledby="how-h">
-      <h2 id="how-h">How a review runs</h2>
-      <ol class="steps">
-        <li><b>Scoping call</b><span>20 minutes to confirm the agent, its tools and what “bad” means for you.</span></li>
-        <li><b>Access</b><span>A staging environment or repo access under NDA. No production data needed.</span></li>
-        <li><b>Testing</b><span>Threat model, attacks, and fixes drafted as I go.</span></li>
-        <li><b>Report and re-test</b><span>Walkthrough call, written report, CI test suite, then one re-test.</span></li>
-      </ol>
-    </section>
-
-    <section id="faq" aria-labelledby="faq-h">
-      <h2 id="faq-h">Questions</h2>
-      <details><summary>Do you only work with Claude?</summary><p>Claude is where I work every day, but the review covers any tool-using LLM: the attacks target the tools and data flow, not a specific model.</p></details>
-      <details><summary>Can you guarantee the agent can’t be injected?</summary><p>No one honestly can. You get a measured result: which attacks your setup stops, which it doesn’t, and what each remaining risk costs to close.</p></details>
-      <details><summary>What do you need from us?</summary><p>A staging environment or repository, a list of the agent’s tools, and one technical contact for questions during the week.</p></details>
-      <details><summary>How do invoicing and contracts work?</summary><p>Fixed-price invoice with half up front and half on delivery. I’m happy to sign your NDA or use a short standard services agreement.</p></details>
-    </section>
   </main>
 
   <section id="contact" class="contact" aria-labelledby="c-h">
-    <h2 id="c-h">Tell me what your agent can do</h2>
-    <p>Send a short note about the agent, the tools it calls and where it runs. I’ll reply within one business day with whether a review or a sprint fits, and a start date.</p>
+    <h2 id="c-h">Questions about a project?</h2>
+    <p>Happy to talk about how these work and what I learned building them.</p>
     <div class="ctas">
-      <a class="btn primary" href="mailto:b.tcay12@gmail.com?subject=Agent%20security%20review">Email me</a>
+      <a class="btn primary" href="mailto:b.tcay12@gmail.com">Email me</a>
       <a class="btn ghost" href="https://github.com/basartuncay">GitHub</a>
     </div>
   </section>
