@@ -669,6 +669,6 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
   lines.forEach((li, i) => setTimeout(() => { li.style.visibility = ""; li.classList.add("on"); }, 350 + i * 420));
 }
 </script>
-<script>/* load glass enhancements after the first frame so they never compete with first paint */ requestAnimationFrame(() => setTimeout(() => import("/assets/glass/enhance.js")));</script>
+<script type="module" src="/assets/glass/enhance.js"></script>
 </body>
 </html>
