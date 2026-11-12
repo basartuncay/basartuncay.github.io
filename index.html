@@ -95,6 +95,33 @@
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .15s !important; }
   ::view-transition-group(*) { animation-duration: .15s; }
 }
+/* Cinematic motion recipes (studied from developer.x.com, 2026-11-12). Pair with fx.js.
+   One orchestrated load per page: .fx-drop on the header and hero pieces, nothing else on load. */
+@keyframes fx-drop { from { opacity: 0; translate: 0 -30px; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: none; } }
+@keyframes fx-sway { from { rotate: -9deg; } to { rotate: -4deg; } }
+@keyframes fx-ping { 75%, 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes fx-up { to { translate: 0 -50%; } }
+/* spotlight beam: a blurred conic wedge, screen-blended over a dark hero; parent needs position:relative + overflow:clip */
+.fx-beam { position: absolute; z-index: -1; pointer-events: none; right: -26vw; top: -70vmax; width: 140vmax; height: 140vmax; rotate: -8deg;
+  background: conic-gradient(from 200deg at 70% 50%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 0%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 6%,
+    rgb(var(--fx-beam-rgb, 255 255 255) / .5) 8%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 10%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 14%);
+  filter: blur(28px); mix-blend-mode: var(--fx-beam-blend, screen);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); }
+.fx-ping { position: relative; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.fx-ping::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; }
+/* endless feed: fx.js wraps the list in .fx-feed and doubles its items */
+.fx-feed { overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
+.fx-feed:hover > *, .fx-feed:focus-within > * { animation-play-state: paused; }
+@media (prefers-reduced-motion: no-preference) {
+  .fx-drop { animation: fx-drop .7s cubic-bezier(.25, .46, .45, .94) both; animation-delay: calc(var(--i, 0) * 90ms); }
+  .fx-beam { animation: fx-sway 14s ease-in-out infinite alternate; }
+  .fx-ping::after { animation: fx-ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; }
+  .fx-feed.run > * { animation: fx-up var(--fx-feed-s, 40s) linear infinite; }
+}
+html, body { overflow-x: clip; } /* both: on body alone it propagates to the viewport and the beam can still be scrolled to */
+:root { --fx-beam-rgb: 47 93 138; --fx-beam-blend: multiply; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fx-beam-rgb: 255 255 255; --fx-beam-blend: screen; } }
+:root[data-theme="dark"] { --fx-beam-rgb: 255 255 255; --fx-beam-blend: screen; }
 </style>
 <style>
   @view-transition { navigation: auto; }
@@ -298,7 +325,7 @@
 </head>
 <body>
 <div class="wrap">
-  <header class="top glass--hero">
+  <header class="top glass--hero fx-drop">
     <a class="brand" href="#">Basar Tuncay</a>
     <nav aria-label="Main">
       <a href="#proof">Work</a>
@@ -309,15 +336,16 @@
 
   <main>
     <div class="hero">
+      <div class="fx-beam" aria-hidden="true"></div>
       <div>
-        <h1>Ship Claude agents that can’t be talked into things.</h1>
-        <p class="lede">I build and test tool-using LLM features, MCP servers and Claude Code setups so untrusted content can’t decide what your agent does. Every result is measured and reproducible, including the attacks that still get through.</p>
-        <div class="ctas">
+        <h1 class="fx-drop" style="--i:1">Ship Claude agents that can’t be talked into things.</h1>
+        <p class="lede fx-drop" style="--i:2">I build and test tool-using LLM features, MCP servers and Claude Code setups so untrusted content can’t decide what your agent does. Every result is measured and reproducible, including the attacks that still get through.</p>
+        <div class="ctas fx-drop" style="--i:3">
           <a class="btn primary" href="#proof">See the projects</a>
           <a class="btn ghost" href="https://github.com/basartuncay">GitHub</a>
         </div>
       </div>
-      <figure style="margin:0">
+      <figure class="fx-drop" style="margin:0;--i:4">
         <div class="switch glass--hero" role="group" aria-label="Show the same attack">
           <button type="button" data-mode="open" aria-pressed="false">Without a guard</button>
           <button type="button" data-mode="guarded" aria-pressed="true">With a policy engine</button>

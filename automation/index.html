@@ -83,6 +83,29 @@
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .15s !important; }
   ::view-transition-group(*) { animation-duration: .15s; }
 }
+/* Cinematic motion recipes (studied from developer.x.com, 2026-11-12). Pair with fx.js.
+   One orchestrated load per page: .fx-drop on the header and hero pieces, nothing else on load. */
+@keyframes fx-drop { from { opacity: 0; translate: 0 -30px; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: none; } }
+@keyframes fx-sway { from { rotate: -9deg; } to { rotate: -4deg; } }
+@keyframes fx-ping { 75%, 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes fx-up { to { translate: 0 -50%; } }
+/* spotlight beam: a blurred conic wedge, screen-blended over a dark hero; parent needs position:relative + overflow:clip */
+.fx-beam { position: absolute; z-index: -1; pointer-events: none; right: -26vw; top: -70vmax; width: 140vmax; height: 140vmax; rotate: -8deg;
+  background: conic-gradient(from 200deg at 70% 50%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 0%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 6%,
+    rgb(var(--fx-beam-rgb, 255 255 255) / .5) 8%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 10%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 14%);
+  filter: blur(28px); mix-blend-mode: var(--fx-beam-blend, screen);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); }
+.fx-ping { position: relative; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.fx-ping::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; }
+/* endless feed: fx.js wraps the list in .fx-feed and doubles its items */
+.fx-feed { overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
+.fx-feed:hover > *, .fx-feed:focus-within > * { animation-play-state: paused; }
+@media (prefers-reduced-motion: no-preference) {
+  .fx-drop { animation: fx-drop .7s cubic-bezier(.25, .46, .45, .94) both; animation-delay: calc(var(--i, 0) * 90ms); }
+  .fx-beam { animation: fx-sway 14s ease-in-out infinite alternate; }
+  .fx-ping::after { animation: fx-ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; }
+  .fx-feed.run > * { animation: fx-up var(--fx-feed-s, 40s) linear infinite; }
+}
 </style>
 <style>
 @view-transition { navigation: auto; }
@@ -143,7 +166,7 @@ a:hover { color: var(--ok); }
 .log { background: var(--console); color: var(--console-ink); border-radius: 10px; padding: 18px 0 14px; font: 13px/1.55 var(--mono);
        box-shadow: 0 30px 60px -30px rgba(23, 32, 29, .55); min-height: 432px; }
 .log .bar { display: flex; justify-content: space-between; padding: 0 20px 12px; color: #8a9a93; border-bottom: 1px solid #2a3531; }
-.log .live::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); margin-right: 7px; vertical-align: 1px; }
+.log .live .fx-ping { color: var(--ok); margin-right: 4px; vertical-align: 1px; }
 .log ol { list-style: none; margin: 0; padding: 10px 0 0; }
 .log li { display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 5px 20px; }
 .log li.on { animation: tick .35s ease-out both; }
@@ -241,7 +264,7 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
 </head>
 <body>
 <div class="wrap">
-  <header class="top glass--hero">
+  <header class="top glass--hero fx-drop">
     <a class="name" href="/automation/">Basar Tuncay</a>
     <nav aria-label="Sections">
       <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="/">Agent security</a><a class="go" href="#contact">Contact</a>
@@ -251,15 +274,15 @@ footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
   <main>
     <div class="hero">
       <div>
-        <h1>Automation for the work your team does by hand.</h1>
-        <p>I build systems that read your inbox, watch your competitors, process your invoices and keep your tools in sync. They run unattended and ask a person only when it matters.</p>
-        <div class="actions">
+        <h1 class="fx-drop" style="--i:1">Automation for the work your team does by hand.</h1>
+        <p class="fx-drop" style="--i:2">I build systems that read your inbox, watch your competitors, process your invoices and keep your tools in sync. They run unattended and ask a person only when it matters.</p>
+        <div class="actions fx-drop" style="--i:3">
           <a class="btn solid" href="#work">Watch the 1-minute demos</a>
           <a class="btn line" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
         </div>
       </div>
-      <div class="log" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live">ops log</span><span>16 systems</span></div>
+      <div class="log fx-drop" style="--i:4" aria-label="Example events from the systems below">
+        <div class="bar"><span class="live"><span class="fx-ping" aria-hidden="true"></span> ops log</span><span>16 systems</span></div>
         <ol id="log">
           <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
           <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
@@ -649,7 +672,7 @@ const projects = [
 document.getElementById("projects").innerHTML = projects.map(([name, dir, what, stack]) =>
   `<tr><td><a href="${GH}${dir}">${name}</a></td><td>${what}</td><td class="stack">${stack}</td></tr>`).join("");
 
-// The one orchestrated moment: the log lines arrive one after another, then the log stays still.
+// The one orchestrated moment: the log lines arrive one after another, then the feed keeps scrolling (enhance.js).
 const lines = [...document.querySelectorAll("#log li")];
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
   lines.forEach(li => (li.style.visibility = "hidden"));

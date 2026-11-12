@@ -1,5 +1,12 @@
 // Page enhancements shared by / and /automation/. Loaded as a module, so it runs after parsing.
 import { LiquidGlass } from "./glass.js";
+import { countUp, feed, scramble } from "./fx.js";
+
+document.querySelectorAll(".top nav a").forEach(scramble);
+document.querySelectorAll(".figure .from, .figure .to").forEach((el) => countUp(el));
+// The ops log becomes an endless feed once its lines have arrived (index.html staggers them 420 ms apart).
+const log = document.getElementById("log");
+if (log) setTimeout(() => feed(log), 350 + log.children.length * 420 + 800);
 
 // Glass play pill over each poster; the native controls appear once the video plays.
 for (const v of document.querySelectorAll(".media video")) {
