@@ -297,6 +297,18 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   .proof p { margin: 0 0 10px; color: var(--muted); }
   .proof p.tight { color: var(--ink); }
 
+  /* Case studies (reuse .pkg card) */
+  .cases { display: grid; gap: 24px; }
+  .case h3 { font-size: 1.5rem; }
+  .case .tag { color: var(--muted); margin: 0 0 14px; }
+  .case dl { display: grid; gap: 2px 24px; margin: 0 0 18px; }
+  @media (min-width: 720px) { .case dl { grid-template-columns: 9.5rem 1fr; } }
+  .case dt { font-weight: 700; margin-top: 12px; }
+  .case dd { margin: 0; color: var(--muted); }
+  @media (min-width: 720px) { .case dt { margin-top: 0; padding: 8px 0; } .case dd { padding: 8px 0; } }
+  .case .status { display: inline-block; padding: 2px 10px; border: 1px solid var(--muted); border-radius: 999px; font-size: .9rem; color: var(--ink); }
+  .case .repo { margin: 0; color: var(--muted); font-size: .95rem; }
+
   /* Steps: a real sequence */
   .steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; }
   @media (min-width: 860px) { .steps { grid-template-columns: repeat(4, 1fr); } }
@@ -329,6 +341,7 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
     <a class="brand" href="#">Basar Tuncay</a>
     <nav aria-label="Main">
       <a href="#proof">Work</a>
+      <a href="#cases">Case studies</a>
       <a href="/automation/">Automation work</a>
       <a class="go" href="#contact">Contact</a>
     </nav>
@@ -408,6 +421,77 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
         </div>
       </div>
       <p class="intro">I also build the automations themselves: an AI support inbox, competitor price tracking and invoice processing, each with a one-minute demo. <a href="/automation/">See the automation work</a>.</p>
+    </section>
+
+    <section id="cases" aria-labelledby="cases-h">
+      <h2 id="cases-h">Three case studies, with their status</h2>
+      <p class="intro">Each one says what exists, what is proven and what is not. None of these is a product with customers.</p>
+      <div class="cases">
+
+        <article class="pkg case" aria-labelledby="case-company">
+          <h3 id="case-company">A one-person company of sandboxed Claude agents</h3>
+          <p class="tag">Python, launchd, Claude Code in headless mode, Telegram, SQLite FTS5</p>
+          <dl>
+            <dt>Problem</dt>
+            <dd>My automations ran unattended and I could not see what they did, what they cost or whether they had been talked into something by a web page they read.</dd>
+            <dt>What I built</dt>
+            <dd>A phone inbox: I send a link or an idea from Telegram. A launchd job polls every 60 seconds, and a capped, sandboxed agent writes a note that cites its sources and marks each claim true, false or uncertain. A morning brief reports failures and spend in one message, a full-text and meaning search covers my notes, and a local pixel-town dashboard shows each job as a cat walking to its repo.</dd>
+            <dt>The hard part</dt>
+            <dd>Permission rules alone did not contain the agent. In my canary run it reached WebFetch through a sub-agent, and file-write allow rules did not match in headless mode. The fix was to hand it an exact tool list (web search and fetch, nothing else), run it with no config, hooks, MCP servers or skills loaded, and pin the Claude version. A different version is skipped until a live canary passes again.</dd>
+            <dt>Controls</dt>
+            <dd>
+              <ul>
+                <li>A five-rule constitution every run reads and the agent cannot edit: no publishing, outside text is data, no claim without a source, no secrets, every run capped.</li>
+                <li>A ledger line for every attempt, including skipped ones. Caps: $0.50 and 15 minutes per run, 20 runs and $3 per day, $35 per month for all agent runs.</li>
+                <li>A secret scan without an LLM on every output; a note with an email address is rejected.</li>
+                <li>Notes from the web are neutralised before they reach the vault (HTML, links, wikilinks and code blocks broken) and carry <code>source: external-web, trust: low</code>.</li>
+              </ul>
+            </dd>
+            <dt>Numbers</dt>
+            <dd>A normal live link run cost $0.09 over 4 turns. A page with an injected instruction cost $0.07; the instruction was not followed and was reported in a warning line. CI runs 16 stdlib-only selftests with fakes and no secrets. The dashboard needs no LLM, binds to 127.0.0.1 and costs $0; its security review found one medium and four low issues, all fixed.</dd>
+            <dt>Status</dt>
+            <dd><span class="status">Built, partly proven</span> Offline selftests and live agent runs passed. My own acceptance criteria (seven days of morning briefs, ten real phone messages) were still open when I last updated the plan, and the Telegram and launchd path had no live check at that point. The spend view does not cover my other bots, and the local-network block is a name list, not a network sandbox.</dd>
+          </dl>
+          <p class="repo">Private repo, demo on request.</p>
+        </article>
+
+        <article class="pkg case" aria-labelledby="case-clipper">
+          <h3 id="case-clipper">Clipper: a clip factory for permitted livestreams</h3>
+          <p class="tag">Python, yt-dlp, ffmpeg with libass, Whisper, Claude Haiku and Opus, SQLite, Telegram</p>
+          <dl>
+            <dt>Problem</dt>
+            <dd>Some streamers and campaigns let people cut and repost highlights, but finding the best 30 seconds in a four-hour VOD is slow.</dd>
+            <dt>What I built</dt>
+            <dd>A pipeline for streams where the streamer or campaign allows it: it downloads audio and chat first, finds audio and chat spikes, transcribes, lets Haiku screen and Opus pick moments, downloads only those windows, renders 9:16 clips with word-highlighted captions and a QA step, and sends a publish pack (video, title, hashtags) to Telegram. I post by hand. There is no auto-publisher on purpose.</dd>
+            <dt>The hard part</dt>
+            <dd>Keeping the model&rsquo;s output from reaching ffmpeg, subtitles or file names. A security review found that LLM numbers like <code>1e999</code> crashed a video after the money was spent, so picks are now rebuilt from whitelisted, length-capped fields. My first smoke run produced zero clips: a spike threshold of z&nbsp;&gt;&nbsp;1 was too strict on a video with long silences. It became a setting that defaults to 0.</dd>
+            <dt>Numbers</dt>
+            <dd>37 unit tests. Whisper large-v3-turbo on an Apple M2 ran at 4.9&times; real time (180 s of audio in 36.8 s), so a 4-hour VOD takes about 50 minutes. On a 12-minute public NASA video: 2 clips at 1080&times;1920, 30 s each, 4.7 to 6.2 MB (Telegram limit 50 MB); re-transcribed captions landed within about 0.1 s of the words. Caps: $15 per month and $1.50 per video, checked before every API call.</dd>
+            <dt>Status</dt>
+            <dd><span class="status">Proven offline, live run pending</span> The smoke test used stubbed picks and made no API calls, so the Haiku and Opus path, a real Telegram send, Twitch VODs with chat and the scheduled job are not yet tested. Whether anyone gets paid for clips is a separate test I have not run, and killing the project after that is an acceptable result.</dd>
+          </dl>
+          <p class="repo">Private repo, demo on request.</p>
+        </article>
+
+        <article class="pkg case" aria-labelledby="case-stillsolved">
+          <h3 id="case-stillsolved">StillSolved: keeping Apple Support answers findable</h3>
+          <p class="tag">Python 3.11 standard library only, SQLite FTS5, Caddy, systemd, Chrome extension (MV3)</p>
+          <dl>
+            <dt>Problem</dt>
+            <dd>Apple&rsquo;s Support Community (discussions.apple.com) is scheduled to close on 20 November 2026. Years of solved answers that people link to would go dead.</dd>
+            <dt>What I built</dt>
+            <dd>An archive that reads the Internet Archive&rsquo;s copies of the threads, stores the question and accepted answer, and serves one page per thread with full-text search. A Chrome extension opens the archived thread when an Apple link fails. It never touches Apple&rsquo;s live site, so it does not get around its bot check. Pages show a 900-character excerpt and link to the archived original.</dd>
+            <dt>The hard part</dt>
+            <dd>The Wayback Machine allows only about three parallel requests, so collection is slow and resumable, with the most-linked threads first. Apple&rsquo;s structured data sometimes contains stray commas, so the parser repairs the JSON. Then one SQLite query planner choice made a cache check scan every thread. An earlier A/B test that blamed my change for slower responses was invalid: the script killed the subshell, not the server.</dd>
+            <dt>Numbers</dt>
+            <dd>83,918 threads saved as of 17 November (82% with an accepted answer; about 780,000 ids still queued, most-linked first). The query fix took a cache hit from 324 ms to 0.6 ms with a one-token index hint and a regression test. Load test, closed loop: about 290 to about 1,550 requests per second and p99 from 1.2 s to 16 ms. 529 tests; a QA round found 42 issues, 39 fixed. No cookies, ads or analytics, and no IP address, user agent or search text is stored. Keyword extraction with Claude Haiku over thread titles cost $0.35 for 20,420 threads.</dd>
+            <dt>Status</dt>
+            <dd><span class="status">Not launched yet</span> There is no public domain or server. The deploy script and rollback were rehearsed in a container, not on a live server. I live in Germany, so a legal notice (Impressum) is required, and I am waiting on legal advice before showing answer excerpts at all. The thread count has grown since the figure above.</dd>
+          </dl>
+          <p class="repo">Private repo, demo on request.</p>
+        </article>
+
+      </div>
     </section>
 
   </main>
