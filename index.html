@@ -342,8 +342,8 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
           <p class="row cmd" translate="no">python3 -m lostanswers stats <span class="dim"># StillSolved</span></p>
           <p class="row" translate="no">threads: ok 164,695 (accepted 103,043, 63%)</p>
           <p class="row" translate="no">saved last 24 h: 35,998</p>
-          <p class="row cmd" translate="no">python -m unittest discover -s tests <span class="dim"># clip pipeline</span></p>
-          <p class="row" translate="no">Ran 249 tests in 7.945s  <span class="ok">OK</span></p>
+          <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># certcadence</span></p>
+          <p class="row" translate="no">Ran 69 tests in 0.929s  <span class="ok">OK</span></p>
           <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># shutdown registry</span></p>
           <p class="row" translate="no">Ran 80 tests in 0.207s  <span class="ok">OK</span></p>
           <p class="row cmd" translate="no">npm test <span class="dim"># offline repo scanner</span></p>
@@ -358,11 +358,11 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
       <p class="intro">Only tools from the projects on this page, so you can ask me about any of them.</p>
       <dl class="skills">
         <dt>Python</dt>
-        <dd>Standard-library CLIs and web servers, SQLite with FTS5 search, <code>unittest</code>, ffmpeg and Whisper pipelines, Telegram bots (StillSolved, Clipper, the shutdown registry, my agent setup).</dd>
+        <dd>Standard-library CLIs and web servers, SQLite with FTS5 search, <code>unittest</code>, Certificate Transparency parsing, Telegram bots (StillSolved, the shutdown registry, certcadence, my agent setup).</dd>
         <dt>TypeScript / Node</dt>
-        <dd>An MCP security gateway and a GitHub Action in TypeScript (Firebreak, CodeAtlas); a zero-dependency Node CLI tested with <code>node:test</code>; a Deno KV library for Cloudflare Workers (kvport); a Chrome MV3 extension.</dd>
+        <dd>An MCP security gateway and a GitHub Action in TypeScript (Firebreak, CodeAtlas); a zero-dependency Node CLI tested with <code>node:test</code>; a Deno KV library for Cloudflare Workers (kvport); a Chrome MV3 extension; an offline-first PWA tested with Playwright (Bleibe).</dd>
         <dt>AI automation</dt>
-        <dd>Claude API (Haiku to screen, Opus to choose), Claude Code in headless mode with an exact tool list, spend caps checked before every call, and model output validated before it reaches ffmpeg, files or the database.</dd>
+        <dd>Claude API and Claude Code in headless mode with an exact tool list, spend caps checked before every call, and model output validated before it reaches files or the database.</dd>
         <dt>Ops and testing</dt>
         <dd>GitHub Actions CI, launchd and systemd jobs, Caddy, load tests, deploy and rollback rehearsed in a container. I audited 23 of my own repos for security issues and fixed the findings on branches.</dd>
       </dl>
@@ -411,23 +411,23 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
           <p class="src">Not public yet: name and launch date are still open.</p>
         </article>
 
-        <article class="case" aria-labelledby="case-clipper">
+        <article class="case" aria-labelledby="case-certcadence">
           <header>
-            <h3 id="case-clipper">Clipper: highlight clips from permitted livestreams</h3>
-            <span class="status s-private">Private · in daily use</span>
+            <h3 id="case-certcadence">certcadence: will your TLS renewals survive the shorter certificate caps?</h3>
+            <span class="status s-launch">Launching soon</span>
           </header>
-          <p class="tag">Python, yt-dlp, ffmpeg with libass, Whisper, Claude Haiku and Opus, SQLite, Telegram, a local web panel.</p>
+          <p class="tag">A Python standard-library CLI and GitHub Action that reads Certificate Transparency history. crt.sh with Cert Spotter as fallback.</p>
           <dl>
             <dt>Problem</dt>
-            <dd>Some streamers and campaigns let people cut and repost highlights, but finding the best 30 seconds in a four-hour stream by hand is slow.</dd>
+            <dd>Public TLS certificates are capped at 200 days since March 2026, 100 days from March 2027 and 47 from March 2029, and Let’s Encrypt shortens its default to 64 days in February 2027. Domains renewed by hand, or by a fixed timer, will break on one of those dates.</dd>
             <dt>What I built</dt>
-            <dd>A pipeline that downloads audio and chat first, finds spikes, transcribes, lets Haiku screen and Opus pick moments, downloads only those windows and renders 9:16 clips with word-highlighted captions and a QA step. I approve every clip from Telegram; approved clips are scheduled or sent to me as a ready pack. A local panel (bound to 127.0.0.1) shows the queue, health checks and spend.</dd>
+            <dd>The tool groups each domain’s certificates into renewal events, guesses whether renewal is manual or ACME-like from the rhythm, and prints the first cap that breaks it, with the rule used. Where the data is thin or truncated it answers UNKNOWN instead of guessing.</dd>
             <dt>How I checked it</dt>
-            <dd><b>249 tests pass</b> (19 Nov). Whisper on an Apple M2 ran at 4.9× real time. A 25-minute stream section gave 5 clips that passed QA for about $0.06 of model usage. Caps of $15 a month and $1.50 a video are checked before every API call.</dd>
+            <dd><b>69 offline tests pass</b>, including a hardened certificate-serial parser and real truncated crt.sh answers. Two snapshot studies on 20 Nov 2026: of the 80 largest German universities, 14 are ready, 63 at risk and 3 unknown; of the DAX 40 main domains, 14 ready, 25 at risk and 1 unknown. Every domain judged manual was at risk.</dd>
             <dt>What I learned</dt>
-            <dd>Model output is untrusted input: a number like <code translate="no">1e999</code> once crashed a render after the money was spent, so picks are now rebuilt from whitelisted fields. And the biggest gap was bookkeeping, not AI: posts made by hand had no link recorded, so nothing could be measured until every human action went through one inbox.</dd>
+            <dd>CT logs show issuance, not deployment. Parallel certificate lines looked like 7-day renewals until I clustered them into events, and a review caught that one university’s sub-sites were being merged into its main domain. The tool now says what it inferred and why.</dd>
           </dl>
-          <p class="src">No earnings data yet. Private repo, demo on request.</p>
+          <p class="src">Studies are internal snapshots, not published. Not yet run as an Action on a real GitHub runner.</p>
         </article>
 
 
@@ -455,12 +455,9 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
 
     <section id="also" aria-labelledby="also-h">
       <h2 id="also-h">Also built</h2>
-      <p class="intro">Five more, in short: problem, what I built, how I checked it, what I learned.</p>
+      <p class="intro">Four more, in short: problem, what I built, how I checked it, what I learned.</p>
       <div class="earlier">
-        <div>
-          <h3>certcadence <span class="status s-launch">Launching soon</span></h3>
-          <p><b>Problem:</b> public TLS certificates are capped at 200 days now, 100 from March 2027 and 47 from March 2029, so hand-renewed domains will break. <b>Built:</b> a Python standard-library CLI and GitHub Action that reads Certificate Transparency history from crt.sh, infers each domain’s real renewal rhythm and prints the date a cap breaks it, with the rule used. <b>Checked:</b> 44 offline tests; on real domains it flagged python.org’s 397-day certificate as at risk and said UNKNOWN where crt.sh truncated the data. <b>Learned:</b> CT shows issuance, not deployment, so the tool says what it guessed and why. The Action has not run on a real GitHub runner yet.</p>
-        </div>
+        
         <div>
           <h3>CRA role wizard <span class="status s-launch">Launching soon · legal review pending</span></h3>
           <p><b>Problem:</b> the EU Cyber Resilience Act applies in stages, and the free tools I found tell you whether a product is in scope, not which role you have or from when. <b>Built:</b> a bilingual static page with yes/no questions, working without JavaScript, where every reason links to the article on EUR-Lex. <b>Checked:</b> 38 tests, including a hand-written decision table for every path, and an independent audit of the wording against EUR-Lex. <b>Also added:</b> a second module on product liability for software, under the new EU Directive 2024/2853 and the German Produkthaftungsgesetz that applies from 9 December 2026: questions lead to a likely role and a cited to-do list. <b>Learned:</b> the dates differ by role: reporting (Article 14) applies from 11 September 2026, open-source steward duties from 11 December 2027. I am not a lawyer: both modules are a reading aid, not legal advice, and nobody with legal training has reviewed them yet. The German text is mine and needs a native reader.</p>
@@ -469,9 +466,10 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
           <h3>scamcheck <span class="status s-launch">Launching soon</span></h3>
           <p><b>Problem:</b> students and newcomers get flat ads and messages that follow known scam patterns, and the warnings are spread over many official pages. <b>Built:</b> a static page in German, English and Turkish where you paste a text and see which patterns it contains; it runs in the browser, so the text is never sent anywhere, and each rule cites a consumer-protection or police source. <b>Checked:</b> precision 0.95 and recall 0.90, but only on 37 invented messages that I wrote myself, so real-world accuracy will be lower; nothing was measured on real messages. <b>Learned:</b> keyword rules miss new wording, so a clean result does not mean an offer is safe, and the page says so.</p>
         </div>
+        
         <div>
-          <h3>Studi-Job-Check <span class="status s-launch">Launching soon</span></h3>
-          <p><b>Problem:</b> a student job touches the minimum wage, the Minijob limit, the Werkstudent rules, BAföG, family insurance and Kindergeld at once. <b>Built:</b> a static page where you enter hours week by week and see which rule applies when, with 2026 and 2027 parameters that each carry a source and a label (official, draft or uncertain), plus a KIT lecture-period preset. <b>Checked:</b> 24 tests; an independent audit against the official texts found 5 of 17 rules wrong and 4 imprecise, all fixed; 2027 values still waiting for official confirmation are marked. <b>Learned:</b> I audited the rules against the official texts, but it is not legal or tax advice, and I am not a lawyer or tax adviser.</p>
+          <h3>Bleibe <span class="status s-private">Private · release pending</span></h3>
+          <p><b>Problem:</b> internationals in Germany juggle residence-permit deadlines, document lists and official letters in a language they are still learning. <b>Built:</b> an offline-first PWA in Turkish, English and German with holiday-aware deadlines, document checklists, a letter decoder, routine letter templates and a Karlsruhe first-30-days list; no account, no server, data stays in the browser. <b>Checked:</b> 78 unit tests plus Playwright runs on desktop and mobile in CI. <b>Learned:</b> templates that argue a legal position stay unshipped until a Migrationsberatung or lawyer has read them; the app is not legal advice.</p>
         </div>
         <div>
           <h3>A small company of sandboxed Claude agents <span class="status s-private">Private · runs on my Mac</span></h3>
