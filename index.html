@@ -274,6 +274,7 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
   .earlier { display: grid; gap: 28px; }
   @media (min-width: 860px) { .earlier { grid-template-columns: 1fr 1fr; column-gap: 48px; } }
   .earlier p { margin: 0; color: var(--muted); }
+  .earlier p b { color: var(--ink); font-weight: 600; }
   .earlier h3 { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -313,25 +314,25 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
       <div class="fx-beam" aria-hidden="true"></div>
       <div>
         <h1 class="fx-drop" style="--i:1">I build automations in Python and TypeScript, and I measure whether they work.</h1>
-        <p class="lede fx-drop" style="--i:2">I’m looking for a <strong>Werkstudent</strong> role in Python, TypeScript or AI automation in Germany. I work in English, German and Turkish. Below are four recent projects, each with how I tested it and what it is not yet.</p>
+        <p class="lede fx-drop" style="--i:2">I’m looking for a <strong>Werkstudent</strong> role in Python, TypeScript or AI automation in Germany. I work in English, German and Turkish. Below are recent projects, each with how I tested it and what it is not yet.</p>
         <div class="ctas fx-drop" style="--i:3">
           <a class="btn primary" href="mailto:b.tcay12@gmail.com">Email me</a>
           <a class="btn ghost" href="#cases">Read the case studies</a>
         </div>
       </div>
       <figure class="fx-drop" style="margin:0;--i:4">
-        <div class="log" aria-label="Commands run on 19 November 2026 and their output">
+        <div class="log" aria-label="Commands run on 19 and 20 November 2026 and their output">
           <p class="row cmd" translate="no">python3 -m lostanswers stats <span class="dim"># StillSolved</span></p>
           <p class="row" translate="no">threads: ok 164,695 (accepted 103,043, 63%)</p>
           <p class="row" translate="no">saved last 24 h: 35,998</p>
           <p class="row cmd" translate="no">python -m unittest discover -s tests <span class="dim"># clip pipeline</span></p>
           <p class="row" translate="no">Ran 249 tests in 7.945s  <span class="ok">OK</span></p>
           <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># shutdown registry</span></p>
-          <p class="row" translate="no">Ran 60 tests in 0.102s  <span class="ok">OK</span></p>
+          <p class="row" translate="no">Ran 80 tests in 0.207s  <span class="ok">OK</span></p>
           <p class="row cmd" translate="no">npm test <span class="dim"># offline repo scanner</span></p>
-          <p class="row" translate="no"># pass 20  # fail 0</p>
+          <p class="row" translate="no"># pass 44  # fail 0</p>
         </div>
-        <figcaption class="log-cap">Real output, run on 19 November 2026 for the numbers on this page. The repos are private until launch; I can run them live in an interview.</figcaption>
+        <figcaption class="log-cap">Real output, run on 19 and 20 November 2026 for the numbers on this page. The repos are private until launch; I can run them live in an interview.</figcaption>
       </figure>
     </div>
 
@@ -342,7 +343,7 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
         <dt>Python</dt>
         <dd>Standard-library CLIs and web servers, SQLite with FTS5 search, <code>unittest</code>, ffmpeg and Whisper pipelines, Telegram bots (StillSolved, Clipper, the shutdown registry, my agent setup).</dd>
         <dt>TypeScript / Node</dt>
-        <dd>An MCP security gateway and a GitHub Action in TypeScript (Firebreak, CodeAtlas); a zero-dependency Node CLI tested with <code>node:test</code>; a Chrome MV3 extension.</dd>
+        <dd>An MCP security gateway and a GitHub Action in TypeScript (Firebreak, CodeAtlas); a zero-dependency Node CLI tested with <code>node:test</code>; a Deno KV library for Cloudflare Workers (kvport); a Chrome MV3 extension.</dd>
         <dt>AI automation</dt>
         <dd>Claude API (Haiku to screen, Opus to choose), Claude Code in headless mode with an exact tool list, spend caps checked before every call, and model output validated before it reaches ffmpeg, files or the database.</dd>
         <dt>Ops and testing</dt>
@@ -386,7 +387,7 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
             <dt>What I built</dt>
             <dd>One TOML file per service, checked by a stdlib Python schema and built into a static site with RSS, calendar and JSON feeds. A zero-dependency Node CLI and GitHub Action reads manifests and source files for package names, hostnames, environment variable names and model IDs. A model ID only matches as a complete quoted string, so <code translate="no">gpt-5</code> never matches <code translate="no">gpt-5.1</code>.</dd>
             <dt>How I checked it</dt>
-            <dd><b>43 entries, 41 checked against the vendor’s own page</b>, each with the URL, a short quote and the date read; 13 carry model-ID signatures. 60 Python tests and 20 Node tests, including one that fails if the scanner imports a network module.</dd>
+            <dd><b>105 entries, 103 with a primary source</b> (the vendor’s own page: URL, a short quote, the date read; the other 2 are marked secondary); 15 carry model-ID signatures. 80 Python tests and 44 Node tests, including one that fails if the scanner imports a network module. Scanner precision was measured on 111 public repos; see the QA notes. A census on 19 Nov found more than 1,800 non-fork public repos that contain at least one of 38 retiring values (a lower bound that leaves out tests, docs and model catalogs; these are references, not proof that anything will break).</dd>
             <dt>What I learned</dt>
             <dd>Search snippets and vendor pages sometimes disagree on dates, so the vendor page wins and the correction is logged. I also searched for prior work before building the scanner and narrowed its scope to what I could not find.</dd>
           </dl>
@@ -412,25 +413,45 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
           <p class="src">No earnings data yet. Private repo, demo on request.</p>
         </article>
 
-        <article class="case" aria-labelledby="case-company">
+
+        <article class="case" aria-labelledby="case-kvport">
           <header>
-            <h3 id="case-company">A small company of sandboxed Claude agents</h3>
-            <span class="status s-private">Private · runs on my Mac</span>
+            <h3 id="case-kvport">kvport: move Deno KV apps to Cloudflare</h3>
+            <span class="status s-private">Alpha · not published</span>
           </header>
-          <p class="tag">Python, launchd, Claude Code in headless mode, Telegram, SQLite FTS5.</p>
+          <p class="tag">A <code translate="no">Deno.Kv</code>-compatible library on a SQLite Durable Object, plus a Deno CLI to export, import and verify data. TypeScript, Deno, Cloudflare Workers.</p>
           <dl>
             <dt>Problem</dt>
-            <dd>My automations ran unattended, and I could not see what they did, what they cost, or whether a web page had talked them into something.</dd>
+            <dd>Deno Deploy is scheduled to shut down about six months after 9 October 2026, and apps that use Deno KV need a new home. Workers KV is eventually consistent, so code that relies on <code translate="no">kv.atomic().check()</code> cannot move to it as is.</dd>
             <dt>What I built</dt>
-            <dd>A phone inbox: I send a link or an idea on Telegram, a job polls every 60 seconds, and a capped agent writes a note that cites its sources and marks each claim true, false or uncertain. Every run reads a five-rule constitution it cannot edit: no publishing, outside text is data, no claim without a source, no secrets, every run capped. A morning brief reports failures and spend.</dd>
+            <dd>The same API (get, list, atomic check, set, sum, min, max, versionstamps, expiry) on a strongly consistent Durable Object, so most code changes one line. A CLI scans code for unsupported features (queues, watch, cron), exports KV to a file, imports it into the Worker and verifies the copy.</dd>
             <dt>How I checked it</dt>
-            <dd>A normal link run cost $0.09. A page with an injected instruction cost $0.07; the instruction was not followed and was reported. Caps: $0.50 and 15 minutes per run, $3 a day. 17 standard-library selftests run in CI with fakes and no secrets; every output passes a secret scan that uses no LLM.</dd>
+            <dd><b>129 conformance cases pass on both targets</b>: real Deno KV as the oracle, and kvport inside Cloudflare’s local runtime. 225 Deno tests and 144 runtime tests pass. An end-to-end run moved 5,000 entries and the SHA-256 digests matched; a copy with one corrupted line was rejected. The key order of 500 random keys matches Deno’s. A security review and a code review found issues that I fixed with tests.</dd>
             <dt>What I learned</dt>
-            <dd>Permission rules alone did not contain the agent: in a canary run it reached a web tool through a sub-agent. The fix was an exact tool list, no extra config loaded, and a pinned version that only changes after a live canary passes again.</dd>
+            <dd>Let the real thing be the specification. Where Deno’s behaviour (key order, limits, error types) disagreed with my assumptions, the case was rewritten to match Deno. The code review also caught an oversized expiry that was written before it was rejected.</dd>
           </dl>
-          <p class="src">Private repo, demo on request.</p>
+          <p class="src">Not tested on a real Cloudflare account or against a real Deploy database, only locally. No queues, watch or cron; TTLs and versionstamps are not preserved on import. Not published, package name undecided.</p>
         </article>
 
+      </div>
+    </section>
+
+    <section id="also" aria-labelledby="also-h">
+      <h2 id="also-h">Also built</h2>
+      <p class="intro">Three more, in short: problem, what I built, how I checked it, what I learned.</p>
+      <div class="earlier">
+        <div>
+          <h3>certcadence <span class="status s-launch">Launching soon</span></h3>
+          <p><b>Problem:</b> public TLS certificates are capped at 200 days now, 100 from March 2027 and 47 from March 2029, so hand-renewed domains will break. <b>Built:</b> a Python standard-library CLI and GitHub Action that reads Certificate Transparency history from crt.sh, infers each domain’s real renewal rhythm and prints the date a cap breaks it, with the rule used. <b>Checked:</b> 44 offline tests; on real domains it flagged python.org’s 397-day certificate as at risk and said UNKNOWN where crt.sh truncated the data. <b>Learned:</b> CT shows issuance, not deployment, so the tool says what it guessed and why. The Action has not run on a real GitHub runner yet.</p>
+        </div>
+        <div>
+          <h3>CRA role wizard <span class="status s-launch">Launching soon · legal review pending</span></h3>
+          <p><b>Problem:</b> the EU Cyber Resilience Act applies in stages, and the free tools I found tell you whether a product is in scope, not which role you have or from when. <b>Built:</b> a bilingual static page with yes/no questions, working without JavaScript, where every reason links to the article on EUR-Lex. <b>Checked:</b> 22 tests, including a hand-written decision table for every path. <b>Learned:</b> the dates differ by role: reporting (Article 14) applies from 11 September 2026, open-source steward duties from 11 December 2027. I am not a lawyer: it is a reading aid, not legal advice, and nobody with legal training has reviewed it yet. The German text is mine and needs a native reader.</p>
+        </div>
+        <div>
+          <h3>A small company of sandboxed Claude agents <span class="status s-private">Private · runs on my Mac</span></h3>
+          <p><b>Problem:</b> unattended automations, with no view of what they did or cost. <b>Built:</b> a Telegram inbox and a capped Claude Code agent that writes sourced notes under a five-rule constitution it cannot edit. <b>Checked:</b> a normal link run cost $0.09, a page with an injected instruction $0.07 (not followed, reported); caps of $0.50 and 15 minutes per run; 17 selftests in CI. <b>Learned:</b> permission rules alone did not contain the agent; an exact tool list and a pinned version did.</p>
+        </div>
       </div>
     </section>
 
