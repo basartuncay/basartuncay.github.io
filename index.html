@@ -345,7 +345,7 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
           <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># certcadence</span></p>
           <p class="row" translate="no">Ran 69 tests in 0.929s  <span class="ok">OK</span></p>
           <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># shutdown registry</span></p>
-          <p class="row" translate="no">Ran 80 tests in 0.207s  <span class="ok">OK</span></p>
+          <p class="row" translate="no">Ran 91 tests in 0.267s  <span class="ok">OK</span></p>
           <p class="row cmd" translate="no">npm test <span class="dim"># offline repo scanner</span></p>
           <p class="row" translate="no"># pass 44  # fail 0</p>
         </div>
@@ -404,7 +404,7 @@ html, body { overflow-x: clip; } /* both: on body alone it propagates to the vie
             <dt>What I built</dt>
             <dd>One TOML file per service, checked by a stdlib Python schema and built into a static site with RSS, calendar and JSON feeds. A zero-dependency Node CLI and GitHub Action reads manifests and source files for package names, hostnames, environment variable names and model IDs. A model ID only matches as a complete quoted string, so <code translate="no">gpt-5</code> never matches <code translate="no">gpt-5.1</code>.</dd>
             <dt>How I checked it</dt>
-            <dd><b>105 entries, 103 with a primary source</b> (the vendor’s own page: URL, a short quote, the date read; the other 2 are marked secondary); 15 carry model-ID signatures. 80 Python tests and 44 Node tests, including one that fails if the scanner imports a network module. Scanner precision was measured on 111 public repos; see the QA notes. A census on 19 Nov found more than 1,800 non-fork public repos that contain at least one of 38 retiring values (a lower bound that leaves out tests, docs and model catalogs; these are references, not proof that anything will break).</dd>
+            <dd><b>216 entries, 214 with a primary source</b> (the vendor’s own page: URL, a short quote, the date read; the other 2 are marked secondary); 39 carry model-ID signatures. 91 Python tests and 44 Node tests, including one that fails if the scanner imports a network module. Scanner precision was measured on 111 public repos; see the QA notes. A census on 20 Nov found more than 2,200 non-fork public repos that contain at least one of 62 values retiring within 60 days (a lower bound that leaves out tests, docs and model catalogs; these are references, not proof that anything will break).</dd>
             <dt>What I learned</dt>
             <dd>Search snippets and vendor pages sometimes disagree on dates, so the vendor page wins and the correction is logged. I also searched for prior work before building the scanner and narrowed its scope to what I could not find.</dd>
           </dl>
