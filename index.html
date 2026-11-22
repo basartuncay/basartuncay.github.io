@@ -528,7 +528,10 @@ else {
   try {
     const { createCore } = await import("/assets/core/scene.js");
     let docked = false, fullSize = { w: innerWidth, h: innerHeight };
-    const slot = () => document.querySelector(".emblem").getBoundingClientRect();
+    // the bar is fixed, so the slot only moves on resize: measure it then, not in every frame
+    let slotRect = document.querySelector(".emblem").getBoundingClientRect();
+    addEventListener("resize", () => { slotRect = document.querySelector(".emblem").getBoundingClientRect(); });
+    const slot = () => slotRect;
     function dock(on) {
       docked = on; canvas.classList.toggle("docked", on); root.classList.toggle("docked-on", on);
       if (on) { const r = slot(); canvas.style.left = r.left + "px"; canvas.style.top = r.top + "px"; }

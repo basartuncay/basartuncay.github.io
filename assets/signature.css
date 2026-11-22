@@ -48,6 +48,7 @@ body {
   margin: 0; background: var(--ground); color: var(--text);
   font: 400 1.0625rem/1.6 var(--sans);
   -webkit-font-smoothing: antialiased;
+  touch-action: manipulation; -webkit-tap-highlight-color: rgb(111 227 255 / .15);
 }
 ::selection { background: var(--accent); color: var(--on-accent); }
 a { color: var(--accent-text); text-underline-offset: 4px; text-decoration-thickness: 1px; }

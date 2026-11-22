@@ -14,7 +14,7 @@ function pct(sorted, p) {
 
 export class Perf {
   constructor({ gl, onTier, show }) {
-    this.samples = []; // [timestamp, frame ms]
+    this.times = []; // [timestamp, frame ms]
     this.last = 0;
     this.tier = 0;
     this.onTier = onTier;
@@ -42,8 +42,8 @@ export class Perf {
   tick(now) {
     if (this.last) {
       const dt = now - this.last;
-      this.samples.push([now, dt]);
-      while (this.samples.length && this.samples[0][0] < now - 10000) this.samples.shift();
+      this.times.push([now, dt]);
+      while (this.times.length && this.times[0][0] < now - 10000) this.times.shift();
       this.judge(now);
       if (now >= this.nextReport) this.report(now);
     } else this.since = now;
@@ -51,7 +51,7 @@ export class Perf {
   }
   judge(now) {
     if (this.tier >= TIERS.length - 1 || now - this.since < 2000) return;
-    const win = this.samples.filter((s) => s[0] >= now - 2000).map((s) => s[1]).sort((a, b) => a - b);
+    const win = this.times.filter((s) => s[0] >= now - 2000).map((s) => s[1]).sort((a, b) => a - b);
     if (pct(win, 0.95) > 20) {
       this.tier++;
       this.stats.tier = TIERS[this.tier].name;
@@ -62,7 +62,7 @@ export class Perf {
   }
   report(now) {
     this.nextReport = now + 500;
-    const d = this.samples.map((s) => s[1]).sort((a, b) => a - b);
+    const d = this.times.map((s) => s[1]).sort((a, b) => a - b);
     const med = pct(d, 0.5);
     Object.assign(this.stats, { median: +med.toFixed(2), fps: med ? +(1000 / med).toFixed(1) : 0, p95: +pct(d, 0.95).toFixed(2), worst: +(d[d.length - 1] || 0).toFixed(1), frames: d.length });
     if (this.box) this.box.textContent = `median ${this.stats.fps} fps · p95 ${this.stats.p95} ms · worst ${this.stats.worst} ms · ${this.stats.frames} frames/10 s · tier ${this.stats.tier}\n${this.renderer}`;
