@@ -2,10 +2,10 @@
 // ?perf=1 shows the overlay; the same numbers are always on window.__corePerf for automated checks.
 
 export const TIERS = [
-  { name: "high", bloom: true, dpr: null }, // dpr null = the device cap (2 desktop, 1.5 phone)
-  { name: "no-bloom", bloom: false, dpr: null },
-  { name: "dpr-1", bloom: false, dpr: 1 },
-  { name: "dpr-0.75", bloom: false, dpr: 0.75 },
+  { name: "high", bloom: true, glass: true, dpr: null }, // dpr null = the device cap (2 desktop, 1.5 phone); glass = the refracting shell
+  { name: "no-bloom", bloom: false, glass: false, dpr: null },
+  { name: "dpr-1", bloom: false, glass: false, dpr: 1 },
+  { name: "dpr-0.75", bloom: false, glass: false, dpr: 0.75 },
 ];
 
 function pct(sorted, p) {

@@ -16,6 +16,7 @@ export const MARKS = {
   orbits: "one ring per group (5); orbit speed follows that group's scheduled starts per day (log scale)",
   nodes: "one per job (22); paused jobs are hollow red and carry no packets",
   packets: "travel from a job to the core; count and speed follow how often the job is scheduled; none for on-demand or paused jobs",
+  glass: "the shell the core sits in: real refraction and colour dispersion of what is inside, reflecting the five orbits (high quality tier only)",
   gyro: "three rings around the core, one per runner (launchd, cron, manual); spin rate follows how many jobs it runs",
   dial: "the floor is a 24-hour dial in Berlin time: hour ticks, a mark at each fixed daily or weekly start, a hand at the current time with the last hour shaded",
   cage: "frame mark",
@@ -28,13 +29,13 @@ export const MOODS = {
     deep: [0.004, 0.03, 0.055], mid: [0.02, 0.2, 0.31], vein: [0.43, 0.89, 1.0], rim: [0.43, 0.89, 1.0], hot: [1, 1, 1],
     halo: 0x2fb9e6, haloOp: 0.42, hotSprite: 0xcdf6ff, line: 0x6fe3ff, lineK: 1, node: 0x6fe3ff, paused: 0xff6b6b,
     runner: [0x6fe3ff, 0x7dffb0, 0x6fe3ff], scan: 0xffffff, dial: 0x6fe3ff, mark: 0x7dffb0, sel: 0xffffff,
-    now: [0.43, 0.89, 1.0], grid: [0.75, 0.93, 1.0], bloom: 0.5,
+    now: [0.43, 0.89, 1.0], grid: [0.75, 0.93, 1.0], bloom: 0.5, glass: 0xd2f4ff,
   },
   gothic: {
     deep: [0.03, 0.006, 0.008], mid: [0.2, 0.17, 0.15], vein: [0.95, 0.91, 0.84], rim: [0.86, 0.06, 0.11], hot: [1, 0.72, 0.66],
     halo: 0x8f0b16, haloOp: 0.5, hotSprite: 0xffd8cc, line: 0xe9e4d8, lineK: 0.7, node: 0x6fe3ff, paused: 0xff4d5a,
     runner: [0xc1121f, 0xc1121f, 0xe9e4d8], scan: 0xe9e4d8, dial: 0xc1121f, mark: 0xe9e4d8, sel: 0xe9e4d8,
-    now: [0.86, 0.07, 0.12], grid: [0.91, 0.87, 0.8], bloom: 0.45,
+    now: [0.86, 0.07, 0.12], grid: [0.91, 0.87, 0.8], bloom: 0.45, glass: 0xffe2da,
   },
 };
 
@@ -152,6 +153,32 @@ export function createCore(opts) {
   const halo = sprite(P.halo, 7.6, P.haloOp, false); world.add(halo);
   const hot = sprite(P.hotSprite, 3.0, 0.12, true); world.add(hot);
   const scan = new THREE.LineLoop(circle(1, 120), lineMat(0.75, P.scan)); world.add(scan);
+
+  // glass shell (high tier only): physically based transmission refracts the opaque core inside it and splits colour at the rim;
+  // its reflections come from a small procedural environment built from the scene's own orbits and nodes (no photo)
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  let envRT = null;
+  function buildEnv() {
+    const es = new THREE.Scene(); es.background = new THREE.Color(0x020306);
+    const lc = new THREE.Color(P.line), rc = new THREE.Color(...P.rim), nc = new THREE.Color(P.node);
+    RAD.forEach((r, k) => { const t = new THREE.Mesh(new THREE.TorusGeometry(r, 0.05, 6, 96), new THREE.MeshBasicMaterial({ color: k % 2 ? lc : rc })); t.rotation.set(Math.PI / 2 + TILT[k][0], 0, TILT[k][1]); es.add(t); });
+    for (let i = 0; i < 22; i++) { const a = i * 2.39996, r = RAD[i % 5]; const m = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), new THREE.MeshBasicMaterial({ color: nc })); m.position.set(Math.cos(a) * r, Math.sin(i * 1.7) * 1.2, Math.sin(a) * r); es.add(m); }
+    // two soft light bands (an overhead ring and a side panel) give the shell a readable rim and highlight
+    const band = new THREE.Mesh(new THREE.TorusGeometry(7, 0.9, 8, 96), new THREE.MeshBasicMaterial({ color: new THREE.Color(P.glass).multiplyScalar(0.9) })); band.position.y = 6; band.rotation.x = Math.PI / 2; es.add(band);
+    const panel = new THREE.Mesh(new THREE.PlaneGeometry(5, 9), new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })); panel.position.set(-9, 2, 4); panel.lookAt(0, 0, 0); es.add(panel);
+    const rt = pmrem.fromScene(es, 0.02);
+    es.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
+    if (envRT) envRT.dispose(); envRT = rt; return rt.texture;
+  }
+  const glassMat = new THREE.MeshPhysicalMaterial({ color: P.glass, metalness: 0, roughness: 0.04, transmission: 1, thickness: 0.9, ior: 1.5, dispersion: 3.5,
+    envMapIntensity: 1.4, specularIntensity: 1, attenuationColor: new THREE.Color(P.glass), attenuationDistance: 4 });
+  const shell = new THREE.Mesh(new THREE.SphereGeometry(1.24, phone ? 48 : 72, phone ? 32 : 48), glassMat);
+  let glassOn = false;
+  function setGlass(on) {
+    glassOn = on; shell.visible = on;
+    if (on && !glassMat.envMap) glassMat.envMap = buildEnv();
+  }
+  world.add(shell);
 
   // runners: one gyro ring each, spin by job count
   const runnerCount = RUNNERS.map((r) => nodes.filter((n) => n.runsOn === r).length);
@@ -273,7 +300,8 @@ export function createCore(opts) {
   // quality
   const dprCap = phone ? 1.5 : 2;
   let tier = TIERS[0], W = 0, H = 0;
-  const perf = new Perf({ gl: renderer.getContext(), show: !!opts.perf, onTier: (t) => { tier = t; bloomOn = t.bloom; W = 0; } });
+  const perf = new Perf({ gl: renderer.getContext(), show: !!opts.perf, onTier: (t) => { tier = t; bloomOn = t.bloom; setGlass(t.glass); W = 0; } });
+  setGlass(!opts.saveData && opts.glass !== false && TIERS[0].glass);
   if (opts.saveData) { tier = TIERS[1]; bloomOn = false; }
   function size() {
     const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1;
@@ -355,6 +383,8 @@ export function createCore(opts) {
     nodes.forEach((n, k) => { objs[k].col.copy(nodeColor(n)); objs[k].m.material.color.copy(objs[k].col); objs[k].s.material.color.copy(objs[k].col); });
     paintTrails(); paintPackets();
     if (bloom) bloom.strength = P.bloom;
+    glassMat.color.set(P.glass); glassMat.attenuationColor.set(P.glass);
+    if (glassMat.envMap) glassMat.envMap = buildEnv();
     wake();
   }
 
@@ -369,7 +399,7 @@ export function createCore(opts) {
   document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
   if ("IntersectionObserver" in window) new IntersectionObserver((es) => { visible = es[es.length - 1].isIntersecting; visible ? start() : stop(); }).observe(canvas);
 
-  const api = { select, setMood, view, nodes, start, stop, perf: perf.stats, marks: MARKS, frames: 0,
+  const api = { select, setMood, view, get glass() { return glassOn; }, nodes, start, stop, perf: perf.stats, marks: MARKS, frames: 0,
     screen(i) { tmp.copy(objs[i].wp).project(camera); return { x: (tmp.x * 0.5 + 0.5) * W, y: (-tmp.y * 0.5 + 0.5) * H, visible: tmp.z < 1 }; },
     get selected() { return sel; } };
 
@@ -394,7 +424,7 @@ export function createCore(opts) {
     look.lerp(tmp, still ? 1 : Math.min(1, dt * 2.2));
     const fw = view.full ? view.full.w : W, fh = view.full ? view.full.h : H;
     const narrow = fw / fh < 0.8;
-    const R0 = (narrow ? 15.5 : 8.9) * zoom * (1 + intro * intro * 1.6);
+    const R0 = (narrow ? (mode === "hero" ? 11.5 : 15.5) : 8.9) * zoom * (1 + intro * intro * 1.6);
     const Rend = view.endSize ? (2 * 5.6 * fh) / (view.endSize * 2 * Math.tan((21 * Math.PI) / 180)) : R0;
     const R = R0 * Math.pow(Rend / R0, ee);
     const ph = phi + par.y * 0.06 * (1 - ee), th = theta - intro * intro * 1.2 + par.x * 0.12 * (1 - ee);
