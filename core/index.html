@@ -11,7 +11,10 @@
 <script>(function(){var m=new URLSearchParams(location.search).get("mood");if(m==="gothic"||m==="hud")document.documentElement.dataset.mood=m;})();</script>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/signature.css">
-<noscript><style>.poster { display: block !important; }</style></noscript>
+<noscript><style>
+  .poster { display: block !important; }
+  html, body { height: auto; overflow: auto; } .app { height: 100svh; } .hud > :not(.head) { display: none; }
+</style></noscript>
 <script type="importmap">{"imports":{"three":"/assets/vendor/three-0.187.0/build/three.module.min.js","three/addons/":"/assets/vendor/three-0.187.0/examples/jsm/"}}</script>
 <style>
 /* One screen. The scene fills the frame; panels sit on a 3-column grid over it and leave the middle free for the core. */
@@ -95,6 +98,19 @@ ol { padding: 0; list-style: none; }
 .day svg { width: 96px; height: 96px; display: block; overflow: visible; }
 .day p { font: 400 12px/1.3 var(--mono); color: var(--muted); margin-top: 2px; }
 
+/* without JavaScript: the poster first, then the plain job list */
+.nojs { max-width: 46rem; margin: 0 auto; padding: 40px var(--gutter) 64px; font: 400 1rem/1.6 var(--sans); }
+.nojs h2 { font: var(--display-weight) 2rem/1.1 var(--display); text-transform: var(--display-case); }
+.nojs h3 { margin: 28px 0 6px; font: 500 .8125rem/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent-text); }
+.nojs ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.nojs li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.nojs li span { font: 400 .875rem/1.5 var(--mono); color: var(--muted); }
+
+/* group names on their orbit rings, desktop only: at phone width five labels crowd the core */
+.rl { position: absolute; left: 0; top: 0; pointer-events: none; font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  padding: 3px 6px; background: rgb(4 7 12 / .72); white-space: nowrap; will-change: transform; }
+@media (max-width: 1023px) { #rlabels { display: none; } }
+
 .tag { position: absolute; left: 0; top: 0; pointer-events: none; font: 500 12px var(--mono); letter-spacing: .04em;
   padding: 3px 8px; border: 1px solid var(--accent); background: rgb(4 7 12 / .82); color: var(--text); white-space: nowrap; will-change: transform; }
 
@@ -124,6 +140,7 @@ ol { padding: 0; list-style: none; }
   .detail .does { font-size: 14px; line-height: 1.45; }
   .detail dl { font-size: 12px; }
   .day, .day svg { width: 76px; }
+  .day text { display: none; } /* hour numerals would render under 12 px at this size; the ticks carry the hours */
   .day svg { height: 76px; }
   .chips .mood { display: none; }
 }
@@ -131,10 +148,14 @@ ol { padding: 0; list-style: none; }
 </head>
 <body>
 <div class="app" id="app">
-  <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 22 scheduled jobs in five orbits around a glowing core, above a 24-hour dial.">
+  <picture>
+    <source id="poster-phone" media="(max-width: 760px)" srcset="/assets/core/poster-hud-phone.webp" width="780" height="1688">
+    <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 22 scheduled jobs in five orbits around a glowing core, above a 24-hour dial.">
+  </picture>
   <canvas id="gl" aria-hidden="true"></canvas>
   <div class="fx" aria-hidden="true"></div>
   <div id="tag" class="tag" hidden></div>
+  <div id="rlabels" aria-hidden="true"></div>
 
   <div class="hud">
     <header class="head">
@@ -174,6 +195,48 @@ ol { padding: 0; list-style: none; }
     </section>
   </div>
 </div>
+<noscript>
+<section class="nojs" aria-labelledby="nojs-h">
+  <h2 id="nojs-h">Jobs</h2>
+  <h3>Study</h3>
+  <ul>
+    <li><b>Study Sync</b> <span>hourly, runs on launchd</span><br>Pulls course files and deadlines into the notes vault.</li>
+    <li><b>Library Booking</b> <span>20:00 daily, runs on launchd</span><br>Reserves a study spot a few days ahead.</li>
+    <li><b>Exam Flashcards</b> <span>on demand, runs on launchd</span><br>Spaced-repetition flashcards delivered through chat.</li>
+  </ul>
+  <h3>System</h3>
+  <ul>
+    <li><b>Health Check</b> <span>hourly, runs on launchd</span><br>Checks that every automation is running and reports problems.</li>
+    <li><b>Self Improver</b> <span>03:15 daily, runs on launchd</span><br>Proposes small code and note improvements overnight for review.</li>
+    <li><b>Vault Backup</b> <span>02:30 daily, runs on launchd</span><br>Backs up the notes vault to a private repository.</li>
+    <li><b>Price Watch</b> <span>daily, runs on cron</span><br>Tracks a product price and sends a daily report.</li>
+    <li><b>Agent Dashboard</b> <span>on demand, runs on manual</span><br>Local office-style view of all agents and their status.</li>
+    <li><b>Overnight Task</b> <span>on demand, runs on manual</span><br>Works one assigned task overnight on a separate branch.</li>
+  </ul>
+  <h3>Publishing</h3>
+  <ul>
+    <li><b>Social Scheduler</b> <span>always on, runs on launchd</span><br>Queues posts for approval and summarises engagement.</li>
+    <li><b>Release Selector</b> <span>23:15 daily, runs on launchd</span><br>Checks the next project's readiness for public release.</li>
+    <li><b>Release Runner</b> <span>every 10 minutes, runs on launchd</span><br>Handles approved releases; real publishing stays switched off.</li>
+    <li><b>Signal Tracker</b> <span>daily, runs on launchd</span><br>Measures stars, downloads and reach of released projects.</li>
+    <li><b>Story Pack</b> <span>on demand, runs on manual</span><br>Drafts a project write-up and social notes from its repository.</li>
+  </ul>
+  <h3>Knowledge</h3>
+  <ul>
+    <li><b>Morning Digest</b> <span>hourly, runs on launchd</span><br>Builds a summary of tasks, approvals and overnight results.</li>
+    <li><b>Inbox Router</b> <span>every 60 seconds, runs on launchd</span><br>Sorts captured messages into notes and idea drafts.</li>
+    <li><b>Idea Verifier</b> <span>Sun 21:00, runs on launchd</span><br>Fact-checks flagged notes against web sources weekly.</li>
+    <li><b>Vault Indexer</b> <span>hourly, runs on launchd</span><br>Rebuilds search and code-map indexes for the notes.</li>
+    <li><b>Vault Map</b> <span>hourly, runs on launchd</span><br>Generates hub pages for agents, courses and research.</li>
+    <li><b>Archive Fetcher</b> <span>always on, runs on manual</span><br>Downloads archived forum threads into a local database.</li>
+  </ul>
+  <h3>Income</h3>
+  <ul>
+    <li><b>Idea Radar</b> <span>22:00 daily, runs on launchd</span><br>Scans public forums for product ideas and scores them.</li>
+    <li><b>Opportunity Scout</b> <span>10:30 daily (paused), runs on launchd</span><br>Finds matching job and freelance listings and drafts applications.</li>
+  </ul>
+</section>
+</noscript>
 
 <script type="module">
 import data from "/assets/core/nodes.js";
@@ -220,7 +283,7 @@ function day(n) {
   const s = $("d-day"); s.textContent = "";
   el("circle", { r: 40, fill: "none", stroke: "var(--line-strong)", "stroke-width": 0.6 }, s);
   for (let h = 0; h < 24; h++) { const [x0, y0] = at(h * 60, 40), [x1, y1] = at(h * 60, h % 6 ? 37 : 34); el("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: "var(--muted)", "stroke-width": h % 6 ? 0.6 : 1 }, s); }
-  [["00", 0], ["06", 360], ["12", 720], ["18", 1080]].forEach(([t, m]) => { const [x, y] = at(m, 26); el("text", { x, y: y + 3.6, "text-anchor": "middle", "font-size": 10.7, fill: "var(--muted)", "font-family": "var(--mono)" }, s).textContent = t; });
+  [["00", 0], ["06", 360], ["12", 720], ["18", 1080]].forEach(([t, m]) => { const [x, y] = at(m, 26); el("text", { x, y: y + 3.6, "text-anchor": "middle", "font-size": 13, fill: "var(--muted)", "font-family": "var(--mono)" }, s).textContent = t; });
   const p = parse(n.schedule), live = n.state === "scheduled", c = "var(--accent-text)";
   if (live && (p.kind === "daily" || p.kind === "weekly")) { const m = p.h * 60 + p.m, [x0, y0] = at(m, 30), [x1, y1] = at(m, 47); el("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: c, "stroke-width": 3, "stroke-linecap": "round" }, s); }
   else if (live && p.kind === "interval" && p.min >= 5) for (let m = 0; m < 1440; m += p.min) { const [x0, y0] = at(m, 42), [x1, y1] = at(m, 46); el("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: c, "stroke-width": p.min >= 60 ? 1.6 : 0.5 }, s); }
@@ -268,9 +331,10 @@ moodBtn.setAttribute("aria-label", "Switch mood");
 moodBtn.addEventListener("click", () => {
   const m = root.dataset.mood === "gothic" ? "hud" : "gothic"; root.dataset.mood = m; label();
   const u = new URL(location.href); u.searchParams.set("mood", m); history.replaceState(null, "", u);
-  $("poster").src = "/assets/core/poster-" + m + ".webp"; if (scene) scene.setMood(m);
+  setPoster(m); if (scene) scene.setMood(m);
 });
-if (root.dataset.mood === "gothic") $("poster").src = "/assets/core/poster-gothic.webp";
+function setPoster(m) { $("poster").src = "/assets/core/poster-" + m + ".webp"; $("poster-phone").srcset = "/assets/core/poster-" + m + "-phone.webp"; }
+if (root.dataset.mood === "gothic") setPoster("gothic");
 
 /* ---------- 3D scene ---------- */
 function webgl() { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (_) { return false; } }
@@ -279,10 +343,22 @@ if (!webgl() || saveData || qs.has("poster-only")) root.classList.add("no-scene"
 else try {
   const { createCore } = await import("/assets/core/scene.js");
   const tag = $("tag"), cv = $("gl");
+  const wide = matchMedia("(min-width: 1024px)").matches;
+  let panels = []; const measure = () => (panels = [...document.querySelectorAll(".hud > :not(.head)")].map((n) => n.getBoundingClientRect())
+    .concat([...document.querySelectorAll(".head > *")].map((n) => { const r = document.createRange(); r.selectNodeContents(n); return r.getBoundingClientRect(); })));
+  measure(); addEventListener("resize", measure); setTimeout(measure, 1200); // after the panels' entrance
+  const rl = data.groups.map((g) => { const e = document.createElement("span"); e.className = "rl"; e.textContent = g.label; $("rlabels").appendChild(e); return e; });
   scene = createCore({
-    canvas: cv, data, mood: root.dataset.mood, reduce, mode: "full", phone: innerWidth <= 760, perf: qs.get("perf") === "1", initial,
+    canvas: cv, data, mood: root.dataset.mood, reduce, mode: "full", phone: innerWidth <= 760, perf: qs.get("perf") === "1", glass: qs.get("glass") !== "0", initial,
     onSelect(i) { if (i >= 0) show(i); tag.hidden = i < 0; },
     onFrame(api) {
+      if (wide) rl.forEach((e, k) => {
+        const p = api.ringTop(k), w = e.offsetWidth, h = e.offsetHeight;
+        const x = p && Math.round(p.x - w / 2), y = p && Math.round(p.y - h - 4);
+        // a label that would sit under a panel or off screen is left out rather than drawn half hidden
+        const hide = !p || x < 0 || y < 0 || x + w > innerWidth || panels.some((r) => x < r.right && x + w > r.left && y < r.bottom && y + h > r.top);
+        e.hidden = hide; if (!hide) e.style.transform = "translate(" + x + "px," + y + "px)";
+      });
       if (api.selected < 0) return;
       const p = api.screen(api.selected);
       tag.hidden = !p.visible;

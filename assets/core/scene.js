@@ -401,6 +401,9 @@ export function createCore(opts) {
 
   const api = { select, setMood, view, get glass() { return glassOn; }, nodes, start, stop, perf: perf.stats, marks: MARKS, frames: 0,
     screen(i) { tmp.copy(objs[i].wp).project(camera); return { x: (tmp.x * 0.5 + 0.5) * W, y: (-tmp.y * 0.5 + 0.5) * H, visible: tmp.z < 1 }; },
+    // the top point of group ring k on screen (for its label), found from 24 points on the ring because the camera orbits
+    ringTop(k) { let best = null; for (let q = 0; q < 24; q++) { const a = (q / 24) * Math.PI * 2; tmp.set(Math.cos(a) * RAD[k], 0, Math.sin(a) * RAD[k]); rings[k].localToWorld(tmp); tmp.project(camera);
+      const y = (-tmp.y * 0.5 + 0.5) * H; if (tmp.z < 1 && (!best || y < best.y)) best = { x: (tmp.x * 0.5 + 0.5) * W, y }; } return best; },
     get selected() { return sel; } };
 
   function frame(now, still) {

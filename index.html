@@ -28,6 +28,9 @@
   .brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--text); text-decoration: none;
     font: var(--display-weight) 1.0625rem/1 var(--display); text-transform: var(--display-case); letter-spacing: .06em; }
   :root[data-mood="gothic"] .brand { font-size: 1.375rem; letter-spacing: 0; }
+  /* the name is the hero's headline on the first screen; the bar takes it over once the hero has scrolled away */
+  .top:not(.solid) .brand { opacity: 0; visibility: hidden; }
+  @media (prefers-reduced-motion: no-preference) { .brand { transition: opacity .3s, visibility 0s; } .top:not(.solid) .brand { transition: opacity .2s, visibility 0s .2s; } }
   .top nav { margin-left: auto; display: flex; gap: 2px; }
   .top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--text); text-decoration: none; font: 500 .9375rem/1 var(--sans); }
   .top nav a:hover { color: var(--accent-text); }
@@ -49,6 +52,7 @@
   .hero-copy a, .hero-copy button { pointer-events: auto; }
   .hero-name { margin: 0 0 18px; max-width: 9ch; font-size: clamp(3rem, 6.6vw, 5.5rem); color: var(--text); text-shadow: 0 0 28px rgb(4 7 12 / .8); }
   :root[data-mood="hud"] .hero-name { letter-spacing: .03em; }
+  :root[data-mood="gothic"] .hero-name { margin-bottom: 26px; } /* Grenze's tall line boxes otherwise touch the headline when the name wraps */
   .hero h1 { margin: 0 0 16px; max-width: 22ch; font: 500 clamp(1.375rem, 2.6vw, 2.125rem)/1.18 var(--sans); letter-spacing: -.01em; text-wrap: balance; }
   .lede { margin: 0 0 26px; max-width: 46ch; color: var(--text); opacity: .86; font-size: 1.0625rem; }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -76,10 +80,12 @@
   @media (max-width: 760px) { .job { position: fixed; left: 16px; right: 16px; top: 68px; width: auto; } }
 
   @media (max-width: 760px) {
-    .hero { height: 70svh; min-height: 650px; }
+    /* the scene owns the first screen: the core sits in the upper half, the headline and both buttons fit above the fold, the data chips follow just below it */
+    .hero { height: calc(100svh + 104px); min-height: 700px; }
+    .hero-copy { bottom: 24px; }
     .reticle { display: none; }
-    .hero .poster { object-position: 68% 30%; }
-    .hero::after { background: linear-gradient(to top, var(--ground) 0, rgb(4 7 12 / .88) 48%, rgb(4 7 12 / .2) 74%, transparent 88%); }
+    .hero .poster { object-position: 50% 0; }
+    .hero::after { background: linear-gradient(to top, var(--ground) 0, var(--ground) 22%, rgb(4 7 12 / .9) 44%, rgb(4 7 12 / .55) 54%, transparent 66%); }
     .hero-name { margin-bottom: 10px; max-width: none; font-size: clamp(2.25rem, 10.4vw, 3rem); white-space: nowrap; }
     .lede { font-size: 1rem; margin-bottom: 18px; }
     .ctas { gap: 10px; }
@@ -222,7 +228,10 @@
 
 <main id="main">
   <section class="hero" id="hero" aria-labelledby="hero-h">
-    <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 22 scheduled jobs in five orbits around a glowing core, above a 24-hour dial." fetchpriority="high">
+    <picture>
+      <source id="poster-phone" media="(max-width: 760px)" srcset="/assets/core/poster-hud-phone.webp" width="780" height="1688">
+      <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 22 scheduled jobs in five orbits around a glowing core, above a 24-hour dial." fetchpriority="high">
+    </picture>
     <div class="hero-copy wrap">
       <p class="hero-name display">Basar Tuncay</p>
       <h1 id="hero-h">I build automations in Python and TypeScript, and I measure whether they work.</h1>
@@ -273,9 +282,9 @@
               <figure class="shot frame">
                 <picture>
                   <source media="(max-width: 560px)" srcset="/assets/shots/stillsolved-390.webp" width="390" height="844">
-                  <img src="/assets/shots/stillsolved-1280.webp" width="1280" height="800" loading="lazy" decoding="async" alt="The StillSolved home page: a search over the Internet Archive’s saved copies of Apple Support Community threads.">
+                  <img src="/assets/shots/stillsolved-1280.webp" width="1280" height="800" loading="lazy" decoding="async" alt="StillSolved search results for “iCloud”: saved Apple Support Community threads with the year asked, a solved mark and an excerpt of the answer.">
                 </picture>
-                <figcaption class="label">StillSolved home page, local build, captured 22 Nov 2026</figcaption>
+                <figcaption class="label">StillSolved search results, local build, 22 Nov 2026</figcaption>
               </figure>
               <p class="stack">Python 3.11 standard library, SQLite FTS5, Caddy, systemd, Chrome extension.</p>
               <dl class="facts">
@@ -499,15 +508,16 @@ moodBtn.addEventListener("click", () => {
   const m = root.dataset.mood === "gothic" ? "hud" : "gothic";
   root.dataset.mood = m; moodLabel();
   const u = new URL(location.href); u.searchParams.set("mood", m); history.replaceState(null, "", u);
-  $("poster").src = posterFor(m);
+  setPoster(m);
   if (scene) scene.setMood(m);
 });
-if (root.dataset.mood === "gothic") $("poster").src = posterFor("gothic");
+function setPoster(m) { $("poster").src = posterFor(m); $("poster-phone").srcset = "/assets/core/poster-" + m + "-phone.webp"; }
+if (root.dataset.mood === "gothic") setPoster("gothic");
 
 const hero = $("hero"), canvas = $("core"), reticle = $("reticle"), top = $("top"), job = $("job");
 const phone = () => innerWidth <= 760;
 let heroH = hero.offsetHeight;
-const heroAnchor = () => (phone() ? { x: innerWidth * 0.5, y: Math.min(innerHeight * 0.16, 150) } : { x: innerWidth * 0.7, y: innerHeight * 0.45 });
+const heroAnchor = () => (phone() ? { x: innerWidth * 0.5, y: innerHeight * 0.3 } : { x: innerWidth * 0.7, y: innerHeight * 0.45 });
 function placeReticle() {
   heroH = hero.offsetHeight; root.style.setProperty("--hero-h", heroH + "px");
   const a = heroAnchor(), s = phone() ? Math.min(innerWidth * 0.86, 360) : Math.min(innerHeight * 0.62, 560);
@@ -538,7 +548,7 @@ else {
       else { canvas.style.left = canvas.style.top = ""; }
     }
     scene = createCore({
-      canvas, data, mood: root.dataset.mood, reduce, mode: "hero", phone: phone(), perf: qs.get("perf") === "1",
+      canvas, data, mood: root.dataset.mood, reduce, mode: "hero", phone: phone(), perf: qs.get("perf") === "1", glass: qs.get("glass") !== "0",
       beforeFrame(api) {
         const v = api.view;
         if (!docked) fullSize = { w: canvas.clientWidth, h: canvas.clientHeight };
