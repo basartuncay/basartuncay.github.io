@@ -1,0 +1,139 @@
+/* Signature style: tokens and components shared by the dark showcase screens (/, /core/, later /automation/).
+   Two moods behind one attribute on <html>: data-mood="hud" (default, "Jarvis HUD") and data-mood="gothic" ("Cyber gothic").
+   Both share the ground, the data layer (JetBrains Mono, signal cyan, ok, alert) and the layout. Dark only, by design. */
+/* Pages link /assets/fonts/fonts.css next to this file (a parallel request, not a chained @import). */
+
+:root {
+  color-scheme: dark;
+  --ground: #04070c;
+  --ground-2: #08101a;
+  --signal: #6fe3ff;
+  --ok: #7dffb0;
+  --alert: #ff6b6b;
+  --text: #d8f6ff;
+  --muted: #8eaab6;
+  --line: rgb(111 227 255 / .24);
+  --line-strong: rgb(111 227 255 / .55);
+  --accent: var(--signal);       /* the one loud colour: fills, strokes, glow */
+  --accent-text: var(--signal);  /* the same colour where it must pass 4.5:1 as small text */
+  --on-accent: #02161d;
+  --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --display: "Chakra Petch", "DM Sans", system-ui, sans-serif;
+  --display-weight: 600;
+  --display-case: uppercase;
+  --display-track: .02em;
+  --cut: 12px;
+  --gutter: 16px;
+  --measure: 65ch;
+}
+:root[data-mood="gothic"] {
+  --text: #e9e4d8;            /* bone */
+  --muted: #a8a194;
+  --line: rgb(233 228 216 / .2);
+  --line-strong: rgb(233 228 216 / .5);
+  --accent: #c1121f;          /* blood: marks and fills only, 2.1:1 on the ground */
+  --accent-text: #ff5a64;     /* lightened blood for text, 6:1 on the ground */
+  --on-accent: #f4efe4;
+  --display: "Grenze Gotisch", Georgia, serif;
+  --display-weight: 800;
+  --display-case: none;
+  --display-track: 0;
+}
+@media (min-width: 720px) { :root { --gutter: 32px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--ground); }
+body {
+  margin: 0; background: var(--ground); color: var(--text);
+  font: 400 1.0625rem/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent); color: var(--on-accent); }
+a { color: var(--accent-text); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+a:hover { color: var(--text); }
+:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+code { font: 400 .9em var(--mono); overflow-wrap: anywhere; color: var(--text); }
+html { scrollbar-color: var(--line-strong) var(--ground); }
+
+.skip { position: absolute; left: 16px; top: -80px; z-index: 50; padding: 12px 16px; background: var(--text); color: var(--ground); font-weight: 700; }
+.skip:focus { top: 12px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter); }
+
+/* display type: headlines, numerals, names only */
+.display { font-family: var(--display); font-weight: var(--display-weight); text-transform: var(--display-case); letter-spacing: var(--display-track); line-height: .98; text-wrap: balance; }
+:root[data-mood="gothic"] .display { line-height: 1.02; }
+
+/* data labels */
+.label { font: 500 .8125rem/1.4 var(--mono); letter-spacing: .08em; color: var(--muted); }
+.data { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* chips: a status taken from the page text; colour = kind */
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; white-space: nowrap;
+  font: 500 .8125rem/1.3 var(--mono); letter-spacing: .04em; color: var(--text);
+  border: 1px solid var(--line-strong);
+}
+.chip::before { content: ""; width: 7px; height: 7px; background: currentColor; flex: none; }
+.chip--launch { color: var(--signal); border-color: rgb(111 227 255 / .5); }
+.chip--private { color: var(--muted); }
+.chip--open { color: var(--ok); border-color: rgb(125 255 176 / .45); }
+.chip--paused { color: var(--alert); border-color: rgb(255 107 107 / .5); }
+:root[data-mood="hud"] .chip { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+:root[data-mood="gothic"] .chip::before { transform: rotate(45deg); width: 6px; height: 6px; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px;
+  font: 600 1rem/1 var(--sans); text-decoration: none; color: var(--text); border: 1px solid var(--line-strong); background: rgb(4 7 12 / .55);
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.btn:hover { border-color: var(--accent-text); color: var(--text); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--primary:hover { background: var(--text); border-color: var(--text); color: var(--ground); }
+:root[data-mood="hud"] .btn { clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut)); }
+:root[data-mood="hud"] .btn:not(.btn--primary) { border: 0; background: linear-gradient(var(--line-strong), var(--line-strong)) 0 0 / 100% 1px no-repeat, linear-gradient(var(--line-strong), var(--line-strong)) 0 100% / 100% 1px no-repeat, linear-gradient(var(--line-strong), var(--line-strong)) 0 0 / 1px 100% no-repeat, linear-gradient(var(--line-strong), var(--line-strong)) 100% 0 / 1px 100% no-repeat, rgb(4 7 12 / .6); }
+:root[data-mood="gothic"] .btn { clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0 50%); border: 0; padding: 0 30px; }
+:root[data-mood="gothic"] .btn:not(.btn--primary) { background: rgb(233 228 216 / .1); }
+:root[data-mood="gothic"] .btn:not(.btn--primary):hover { background: rgb(233 228 216 / .2); }
+@media (prefers-reduced-motion: no-preference) { .btn:active { transform: scale(.97); } .btn { transition: background-color .2s, color .2s, border-color .2s, transform .15s; } }
+
+/* frame: a plain mark around a real picture or a panel. HUD = cut corners with brackets; gothic = double rule with chamfered tracery corners */
+.frame { position: relative; border: 1px solid var(--line); background: var(--ground-2); }
+.frame::before, .frame::after { content: ""; position: absolute; width: 14px; height: 14px; border: solid var(--accent); pointer-events: none; }
+.frame::before { left: -1px; top: -1px; border-width: 2px 0 0 2px; }
+.frame::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
+:root[data-mood="gothic"] .frame { outline: 1px solid var(--line); outline-offset: 4px; }
+:root[data-mood="gothic"] .frame::before, :root[data-mood="gothic"] .frame::after { width: 22px; height: 22px; border: 0; background: linear-gradient(135deg, transparent 45%, var(--accent) 45% 55%, transparent 55%); }
+:root[data-mood="gothic"] .frame::before { left: -6px; top: -6px; }
+:root[data-mood="gothic"] .frame::after { right: -6px; bottom: -6px; }
+.frame img { display: block; width: 100%; height: auto; }
+
+/* section head: oversized numeral + title. Gothic sets the numeral as a Roman numeral inside a lancet arch drawn in lines */
+.sec { position: relative; padding: clamp(72px, 12vw, 160px) 0 clamp(40px, 6vw, 80px); }
+.sec-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 clamp(16px, 3vw, 40px); align-items: end; margin-bottom: clamp(28px, 5vw, 56px); }
+.num { font: 500 clamp(1rem, 1.6vw, 1.25rem)/1 var(--mono); color: var(--accent-text); letter-spacing: .1em; align-self: start; padding-top: .7em; }
+.num::before { content: attr(data-n); }
+.sec-head h2 { margin: 0; font-size: clamp(2.5rem, 8.5vw, 6rem); }
+.sec-head p { grid-column: 2; margin: 18px 0 0; max-width: var(--measure); color: var(--muted); }
+:root[data-mood="hud"] .num { border-top: 2px solid var(--accent); padding-top: 10px; margin-top: .5em; }
+:root[data-mood="gothic"] .num {
+  width: 56px; height: 84px; display: grid; place-items: end center; padding: 0 0 14px; align-self: end;
+  font: 700 1.25rem/1 var(--display); letter-spacing: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 84' fill='none' stroke='%23c1121f' stroke-width='1.2'%3E%3Cpath d='M2 84V38C2 18 14 6 28 1C42 6 54 18 54 38v46'/%3E%3Cpath d='M8 84V40C8 24 17 13 28 8C39 13 48 24 48 40v44' opacity='.6'/%3E%3Ccircle cx='28' cy='30' r='7'/%3E%3Cpath d='M28 37v47' opacity='.35'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+:root[data-mood="gothic"] .num::before { content: attr(data-roman); background: var(--ground); padding: 2px 4px; }
+@media (max-width: 560px) {
+  .sec-head { grid-template-columns: minmax(0, 1fr); }
+  .sec-head p { grid-column: 1; }
+  .num { margin-bottom: 14px; }
+  :root[data-mood="gothic"] .num { width: 40px; height: 60px; padding-bottom: 8px; font-size: 1rem; }
+}
+
+/* reading text */
+.prose { max-width: var(--measure); }
+.prose p, .prose dd { line-height: 1.6; }
+
+/* perf overlay (?perf=1) */
+.perf-overlay { position: fixed; right: 8px; bottom: 8px; z-index: 100; max-width: min(560px, calc(100vw - 16px)); padding: 8px 10px; white-space: pre-wrap;
+  font: 500 12px/1.45 var(--mono); color: var(--text); background: rgb(4 7 12 / .88); border: 1px solid var(--line-strong); pointer-events: none; }

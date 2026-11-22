@@ -1,532 +1,574 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-mood="hud">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Basar Tuncay · Python, TypeScript and AI automation</title>
 <meta name="description" content="Portfolio of Basar Tuncay: Python, TypeScript and AI automation projects with how each was tested and its honest status.">
-<meta name="theme-color" content="#EEF4FF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#07142E" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E5FD8'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='%23F2B33D' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#04070c">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2304070c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%236fe3ff' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%236fe3ff'/%3E%3C/svg%3E">
+<script>(function(){var m=new URLSearchParams(location.search).get("mood");if(m==="gothic"||m==="hud")document.documentElement.dataset.mood=m;if(matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("rm");})();</script>
+<link rel="preload" href="/assets/fonts/dm-sans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/signature.css">
+<script type="importmap">{"imports":{"three":"/assets/vendor/three-0.187.0/build/three.module.min.js","three/addons/":"/assets/vendor/three-0.187.0/examples/jsm/"}}</script>
 <style>
-/* Liquid Glass material + motion (from the liquid-glass skill), inlined to avoid two render-blocking requests */
-:root {
-  --glass-tint-rgb: 255 255 255;
-  --glass-tint-a: .55;
-  --glass-blur: 18px;
-  --glass-sat: 175%;
-  --glass-radius: 22px;
-  --glass-rim-top: rgb(255 255 255 / .75);
-  --glass-rim-bottom: rgb(255 255 255 / .18);
-  --glass-shadow: 0 1px 1px rgb(0 0 0 / .04), 0 8px 32px rgb(0 0 0 / .12);
-  --glass-shadow-float: 0 2px 4px rgb(0 0 0 / .06), 0 24px 64px rgb(0 0 0 / .22);
-  --glass-ink: rgb(0 0 0 / .88);
-  --glass-ink-2: rgb(0 0 0 / .56);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --glass-tint-rgb: 28 28 32; --glass-tint-a: .5;
-    --glass-rim-top: rgb(255 255 255 / .22); --glass-rim-bottom: rgb(255 255 255 / .06);
-    --glass-shadow: 0 1px 1px rgb(0 0 0 / .3), 0 8px 32px rgb(0 0 0 / .45);
-    --glass-ink: rgb(255 255 255 / .92); --glass-ink-2: rgb(255 255 255 / .6);
-  }
-}
-:root[data-theme="dark"] {
-  --glass-tint-rgb: 28 28 32; --glass-tint-a: .5;
-  --glass-rim-top: rgb(255 255 255 / .22); --glass-rim-bottom: rgb(255 255 255 / .06);
-  --glass-shadow: 0 1px 1px rgb(0 0 0 / .3), 0 8px 32px rgb(0 0 0 / .45);
-  --glass-ink: rgb(255 255 255 / .92); --glass-ink-2: rgb(255 255 255 / .6);
-}
-.glass, .glass--hero, .glass--thin {
-  position: relative;
-  color: var(--glass-ink);
-  background: rgb(var(--glass-tint-rgb) / var(--glass-tint-a));
-  border-radius: var(--glass-radius);
-  box-shadow: inset 0 1px 0 var(--glass-rim-top), inset 0 -1px 0 var(--glass-rim-bottom), var(--glass-shadow);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  isolation: isolate;
-}
-.glass::before, .glass--hero::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: linear-gradient(135deg, var(--glass-rim-top), transparent 40%, transparent 60%, var(--glass-rim-bottom));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-}
-.glass--hero::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
-  background: radial-gradient(120% 80% at var(--mx, 30%) var(--my, 0%), rgb(255 255 255 / .35), transparent 55%);
-  transition: opacity .4s;
-}
-.glass--hero:hover::after { opacity: 1; }
-.glass--hero { box-shadow: inset 0 1px 0 var(--glass-rim-top), inset 0 -1px 0 var(--glass-rim-bottom), var(--glass-shadow-float); }
-.glass--hero[data-refract] {
-  -webkit-backdrop-filter: var(--glass-refract) blur(calc(var(--glass-blur) * .4)) saturate(var(--glass-sat));
-  backdrop-filter: var(--glass-refract) blur(calc(var(--glass-blur) * .4)) saturate(var(--glass-sat));
-}
-.glass--thin { --glass-blur: 6px; box-shadow: inset 0 1px 0 var(--glass-rim-top), 0 1px 2px rgb(0 0 0 / .06); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass, .glass--hero, .glass--thin { background: rgb(var(--glass-tint-rgb) / .92); }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .glass, .glass--hero, .glass--thin { background: rgb(var(--glass-tint-rgb) / .96); backdrop-filter: none; -webkit-backdrop-filter: none; }
-}
-:root[data-glass="fallback"] .glass--hero[data-refract] {
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-}
-:root {
-  --spring-snappy: linear(0, 0.027, 0.096, 0.191, 0.297, 0.407, 0.513, 0.611, 0.698, 0.774, 0.838, 0.89, 0.932, 0.964, 0.988, 1.005, 1.017, 1.024, 1.027, 1.028, 1.028, 1.026, 1.023, 1.02, 1.017, 1.014, 1.011, 1.009, 1.007, 1.005, 1.003, 1.002, 1);
-  --spring-snappy-ms: 400ms;
-  --spring-smooth: linear(0, 0.034, 0.113, 0.212, 0.317, 0.419, 0.512, 0.595, 0.667, 0.728, 0.78, 0.822, 0.858, 0.886, 0.909, 0.928, 0.943, 0.955, 0.965, 0.972, 0.978, 0.983, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.999, 1);
-  --spring-smooth-ms: 700ms;
-  --ease-out-soft: cubic-bezier(.22, 1, .36, 1);
-}
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-group(*) { animation-duration: var(--spring-smooth-ms); animation-timing-function: var(--spring-smooth); }
-  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; }
-  @supports (animation-timeline: view()) {
-    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
-  }
-  @keyframes reveal { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .15s !important; }
-  ::view-transition-group(*) { animation-duration: .15s; }
-}
-/* Cinematic motion recipes (studied from developer.x.com, 2026-11-12). Pair with fx.js.
-   One orchestrated load per page: .fx-drop on the header and hero pieces, nothing else on load. */
-@keyframes fx-drop { from { opacity: 0; translate: 0 -30px; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: none; } }
-@keyframes fx-sway { from { rotate: -9deg; } to { rotate: -4deg; } }
-@keyframes fx-ping { 75%, 100% { transform: scale(2.4); opacity: 0; } }
-@keyframes fx-up { to { translate: 0 -50%; } }
-/* spotlight beam: a blurred conic wedge, screen-blended over a dark hero; parent needs position:relative + overflow:clip */
-.fx-beam { position: absolute; z-index: -1; pointer-events: none; right: -26vw; top: -70vmax; width: 140vmax; height: 140vmax; rotate: -8deg;
-  background: conic-gradient(from 200deg at 70% 50%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 0%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 6%,
-    rgb(var(--fx-beam-rgb, 255 255 255) / .5) 8%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 10%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 14%);
-  filter: blur(28px); mix-blend-mode: var(--fx-beam-blend, screen);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); }
-.fx-ping { position: relative; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.fx-ping::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; }
-/* endless feed: fx.js wraps the list in .fx-feed and doubles its items */
-.fx-feed { overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
-.fx-feed:hover > *, .fx-feed:focus-within > * { animation-play-state: paused; }
-@media (prefers-reduced-motion: no-preference) {
-  .fx-drop { animation: fx-drop .7s cubic-bezier(.25, .46, .45, .94) both; animation-delay: calc(var(--i, 0) * 90ms); }
-  .fx-beam { animation: fx-sway 14s ease-in-out infinite alternate; }
-  .fx-ping::after { animation: fx-ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; }
-  .fx-feed.run > * { animation: fx-up var(--fx-feed-s, 40s) linear infinite; }
-}
-html, body { overflow-x: clip; } /* both: on body alone it propagates to the viewport and the beam can still be scrolled to */
-:root { --fx-beam-rgb: 47 93 138; --fx-beam-blend: multiply; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fx-beam-rgb: 255 255 255; --fx-beam-blend: screen; } }
-:root[data-theme="dark"] { --fx-beam-rgb: 255 255 255; --fx-beam-blend: screen; }
-</style>
-<style>
-  @view-transition { navigation: auto; }
-  :root {
-    /* Blue Kyanite palette (liquid-glass skill, palettes.css) */
-    --paper: #EEF4FF;
-    --panel: #FFFFFF;
-    --ink: #0B1B3A;
-    --muted: #4A5873;
-    --line: #CFDCF2;
-    --steel: #1A50B8;
-    --accent: #1E5FD8;
-    --on-accent: #FFFFFF;
-    --deep: #0B3D91;
-    --allow: #2E7D5B;
-    --confirm: #A86A12;
-    --deny: #B42318;
-    --trace-bg: #0B1B3A;
-    --trace-ink: #DCE6F7;
-    --trace-dim: #8C9BB8;
-    --amber: #F2B33D;
-    --paper-rgb: 238 244 255;
-    --spring-bouncy: linear(0, 0.098, 0.329, 0.605, 0.859, 1.053, 1.172, 1.218, 1.208, 1.164, 1.104, 1.046, 0.999, 0.968, 0.954, 0.953, 0.961, 0.973, 0.986, 0.998, 1.005, 1.01, 1.011, 1.009, 1.007, 1.004, 1.001, 0.999, 0.998, 0.998, 0.998, 0.998, 1);
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper: #07142E; --panel: #0E1F42; --ink: #EEF4FF; --muted: #A3B3CF; --line: #1E3463;
-      --steel: #7FAEFF; --accent: #4C8DF6; --on-accent: #06142E; --deep: #0B3D91;
-      --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
-      --trace-bg: #040B1C; --paper-rgb: 7 20 46; color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #07142E; --panel: #0E1F42; --ink: #EEF4FF; --muted: #A3B3CF; --line: #1E3463;
-    --steel: #7FAEFF; --accent: #4C8DF6; --on-accent: #06142E; --deep: #0B3D91;
-    --allow: #5FC093; --confirm: #E3A445; --deny: #F07466;
-    --trace-bg: #040B1C; --paper-rgb: 7 20 46; color-scheme: dark;
-  }
+  html { scroll-padding-top: 72px; overflow-x: clip; }
+  body { overflow-x: clip; }
 
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font: 400 1.0625rem/1.6 "Schibsted Grotesk", system-ui, sans-serif;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  }
-  a { color: var(--steel); text-underline-offset: 3px; }
-  a:hover { color: var(--ink); }
-  :focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 4px; }
-  code { font: 400 .9em "JetBrains Mono", ui-monospace, monospace; overflow-wrap: anywhere; }
-  .skip { position: absolute; left: 16px; top: -60px; z-index: 20; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 700; }
-  .skip:focus { top: 12px; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
-  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
-
-  /* Top bar: a floating glass capsule (refraction in Chromium, frost elsewhere) */
-  .top {
-    display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    position: sticky; top: 12px; z-index: 10; margin-top: 12px; padding: 4px 4px 4px 20px;
-    --glass-radius: 999px; --glass-tint-rgb: var(--paper-rgb); --glass-tint-a: .72; color: var(--ink);
-    view-transition-name: site-nav;
-  }
-  .brand { font-weight: 700; text-decoration: none; color: var(--ink); view-transition-name: brand; }
-  .top nav { display: flex; gap: 2px; }
-  /* links stay ink on glass: muted grey fails AA over the darkest content that scrolls under the bar */
-  .top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 500; }
-  .top nav a:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
-  .top nav a.go { background: var(--accent); color: var(--on-accent); font-weight: 700; }
-  .top nav a.go:hover { background: var(--deep); color: #fff; }
+  /* top bar: the Core docks into the emblem slot as the hero scrolls away */
+  .top { position: fixed; inset: 0 0 auto; z-index: 20; height: 60px; display: flex; align-items: center; gap: 10px;
+    padding: 0 max(var(--gutter), env(safe-area-inset-right)) 0 max(calc(var(--gutter) - 8px), env(safe-area-inset-left));
+    transition: background-color .3s, border-color .3s; border-bottom: 1px solid transparent; }
+  .top.solid { background: rgb(4 7 12 / .94); border-bottom-color: var(--line); }
+  .emblem { flex: none; width: 44px; height: 44px; display: grid; place-items: center; color: var(--accent); }
+  .emblem svg { width: 36px; height: 36px; }
+  .docked-on .emblem svg { visibility: hidden; }
+  .brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--text); text-decoration: none;
+    font: var(--display-weight) 1.0625rem/1 var(--display); text-transform: var(--display-case); letter-spacing: .06em; }
+  :root[data-mood="gothic"] .brand { font-size: 1.375rem; letter-spacing: 0; }
+  .top nav { margin-left: auto; display: flex; gap: 2px; }
+  .top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--text); text-decoration: none; font: 500 .9375rem/1 var(--sans); }
+  .top nav a:hover { color: var(--accent-text); }
+  .top nav a.go { border: 1px solid var(--line-strong); padding: 0 16px; }
   @media (max-width: 760px) { .top nav a:not(.go) { display: none; } }
 
-  /* Hero */
-  .hero { display: grid; gap: 40px; padding: 40px 0 64px; align-items: center; position: relative; }
-  /* soft light behind the hero so the glass has something to bend; static, no filter */
-  .hero::before {
-    content: ""; position: absolute; z-index: -1; pointer-events: none; top: -160px; right: calc((100% - 100vw) / 2 + 16px); width: min(820px, 90vw); height: 680px;
-    background: radial-gradient(closest-side at 62% 40%, rgb(30 95 216 / .32), transparent),
-                radial-gradient(closest-side at 30% 62%, rgb(169 200 255 / .45), transparent);
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero::before { opacity: .55; } }
-  :root[data-theme="dark"] .hero::before { opacity: .55; }
-  @media (min-width: 900px) { .hero { grid-template-columns: 1fr 1fr; padding-top: 64px; } }
-  .hero > * { min-width: 0; } /* let the log shrink instead of widening the page */
-  h1 {
-    font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.04; letter-spacing: -0.03em;
-    font-weight: 800; margin: 0 0 22px; max-width: 15ch; text-wrap: balance;
-  }
-  .lede { font-size: 1.2rem; color: var(--muted); max-width: 46ch; margin: 0 0 24px; text-wrap: pretty; }
-  .lede strong { color: var(--ink); font-weight: 600; }
+  /* the scene */
+  .core-canvas { position: fixed; left: 0; top: 0; width: 100%; height: 100vh; z-index: 0; display: block; touch-action: pan-y; cursor: grab; }
+  .core-canvas.docked { width: 44px; height: 44px; z-index: 21; pointer-events: none; }
+  .rm .core-canvas { position: absolute; height: var(--hero-h, 100svh); }
+  .no-scene .core-canvas { display: none; }
+
+  .hero { position: relative; z-index: 1; height: 100svh; min-height: 600px; pointer-events: none; overflow: hidden; }
+  .hero .poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 68% 46%; z-index: -1; transition: opacity .8s; }
+  .scene-ready .hero .poster { opacity: 0; visibility: hidden; transition: opacity .8s, visibility 0s .8s; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(90% 75% at 0% 100%, rgb(4 7 12 / .9), rgb(4 7 12 / .55) 45%, transparent 75%), linear-gradient(to top, var(--ground), transparent 22%); }
+  .hero-copy { position: absolute; left: 0; right: 0; bottom: clamp(28px, 7vh, 88px); }
+  .hero-copy a, .hero-copy button { pointer-events: auto; }
+  .hero-name { margin: 0 0 18px; max-width: 9ch; font-size: clamp(3rem, 6.6vw, 5.5rem); color: var(--text); text-shadow: 0 0 28px rgb(4 7 12 / .8); }
+  :root[data-mood="hud"] .hero-name { letter-spacing: .03em; }
+  .hero h1 { margin: 0 0 16px; max-width: 22ch; font: 500 clamp(1.375rem, 2.6vw, 2.125rem)/1.18 var(--sans); letter-spacing: -.01em; text-wrap: balance; }
+  .lede { margin: 0 0 26px; max-width: 46ch; color: var(--text); opacity: .86; font-size: 1.0625rem; }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-  .btn {
-    display: inline-flex; align-items: center; min-height: 48px; padding: 0 20px; border-radius: 999px; font-weight: 700;
-    text-decoration: none; border: 2px solid var(--ink);
-  }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-  .btn.primary:hover { background: var(--deep); border-color: var(--deep); color: #fff; }
-  .btn.ghost { color: var(--ink); }
-  .btn.ghost:hover { background: var(--panel); }
+  .hero-data { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 26px 0 0; }
+  .hero-data a { display: inline-flex; align-items: center; min-height: 44px; font: 500 .875rem/1 var(--mono); }
 
-  /* The memorable thing: the commands behind the numbers on this page, tailing like a log */
-  .log {
-    background: var(--trace-bg); color: var(--trace-ink); border-radius: 14px; margin: 0;
-    padding: 22px 22px 18px; font: 400 0.84rem/1.65 "JetBrains Mono", ui-monospace, monospace;
-    box-shadow: 0 24px 60px -30px rgba(27,36,48,.55); overflow-x: auto; font-variant-numeric: tabular-nums;
-  }
-  .log p { margin: 0; white-space: pre; }
-  .log .cmd { color: #fff; font-weight: 600; margin-top: 10px; }
-  .log .cmd:first-child { margin-top: 0; }
-  .log .cmd::before { content: "$ "; color: var(--amber); }
-  .log .dim { color: var(--trace-dim); font-weight: 400; }
-  .log .ok { color: #7FD8A8; }
-  @media (max-width: 560px) {
-    .log { font-size: .76rem; padding: 18px 16px; }
-    .log p { white-space: pre-wrap; padding-left: 2ch; text-indent: -2ch; } /* wrapped lines hang under the text */
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .log { border: 1px solid var(--line); } }
-  :root[data-theme="dark"] .log { border: 1px solid var(--line); }
-  .log .row.pending { visibility: hidden; }
-  .log-cap { color: var(--muted); font-size: .9rem; margin: 12px 4px 0; max-width: 56ch; }
-  @media (prefers-reduced-motion: no-preference) {
-    /* tap feedback: everything pressable gives way, then springs back */
-    .top nav a { transition: scale var(--spring-snappy-ms) var(--spring-snappy), background-color .2s, color .2s; }
-    .top nav a:active { scale: .95; transition-duration: 90ms; }
-  }
+  /* frame around the core on the first screen: HUD reticle or gothic lancet window, both plain line marks */
+  .reticle { position: fixed; z-index: 0; left: var(--ax, 68vw); top: var(--ay, 46vh); width: var(--rs, 420px); pointer-events: none; transform: translate(-50%, -50%); color: var(--accent); }
+  .reticle svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .reticle .r-gothic { display: none; }
+  :root[data-mood="gothic"] .reticle .r-hud { display: none; }
+  :root[data-mood="gothic"] .reticle .r-gothic { display: block; transform: translateY(8.7%); }
+  .rm .reticle, .no-scene .reticle { position: absolute; }
 
-  /* Sections */
-  section { padding: 64px 0; border-top: 1px solid var(--line); }
-  h2 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 14px; max-width: 26ch; text-wrap: balance; }
-  .intro { color: var(--muted); max-width: 60ch; margin: 0 0 34px; }
-  h3 { font-size: 1.25rem; margin: 0 0 6px; letter-spacing: -0.01em; text-wrap: balance; }
+  /* tapped job */
+  .job { position: absolute; z-index: 3; width: min(340px, calc(100vw - 32px)); padding: 16px 18px 18px; pointer-events: auto; background: rgb(4 7 12 / .9); }
+  .job[hidden] { display: none; }
+  .job h2 { margin: 0 44px 6px 0; font-size: 1.5rem; }
+  .job p { margin: 0 0 12px; font-size: 1rem; line-height: 1.5; }
+  .job dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; margin: 0 0 12px; font: 400 .875rem/1.45 var(--mono); }
+  .job dt { color: var(--muted); }
+  .job dd { margin: 0; }
+  .job a { display: inline-flex; align-items: center; min-height: 44px; font: 500 .875rem/1 var(--mono); }
+  .job .x { position: absolute; right: 4px; top: 4px; width: 44px; height: 44px; border: 0; background: none; color: var(--text); font: 400 1.5rem/1 var(--mono); cursor: pointer; }
+  @media (max-width: 760px) { .job { position: fixed; left: 16px; right: 16px; top: 68px; width: auto; } }
 
-  /* Skills: what I used, tied to the projects below */
-  .skills { display: grid; gap: 0; margin: 0; }
-  @media (min-width: 760px) { .skills { grid-template-columns: 11rem 1fr; } }
-  .skills dt { font-weight: 700; padding: 14px 0 0; }
-  .skills dd { margin: 0; padding: 2px 0 14px; color: var(--muted); border-bottom: 1px solid var(--line); }
-  @media (min-width: 760px) { .skills dt, .skills dd { padding: 14px 0; border-bottom: 1px solid var(--line); } .skills dd { padding-left: 24px; } }
-
-  /* Case studies */
-  .cases { display: grid; gap: 24px; }
-  .case { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
-  @media (max-width: 560px) { .case { padding: 22px 18px; } }
-  .case header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 6px; }
-  .case h3 { font-size: 1.45rem; margin: 0; }
-  .case .tag { color: var(--muted); margin: 0 0 18px; font-size: .95rem; }
-  .case dl { display: grid; gap: 2px 24px; margin: 0; }
-  @media (min-width: 720px) { .case dl { grid-template-columns: 9rem 1fr; } }
-  .case dt { font-weight: 700; margin-top: 12px; }
-  .case dd { margin: 0; color: var(--muted); max-width: 70ch; }
-  .case dd b { color: var(--ink); font-weight: 600; }
-  @media (min-width: 720px) { .case dt { margin-top: 0; padding: 8px 0; } .case dd { padding: 8px 0; } }
-  .case .src { margin: 14px 0 0; color: var(--muted); font-size: .9rem; }
-  .status { display: inline-flex; align-items: center; gap: 8px; padding: 3px 12px; border-radius: 999px; font-size: .9rem; font-weight: 600; white-space: nowrap; border: 1px solid currentColor; }
-  .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-  .s-launch { color: var(--confirm); }
-  .s-private { color: var(--muted); }
-  .s-open { color: var(--allow); }
-
-  /* Smaller, earlier work */
-  .earlier { display: grid; gap: 28px; }
-  @media (min-width: 860px) { .earlier { grid-template-columns: 1fr 1fr; column-gap: 48px; } }
-  .earlier p { margin: 0; color: var(--muted); }
-  .earlier p b { color: var(--ink); font-weight: 600; }
-  .earlier h3 { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .btn { transition: scale var(--spring-snappy-ms) var(--spring-snappy), background-color .2s, color .2s, border-color .2s; }
-    .btn:active { scale: .97; transition-duration: 90ms; }
-    /* the one load moment: the log settles in, then its rows tail */
-    .hero figure { animation: settle var(--spring-smooth-ms) var(--spring-smooth) .12s both; }
-    @keyframes settle { from { opacity: 0; translate: 0 18px; scale: .97; } }
+  @media (max-width: 760px) {
+    .hero { height: 70svh; min-height: 600px; }
+    .hero .poster { object-position: 68% 30%; }
+    .hero::after { background: linear-gradient(to top, var(--ground) 0, rgb(4 7 12 / .88) 48%, rgb(4 7 12 / .2) 74%, transparent 88%); }
+    .hero-name { margin-bottom: 10px; max-width: none; font-size: clamp(2.25rem, 10.4vw, 3rem); white-space: nowrap; }
+    .lede { font-size: 1rem; margin-bottom: 18px; }
+    .ctas { gap: 10px; }
+    .ctas .btn { padding: 0 16px; }
+    :root[data-mood="gothic"] .ctas .btn { padding: 0 22px; }
+    .hero-data { margin-top: 14px; gap: 6px 8px; }
   }
 
-  /* Contact */
-  .contact {
-    background: radial-gradient(120% 140% at 85% 0%, #1E5FD8 0%, #0B3D91 45%, #0B1B3A 100%);
-    color: #EEF4FF; border-radius: 28px; padding: 44px 28px; margin: 64px 0; border-top: 0;
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / .18), 0 30px 80px -40px rgb(11 61 145 / .7);
+  /* everything after the hero sits on the ground, above the fixed scene */
+  .content { position: relative; z-index: 2; background: var(--ground); }
+  :root[data-mood="hud"] .content { background:
+      linear-gradient(rgb(111 227 255 / .035) 1px, transparent 1px) 0 0 / 64px 64px,
+      linear-gradient(90deg, rgb(111 227 255 / .035) 1px, transparent 1px) 0 0 / 64px 64px, var(--ground); }
+  .sec + .sec { border-top: 1px solid var(--line); }
+  .note { margin: -24px 0 40px; max-width: 60ch; color: var(--muted); font-size: 1rem; }
+
+  /* 01 dossiers */
+  .dossiers, .index { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .dossier, .index > li { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  .dossier > summary { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto 44px; gap: 10px 28px; align-items: center; padding: 30px 0; }
+  .d-year { grid-column: 1; grid-row: 1 / span 2; align-self: start; padding-top: .55em; color: var(--muted); font-size: .875rem; }
+  .d-name { grid-column: 2; margin: 0; font-size: clamp(1.875rem, 4.4vw, 3.5rem); color: var(--text); }
+  .d-name .sub { display: block; margin-top: 8px; font: 500 clamp(1.0625rem, 1.6vw, 1.25rem)/1.35 var(--sans); text-transform: none; letter-spacing: 0; color: var(--text); }
+  .d-claim { grid-column: 2; margin: 0; max-width: 58ch; color: var(--muted); }
+  .dossier .chip { grid-column: 3; grid-row: 1; }
+  .tog { grid-column: 4; grid-row: 1; width: 44px; height: 44px; position: relative; border: 1px solid var(--line-strong); }
+  .tog::before, .tog::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; background: var(--text); translate: -50% -50%; }
+  .tog::after { rotate: 90deg; }
+  details[open] > summary .tog::after { rotate: 0deg; }
+  @media (prefers-reduced-motion: no-preference) { .tog::after { transition: rotate .25s cubic-bezier(.2, .7, .2, 1); } }
+  summary:hover .d-name, summary:hover h3 { color: var(--accent-text); }
+  summary:focus-visible { outline-offset: -2px; }
+  .d-body { padding: 4px 0 56px calc(4.5rem + 28px); display: grid; gap: 36px; }
+  .shot { margin: 0; max-width: 960px; }
+  .shot figcaption { padding: 10px 14px; border-top: 1px solid var(--line); }
+  .facts { display: grid; grid-template-columns: 11rem minmax(0, 65ch); gap: 0 32px; margin: 0; }
+  .facts dt { padding: 16px 0; border-top: 1px solid var(--line); font: 500 .9375rem/1.5 var(--mono); color: var(--accent-text); }
+  .facts dd { margin: 0; padding: 14px 0 16px; border-top: 1px solid var(--line); color: var(--text); opacity: .9; }
+  .facts dd b { color: var(--text); font-weight: 600; opacity: 1; }
+  .stack, .src { margin: 0; max-width: 65ch; color: var(--muted); }
+  .src { font-size: 1rem; }
+  .term { margin: 0; max-width: 760px; padding: 18px 20px; background: #020408; border: 1px solid var(--line); font: 400 .875rem/1.7 var(--mono); color: var(--text); overflow-x: auto; font-variant-numeric: tabular-nums; }
+  .term p { margin: 0; white-space: pre-wrap; padding-left: 2ch; text-indent: -2ch; }
+  .term .cmd { font-weight: 600; margin-top: 10px; }
+  .term .cmd:first-child { margin-top: 0; }
+  .term .cmd::before { content: "$ "; color: var(--accent-text); }
+  .term .dim { color: var(--muted); font-weight: 400; }
+  .term .ok { color: var(--ok); }
+  @media (max-width: 760px) {
+    .dossier > summary { grid-template-columns: minmax(0, 1fr) 44px; gap: 10px 16px; padding: 24px 0; }
+    .d-year { grid-column: 1; grid-row: 1; padding: 0; }
+    .d-name, .d-claim { grid-column: 1 / -1; }
+    .dossier .chip { grid-column: 1 / -1; grid-row: auto; justify-self: start; white-space: normal; }
+    .tog { grid-column: 2; grid-row: 1; }
+    .d-body { padding: 0 0 40px; gap: 28px; }
+    .facts { grid-template-columns: minmax(0, 1fr); }
+    .facts dt { padding: 14px 0 0; }
+    .facts dd { border-top: 0; padding-top: 4px; }
+    .term { font-size: .8125rem; padding: 14px; }
   }
-  .contact h2 { color: #fff; }
-  .contact p { color: #EEF4FF; max-width: 56ch; } /* full strength: AA even over the bright corner */
-  .contact .btn.primary { background: var(--amber); border-color: var(--amber); color: #0B1B3A; }
-  .contact .btn.primary:hover { background: #fff; border-color: #fff; }
-  .contact .btn.ghost { color: #EEF4FF; border-color: #EEF4FF; }
-  .contact .btn.ghost:hover { background: transparent; color: var(--amber); border-color: var(--amber); }
-  footer { color: var(--muted); font-size: .9rem; padding: 0 0 40px; }
+
+  /* 02 data table */
+  .uses { width: 100%; border-collapse: collapse; border-top: 1px solid var(--line); }
+  .uses th, .uses td { text-align: left; vertical-align: top; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .uses th { width: 15rem; padding-right: 32px; font: 500 1rem/1.5 var(--mono); color: var(--accent-text); white-space: nowrap; }
+  .uses td { max-width: 65ch; }
+  @media (max-width: 760px) { .uses, .uses tbody, .uses tr, .uses th, .uses td { display: block; width: auto; } .uses th { padding: 18px 0 2px; border: 0; } .uses td { padding: 0 0 18px; } }
+
+  /* 03, 04 index rows */
+  .index > li > details > summary, .index--open > li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto 44px; gap: 8px 28px; align-items: center; padding: 24px 0; }
+  .index--open > li { grid-template-columns: 4.5rem minmax(0, 1fr) auto; }
+  .idx { color: var(--muted); font-size: .875rem; }
+  .index h3 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.25rem); }
+  .index h3 a { color: var(--text); text-decoration-color: var(--line-strong); }
+  .index h3 a:hover { color: var(--accent-text); }
+  .index .chip { justify-self: end; }
+  .index .row-text { grid-column: 2 / -1; margin: 0; max-width: 65ch; }
+  .index details > p { margin: 0 0 32px calc(4.5rem + 28px); max-width: 65ch; }
+  .index p b { font-weight: 600; color: var(--accent-text); }
+  @media (max-width: 760px) {
+    .index > li > details > summary { grid-template-columns: minmax(0, 1fr) 44px; }
+    .index--open > li { grid-template-columns: minmax(0, 1fr); }
+    .idx { grid-column: 1; }
+    .index h3 { grid-column: 1; }
+    .index .chip { grid-column: 1; justify-self: start; white-space: normal; }
+    .index .tog { grid-column: 2; grid-row: 1 / span 2; }
+    .index .row-text { grid-column: 1; }
+    .index details > p { margin-left: 0; }
+  }
+
+  /* 05 contact */
+  .contact h2 { font-size: clamp(3rem, 12vw, 6rem); }
+  .contact p { margin: 0 0 28px; max-width: 56ch; font-size: 1.125rem; }
+  footer { position: relative; z-index: 2; background: var(--ground); border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding-block: 16px 28px; color: var(--muted); font-size: 1rem; }
+  footer a { display: inline-flex; align-items: center; min-height: 44px; }
+  .mood { margin-left: auto; min-height: 44px; padding: 0 14px; background: none; border: 1px solid var(--line-strong); color: var(--text); font: 500 .875rem/1 var(--mono); cursor: pointer; }
+  .mood:hover { border-color: var(--accent-text); }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="wrap">
-  <header class="top glass--hero fx-drop">
-    <a class="brand" href="#">Basar Tuncay</a>
-    <nav aria-label="Main">
-      <a href="#skills">Skills</a>
-      <a href="#cases">Case studies</a>
-      <a href="/automation/">Automation demos</a>
-      <a class="go" href="#contact">Contact</a>
-    </nav>
-  </header>
 
-  <main id="main">
-    <div class="hero">
-      <div class="fx-beam" aria-hidden="true"></div>
-      <div>
-        <h1 class="fx-drop" style="--i:1">I build automations in Python and TypeScript, and I measure whether they work.</h1>
-        <p class="lede fx-drop" style="--i:2">Based in Karlsruhe; I work in English, German and Turkish. Below are recent projects, each with how I tested it and what it is not yet.</p>
-        <div class="ctas fx-drop" style="--i:3">
-          <a class="btn primary" href="mailto:b.tcay12@gmail.com">Email me</a>
-          <a class="btn ghost" href="#cases">Read the case studies</a>
-        </div>
+<header class="top" id="top">
+  <a class="emblem" href="/core/" aria-label="Open the full map" title="Open the full map">
+    <!-- five rings for the five job groups, the core in the middle -->
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <ellipse cx="20" cy="20" rx="7" ry="6.2" transform="rotate(12 20 20)"/><ellipse cx="20" cy="20" rx="9.6" ry="8.4" transform="rotate(-20 20 20)"/>
+      <ellipse cx="20" cy="20" rx="12.2" ry="11.2" transform="rotate(30 20 20)"/><ellipse cx="20" cy="20" rx="15" ry="13.6" transform="rotate(-8 20 20)"/>
+      <ellipse cx="20" cy="20" rx="18" ry="16.2" transform="rotate(18 20 20)"/><circle cx="20" cy="20" r="3.2" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+  <a class="brand" href="#">Basar Tuncay</a>
+  <nav aria-label="Main">
+    <a href="#skills">Skills</a>
+    <a href="#cases">Case studies</a>
+    <a href="/automation/">Automation demos</a>
+    <a class="go" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<canvas class="core-canvas" id="core" aria-hidden="true"></canvas>
+<div class="reticle" id="reticle" aria-hidden="true">
+  <svg class="r-hud" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+    <circle cx="50" cy="50" r="47" stroke-width=".25" opacity=".7"/>
+    <circle cx="50" cy="50" r="49.5" stroke-width=".9" stroke-dasharray=".6 5.88" opacity=".8"/>
+    <path d="M0 10V0h10M90 0h10v10M100 90v10H90M10 100H0V90" stroke-width=".5"/>
+  </svg>
+  <svg class="r-gothic" viewBox="0 0 100 150" fill="none" stroke="currentColor">
+    <path d="M3 150V62C3 33 22 12 50 2c28 10 47 31 47 60v88" stroke-width=".5"/>
+    <path d="M9 150V64C9 38 26 19 50 10c24 9 41 28 41 54v86" stroke-width=".25" opacity=".7"/>
+    <circle cx="50" cy="62" r="31" stroke-width=".35"/>
+    <circle cx="50" cy="62" r="27.5" stroke-width=".2" opacity=".7"/>
+    <path d="M50 31v-6M50 93v57M19 62h-10M81 62h10M28 40l-4-4M72 40l4-4M28 84l-4 4M72 84l4 4" stroke-width=".25" opacity=".8"/>
+  </svg>
+</div>
+
+<main id="main">
+  <section class="hero" id="hero" aria-labelledby="hero-h">
+    <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 22 scheduled jobs in five orbits around a glowing core, above a 24-hour dial." fetchpriority="high">
+    <div class="hero-copy wrap">
+      <p class="hero-name display">Basar Tuncay</p>
+      <h1 id="hero-h">I build automations in Python and TypeScript, and I measure whether they work.</h1>
+      <p class="lede">Based in Karlsruhe; I work in English, German and Turkish. Below are recent projects, each with how I tested it and what it is not yet.</p>
+      <div class="ctas">
+        <a class="btn btn--primary" href="mailto:b.tcay12@gmail.com">Email me</a>
+        <a class="btn" href="#cases">Read the case studies</a>
       </div>
-      <figure class="fx-drop" style="margin:0;--i:4">
-        <div class="log" aria-label="Commands run on 19 and 20 November 2026 and their output">
-          <p class="row cmd" translate="no">python3 -m lostanswers stats <span class="dim"># StillSolved</span></p>
-          <p class="row" translate="no">threads: ok 164,695 (accepted 103,043, 63%)</p>
-          <p class="row" translate="no">saved last 24 h: 35,998</p>
-          <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># certcadence</span></p>
-          <p class="row" translate="no">Ran 69 tests in 0.929s  <span class="ok">OK</span></p>
-          <p class="row cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># shutdown registry</span></p>
-          <p class="row" translate="no">Ran 91 tests in 0.267s  <span class="ok">OK</span></p>
-          <p class="row cmd" translate="no">npm test <span class="dim"># offline repo scanner</span></p>
-          <p class="row" translate="no"># pass 44  # fail 0</p>
-        </div>
-        <figcaption class="log-cap">Real output, run on 19 and 20 November 2026 for the numbers on this page. The repos are private until launch; I can run them live in an interview.</figcaption>
-      </figure>
+      <p class="hero-data">
+        <span class="chip" id="chip-jobs">22 jobs</span><span class="chip" id="chip-snap">Snapshot 22 Nov 2026</span>
+        <a href="/core/">Open the full map</a>
+      </p>
     </div>
-
-    <section id="skills" aria-labelledby="skills-h">
-      <h2 id="skills-h">What I use, and where</h2>
-      <p class="intro">Only tools from the projects on this page, so you can ask me about any of them.</p>
-      <dl class="skills">
-        <dt>Python</dt>
-        <dd>Standard-library CLIs and web servers, SQLite with FTS5 search, <code>unittest</code>, Certificate Transparency parsing, Telegram bots (StillSolved, the shutdown registry, certcadence, my agent setup).</dd>
-        <dt>TypeScript / Node</dt>
-        <dd>An MCP security gateway and a GitHub Action in TypeScript (Firebreak, CodeAtlas); a zero-dependency Node CLI tested with <code>node:test</code>; a Deno KV library for Cloudflare Workers (kvport); a Chrome MV3 extension; an offline-first PWA tested with Playwright (Bleibe).</dd>
-        <dt>AI automation</dt>
-        <dd>Claude API and Claude Code in headless mode with an exact tool list, spend caps checked before every call, and model output validated before it reaches files or the database.</dd>
-        <dt>Ops and testing</dt>
-        <dd>GitHub Actions CI, launchd and systemd jobs, Caddy, load tests, deploy and rollback rehearsed in a container. I audited 23 of my own repos for security issues and fixed the findings on branches.</dd>
+    <aside class="job frame" id="job" hidden aria-live="polite" aria-labelledby="job-name">
+      <button class="x" type="button" id="job-x" aria-label="Close">×</button>
+      <h2 class="display" id="job-name"></h2>
+      <p id="job-does"></p>
+      <dl>
+        <dt>Group</dt><dd id="job-group"></dd>
+        <dt>Schedule</dt><dd id="job-sched"></dd>
+        <dt>Next</dt><dd id="job-next"></dd>
+        <dt>Runs on</dt><dd id="job-runs"></dd>
       </dl>
-    </section>
-
-    <section id="cases" aria-labelledby="cases-h">
-      <h2 id="cases-h">Four case studies</h2>
-      <p class="intro">Problem, what I built, how I checked it, and what I learned. Each status says plainly whether it is public yet. None of them has paying customers.</p>
-      <div class="cases">
-
-        <article class="case" aria-labelledby="case-stillsolved">
-          <header>
-            <h3 id="case-stillsolved">StillSolved</h3>
-            <span class="status s-launch">Launching · domain pending</span>
-          </header>
-          <p class="tag">Keeps Apple Support Community answers findable after the forum closes. Python 3.11 standard library, SQLite FTS5, Caddy, systemd, Chrome extension.</p>
-          <dl>
-            <dt>Problem</dt>
-            <dd>Apple’s Support Community is scheduled to close on 20 November 2026. Years of solved answers that people link to would stop working.</dd>
-            <dt>What I built</dt>
-            <dd>An indexer that reads the Internet Archive’s copies of the threads (never Apple’s live site), stores the question and accepted answer, and serves one page per thread with full-text search. A browser extension opens the saved thread when an Apple link fails. Pages show a 900-character excerpt and link to the archived original.</dd>
-            <dt>How I checked it</dt>
-            <dd><b>164,695 threads indexed</b>, 63% with an accepted answer, about 36,000 in the last 24 hours (stats command, 19 Nov). 529 tests. A cache check went from 324&nbsp;ms to 0.6&nbsp;ms with one index hint and a regression test; a load test went from about 290 to 1,550 requests per second, p99 from 1.2&nbsp;s to 16&nbsp;ms. Deploy and rollback rehearsed in an Ubuntu container.</dd>
-            <dt>What I learned</dt>
-            <dd>Measure the thing you think you measured. One A/B test blamed my change for slower responses, but the script had killed a subshell, not the server. The real 1.2&nbsp;s tail came from the Python server’s default listen backlog of 5.</dd>
-          </dl>
-          <p class="src">Not public yet: the domain and server are still being set up, and a legal notice (Impressum) is required in Germany. Demo on request.</p>
-        </article>
-
-        <article class="case" aria-labelledby="case-radar">
-          <header>
-            <h3 id="case-radar">Service shutdown registry and repo scanner</h3>
-            <span class="status s-launch">Launching soon</span>
-          </header>
-          <p class="tag">A registry of announced service shutdowns, plus an offline scanner that flags hard-coded deprecated AI model IDs and other dependencies in a repo. Python, Node, GitHub Actions.</p>
-          <dl>
-            <dt>Problem</dt>
-            <dd>Services and AI models are retired on dates the vendor sets, and the notice often reaches only the account owner. Lists of shutdowns exist, but none told me whether my own repo was affected.</dd>
-            <dt>What I built</dt>
-            <dd>One TOML file per service, checked by a stdlib Python schema and built into a static site with RSS, calendar and JSON feeds. A zero-dependency Node CLI and GitHub Action reads manifests and source files for package names, hostnames, environment variable names and model IDs. A model ID only matches as a complete quoted string, so <code translate="no">gpt-5</code> never matches <code translate="no">gpt-5.1</code>.</dd>
-            <dt>How I checked it</dt>
-            <dd><b>216 entries, 214 with a primary source</b> (the vendor’s own page: URL, a short quote, the date read; the other 2 are marked secondary); 39 carry model-ID signatures. 91 Python tests and 44 Node tests, including one that fails if the scanner imports a network module. Scanner precision was measured on 111 public repos; see the QA notes. A census on 20 Nov found more than 2,200 non-fork public repos that contain at least one of 62 values retiring within 60 days (a lower bound that leaves out tests, docs and model catalogs; these are references, not proof that anything will break).</dd>
-            <dt>What I learned</dt>
-            <dd>Search snippets and vendor pages sometimes disagree on dates, so the vendor page wins and the correction is logged. I also searched for prior work before building the scanner and narrowed its scope to what I could not find.</dd>
-          </dl>
-          <p class="src">Not public yet: name and launch date are still open.</p>
-        </article>
-
-        <article class="case" aria-labelledby="case-certcadence">
-          <header>
-            <h3 id="case-certcadence">certcadence: will your TLS renewals survive the shorter certificate caps?</h3>
-            <span class="status s-launch">Launching soon</span>
-          </header>
-          <p class="tag">A Python standard-library CLI and GitHub Action that reads Certificate Transparency history. crt.sh with Cert Spotter as fallback.</p>
-          <dl>
-            <dt>Problem</dt>
-            <dd>Public TLS certificates are capped at 200 days since March 2026, 100 days from March 2027 and 47 from March 2029, and Let’s Encrypt shortens its default to 64 days in February 2027. Domains renewed by hand, or by a fixed timer, will break on one of those dates.</dd>
-            <dt>What I built</dt>
-            <dd>The tool groups each domain’s certificates into renewal events, guesses whether renewal is manual or ACME-like from the rhythm, and prints the first cap that breaks it, with the rule used. Where the data is thin or truncated it answers UNKNOWN instead of guessing.</dd>
-            <dt>How I checked it</dt>
-            <dd><b>69 offline tests pass</b>, including a hardened certificate-serial parser and real truncated crt.sh answers. Two snapshot studies on 20 Nov 2026: of the 80 largest German universities, 14 are ready, 63 at risk and 3 unknown; of the DAX 40 main domains, 14 ready, 25 at risk and 1 unknown. Every domain judged manual was at risk.</dd>
-            <dt>What I learned</dt>
-            <dd>CT logs show issuance, not deployment. Parallel certificate lines looked like 7-day renewals until I clustered them into events, and a review caught that one university’s sub-sites were being merged into its main domain. The tool now says what it inferred and why.</dd>
-          </dl>
-          <p class="src">Studies are internal snapshots, not published. Not yet run as an Action on a real GitHub runner.</p>
-        </article>
-
-
-        <article class="case" aria-labelledby="case-kvport">
-          <header>
-            <h3 id="case-kvport">kvport: move Deno KV apps to Cloudflare</h3>
-            <span class="status s-private">Alpha · not published</span>
-          </header>
-          <p class="tag">A <code translate="no">Deno.Kv</code>-compatible library on a SQLite Durable Object, plus a Deno CLI to export, import and verify data. TypeScript, Deno, Cloudflare Workers.</p>
-          <dl>
-            <dt>Problem</dt>
-            <dd>Deno Deploy is scheduled to shut down about six months after 9 October 2026, and apps that use Deno KV need a new home. Workers KV is eventually consistent, so code that relies on <code translate="no">kv.atomic().check()</code> cannot move to it as is.</dd>
-            <dt>What I built</dt>
-            <dd>The same API (get, list, atomic check, set, sum, min, max, versionstamps, expiry) on a strongly consistent Durable Object, so most code changes one line. A CLI scans code for unsupported features (queues, watch, cron), exports KV to a file, imports it into the Worker and verifies the copy.</dd>
-            <dt>How I checked it</dt>
-            <dd><b>129 conformance cases pass on both targets</b>: real Deno KV as the oracle, and kvport inside Cloudflare’s local runtime. 225 Deno tests and 144 runtime tests pass. An end-to-end run moved 5,000 entries and the SHA-256 digests matched; a copy with one corrupted line was rejected. The key order of 500 random keys matches Deno’s. A security review and a code review found issues that I fixed with tests.</dd>
-            <dt>What I learned</dt>
-            <dd>Let the real thing be the specification. Where Deno’s behaviour (key order, limits, error types) disagreed with my assumptions, the case was rewritten to match Deno. The code review also caught an oversized expiry that was written before it was rejected.</dd>
-          </dl>
-          <p class="src">Not tested on a real Cloudflare account or against a real Deploy database, only locally. No queues, watch or cron; TTLs and versionstamps are not preserved on import. Not published, package name undecided.</p>
-        </article>
-
-      </div>
-    </section>
-
-    <section id="also" aria-labelledby="also-h">
-      <h2 id="also-h">Also built</h2>
-      <p class="intro">Four more, in short: problem, what I built, how I checked it, what I learned.</p>
-      <div class="earlier">
-        
-        <div>
-          <h3>CRA role wizard <span class="status s-launch">Launching soon · legal review pending</span></h3>
-          <p><b>Problem:</b> the EU Cyber Resilience Act applies in stages, and the free tools I found tell you whether a product is in scope, not which role you have or from when. <b>Built:</b> a bilingual static page with yes/no questions, working without JavaScript, where every reason links to the article on EUR-Lex. <b>Checked:</b> 38 tests, including a hand-written decision table for every path, and an independent audit of the wording against EUR-Lex. <b>Also added:</b> a second module on product liability for software, under the new EU Directive 2024/2853 and the German Produkthaftungsgesetz that applies from 9 December 2026: questions lead to a likely role and a cited to-do list. <b>Learned:</b> the dates differ by role: reporting (Article 14) applies from 11 September 2026, open-source steward duties from 11 December 2027. I am not a lawyer: both modules are a reading aid, not legal advice, and nobody with legal training has reviewed them yet. The German text is mine and needs a native reader.</p>
-        </div>
-        <div>
-          <h3>scamcheck <span class="status s-launch">Launching soon</span></h3>
-          <p><b>Problem:</b> students and newcomers get flat ads and messages that follow known scam patterns, and the warnings are spread over many official pages. <b>Built:</b> a static page in German, English and Turkish where you paste a text and see which patterns it contains; it runs in the browser, so the text is never sent anywhere, and each rule cites a consumer-protection or police source. <b>Checked:</b> precision 0.95 and recall 0.90, but only on 37 invented messages that I wrote myself, so real-world accuracy will be lower; nothing was measured on real messages. <b>Learned:</b> keyword rules miss new wording, so a clean result does not mean an offer is safe, and the page says so.</p>
-        </div>
-        
-        <div>
-          <h3>Bleibe <span class="status s-private">Private · release pending</span></h3>
-          <p><b>Problem:</b> internationals in Germany juggle residence-permit deadlines, document lists and official letters in a language they are still learning. <b>Built:</b> an offline-first PWA in Turkish, English and German with holiday-aware deadlines, document checklists, a letter decoder, routine letter templates and a Karlsruhe first-30-days list; no account, no server, data stays in the browser. <b>Checked:</b> 78 unit tests plus Playwright runs on desktop and mobile in CI. <b>Learned:</b> templates that argue a legal position stay unshipped until a Migrationsberatung or lawyer has read them; the app is not legal advice.</p>
-        </div>
-        <div>
-          <h3>A small company of sandboxed Claude agents <span class="status s-private">Private · runs on my Mac</span></h3>
-          <p><b>Problem:</b> unattended automations, with no view of what they did or cost. <b>Built:</b> a Telegram inbox and a capped Claude Code agent that writes sourced notes under a five-rule constitution it cannot edit. <b>Checked:</b> a normal link run cost $0.09, a page with an injected instruction $0.07 (not followed, reported); caps of $0.50 and 15 minutes per run; 17 selftests in CI. <b>Learned:</b> permission rules alone did not contain the agent; an exact tool list and a pinned version did.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="earlier" aria-labelledby="earlier-h">
-      <h2 id="earlier-h">Earlier open-source work</h2>
-      <p class="intro">Public repos on keeping tool-using LLM agents safe, with the results that did not go my way included.</p>
-      <div class="earlier">
-        <div>
-          <h3><a href="https://github.com/basartuncay/firebreak">Firebreak</a> <span class="status s-open">Open source</span></h3>
-          <p>A TypeScript gateway for MCP servers that checks where each tool argument came from and holds risky calls for approval. It blocks 63 of 73 attacks in its suite; the ten it misses are documented.</p>
-        </div>
-        <div>
-          <h3><a href="https://github.com/basartuncay/Cordon">Cordon</a> <span class="status s-open">Open source</span></h3>
-          <p>A Python mail and calendar agent with provenance tracking and an 80-scenario attack corpus in English, Turkish and German. A content-trust rule raised blocked attacks from 22 to 33 of 37; the write-up reports the 4 still unblocked.</p>
-        </div>
-        <div>
-          <h3><a href="https://github.com/basartuncay/CodeAtlas">CodeAtlas</a> <span class="status s-open">Open source</span></h3>
-          <p>A TypeScript GitHub Action that ranks a codebase’s riskiest files by coupling, complexity and change history, and drops any LLM finding that cites a module or number that does not exist.</p>
-        </div>
-        <div>
-          <h3><a href="/automation/">Automation demos</a></h3>
-          <p>Business automations (support inbox, price tracking, invoice processing and more), each recorded from the running software with a short demo video.</p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <section id="contact" class="contact" aria-labelledby="c-h">
-    <h2 id="c-h">Get in touch</h2>
-    <p>I’m happy to walk through any of these projects, run the tests live, or talk about what I would do differently.</p>
-    <div class="ctas">
-      <a class="btn primary" href="mailto:b.tcay12@gmail.com">Email me</a>
-      <a class="btn ghost" href="https://github.com/basartuncay">GitHub</a>
-    </div>
+      <a href="/core/">Open the full map</a>
+    </aside>
   </section>
 
-  <footer>© 2026 Basar Tuncay</footer>
-</div>
-<script>
-  // The log tails in once it is on screen (it sits below the fold on phones); reduced motion shows it at once.
-  const log = document.querySelector('.log');
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const rows = [...log.querySelectorAll('.row')];
-    rows.forEach((r) => r.classList.add('pending'));
-    new IntersectionObserver((entries, obs) => {
-      if (!entries[0].isIntersecting) return;
-      obs.disconnect();
-      rows.forEach((r, i) => setTimeout(() => r.classList.remove('pending'), 150 + i * 260));
-    }, { threshold: 0.3 }).observe(log);
+  <div class="content">
+    <section id="cases" class="sec" aria-labelledby="cases-h">
+      <div class="wrap">
+        <header class="sec-head">
+          <span class="num" data-n="01" data-roman="I" aria-hidden="true"></span>
+          <h2 class="display" id="cases-h">Four case studies</h2>
+          <p>Problem, what I built, how I checked it, and what I learned. Each status says plainly whether it is public yet. None of them has paying customers.</p>
+        </header>
+        <p class="note">Real output, run on 19 and 20 November 2026 for the numbers on this page. The repos are private until launch; I can run them live in an interview.</p>
+
+        <ol class="dossiers">
+          <li><details class="dossier">
+            <summary>
+              <span class="d-year data">2026</span>
+              <h3 class="d-name display" id="case-stillsolved">StillSolved</h3>
+              <p class="d-claim">Keeps Apple Support Community answers findable after the forum closes.</p>
+              <span class="chip chip--launch">Launching · domain pending</span>
+              <span class="tog" aria-hidden="true"></span>
+            </summary>
+            <div class="d-body">
+              <figure class="shot frame">
+                <picture>
+                  <source media="(max-width: 560px)" srcset="/assets/shots/stillsolved-390.webp" width="390" height="844">
+                  <img src="/assets/shots/stillsolved-1280.webp" width="1280" height="800" loading="lazy" decoding="async" alt="The StillSolved home page: a search over the Internet Archive’s saved copies of Apple Support Community threads.">
+                </picture>
+                <figcaption class="label">StillSolved home page, local build, captured 22 Nov 2026</figcaption>
+              </figure>
+              <p class="stack">Python 3.11 standard library, SQLite FTS5, Caddy, systemd, Chrome extension.</p>
+              <dl class="facts">
+                <dt>Problem</dt>
+                <dd>Apple’s Support Community is scheduled to close on 20 November 2026. Years of solved answers that people link to would stop working.</dd>
+                <dt>What I built</dt>
+                <dd>An indexer that reads the Internet Archive’s copies of the threads (never Apple’s live site), stores the question and accepted answer, and serves one page per thread with full-text search. A browser extension opens the saved thread when an Apple link fails. Pages show a 900-character excerpt and link to the archived original.</dd>
+                <dt>How I checked it</dt>
+                <dd><b>164,695 threads indexed</b>, 63% with an accepted answer, about 36,000 in the last 24 hours (stats command, 19 Nov). 529 tests. A cache check went from 324&nbsp;ms to 0.6&nbsp;ms with one index hint and a regression test; a load test went from about 290 to 1,550 requests per second, p99 from 1.2&nbsp;s to 16&nbsp;ms. Deploy and rollback rehearsed in an Ubuntu container.</dd>
+                <dt>What I learned</dt>
+                <dd>Measure the thing you think you measured. One A/B test blamed my change for slower responses, but the script had killed a subshell, not the server. The real 1.2&nbsp;s tail came from the Python server’s default listen backlog of 5.</dd>
+              </dl>
+              <div class="term" aria-label="Command run on 19 November 2026 and its output">
+                <p class="cmd" translate="no">python3 -m lostanswers stats <span class="dim"># StillSolved</span></p>
+                <p translate="no">threads: ok 164,695 (accepted 103,043, 63%)</p>
+                <p translate="no">saved last 24 h: 35,998</p>
+              </div>
+              <p class="src">Not public yet: the domain and server are still being set up, and a legal notice (Impressum) is required in Germany. Demo on request.</p>
+            </div>
+          </details></li>
+
+          <li><details class="dossier">
+            <summary>
+              <span class="d-year data">2026</span>
+              <h3 class="d-name display" id="case-radar">Service shutdown registry and repo scanner</h3>
+              <p class="d-claim">A registry of announced service shutdowns, plus an offline scanner that flags hard-coded deprecated AI model IDs and other dependencies in a repo.</p>
+              <span class="chip chip--launch">Launching soon</span>
+              <span class="tog" aria-hidden="true"></span>
+            </summary>
+            <div class="d-body">
+              <figure class="shot frame">
+                <picture>
+                  <source media="(max-width: 560px)" srcset="/assets/shots/shutdown-registry-390.webp" width="390" height="844">
+                  <img src="/assets/shots/shutdown-registry-1280.webp" width="1280" height="800" loading="lazy" decoding="async" alt="The shutdown registry home page: a list of announced service shutdowns with their dates.">
+                </picture>
+                <figcaption class="label">Registry home page, local build, captured 22 Nov 2026</figcaption>
+              </figure>
+              <p class="stack">Python, Node, GitHub Actions.</p>
+              <dl class="facts">
+                <dt>Problem</dt>
+                <dd>Services and AI models are retired on dates the vendor sets, and the notice often reaches only the account owner. Lists of shutdowns exist, but none told me whether my own repo was affected.</dd>
+                <dt>What I built</dt>
+                <dd>One TOML file per service, checked by a stdlib Python schema and built into a static site with RSS, calendar and JSON feeds. A zero-dependency Node CLI and GitHub Action reads manifests and source files for package names, hostnames, environment variable names and model IDs. A model ID only matches as a complete quoted string, so <code translate="no">gpt-5</code> never matches <code translate="no">gpt-5.1</code>.</dd>
+                <dt>How I checked it</dt>
+                <dd><b>216 entries, 214 with a primary source</b> (the vendor’s own page: URL, a short quote, the date read; the other 2 are marked secondary); 39 carry model-ID signatures. 91 Python tests and 44 Node tests, including one that fails if the scanner imports a network module. Scanner precision was measured on 111 public repos; see the QA notes. A census on 20 Nov found more than 2,200 non-fork public repos that contain at least one of 62 values retiring within 60 days (a lower bound that leaves out tests, docs and model catalogs; these are references, not proof that anything will break).</dd>
+                <dt>What I learned</dt>
+                <dd>Search snippets and vendor pages sometimes disagree on dates, so the vendor page wins and the correction is logged. I also searched for prior work before building the scanner and narrowed its scope to what I could not find.</dd>
+              </dl>
+              <div class="term" aria-label="Commands run on 20 November 2026 and their output">
+                <p class="cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># shutdown registry</span></p>
+                <p translate="no">Ran 91 tests in 0.267s  <span class="ok">OK</span></p>
+                <p class="cmd" translate="no">npm test <span class="dim"># offline repo scanner</span></p>
+                <p translate="no"># pass 44  # fail 0</p>
+              </div>
+              <p class="src">Not public yet: name and launch date are still open.</p>
+            </div>
+          </details></li>
+
+          <li><details class="dossier">
+            <summary>
+              <span class="d-year data">2026</span>
+              <h3 class="d-name display" id="case-certcadence"><span>certcadence:</span> <span class="sub">will your TLS renewals survive the shorter certificate caps?</span></h3>
+              <p class="d-claim">A Python standard-library CLI and GitHub Action that reads Certificate Transparency history.</p>
+              <span class="chip chip--launch">Launching soon</span>
+              <span class="tog" aria-hidden="true"></span>
+            </summary>
+            <div class="d-body">
+              <div class="term" aria-label="Command run on 20 November 2026 and its output">
+                <p class="cmd" translate="no">python3 -m unittest discover -s tests <span class="dim"># certcadence</span></p>
+                <p translate="no">Ran 69 tests in 0.929s  <span class="ok">OK</span></p>
+              </div>
+              <p class="stack">crt.sh with Cert Spotter as fallback.</p>
+              <dl class="facts">
+                <dt>Problem</dt>
+                <dd>Public TLS certificates are capped at 200 days since March 2026, 100 days from March 2027 and 47 from March 2029, and Let’s Encrypt shortens its default to 64 days in February 2027. Domains renewed by hand, or by a fixed timer, will break on one of those dates.</dd>
+                <dt>What I built</dt>
+                <dd>The tool groups each domain’s certificates into renewal events, guesses whether renewal is manual or ACME-like from the rhythm, and prints the first cap that breaks it, with the rule used. Where the data is thin or truncated it answers UNKNOWN instead of guessing.</dd>
+                <dt>How I checked it</dt>
+                <dd><b>69 offline tests pass</b>, including a hardened certificate-serial parser and real truncated crt.sh answers. Two snapshot studies on 20 Nov 2026: of the 80 largest German universities, 14 are ready, 63 at risk and 3 unknown; of the DAX 40 main domains, 14 ready, 25 at risk and 1 unknown. Every domain judged manual was at risk.</dd>
+                <dt>What I learned</dt>
+                <dd>CT logs show issuance, not deployment. Parallel certificate lines looked like 7-day renewals until I clustered them into events, and a review caught that one university’s sub-sites were being merged into its main domain. The tool now says what it inferred and why.</dd>
+              </dl>
+              <p class="src">Studies are internal snapshots, not published. Not yet run as an Action on a real GitHub runner.</p>
+            </div>
+          </details></li>
+
+          <li><details class="dossier">
+            <summary>
+              <span class="d-year data">2026</span>
+              <h3 class="d-name display" id="case-kvport"><span>kvport:</span> <span class="sub">move Deno KV apps to Cloudflare</span></h3>
+              <p class="d-claim">A <code translate="no">Deno.Kv</code>-compatible library on a SQLite Durable Object, plus a Deno CLI to export, import and verify data.</p>
+              <span class="chip chip--private">Alpha · not published</span>
+              <span class="tog" aria-hidden="true"></span>
+            </summary>
+            <div class="d-body">
+              <p class="stack">TypeScript, Deno, Cloudflare Workers.</p>
+              <dl class="facts">
+                <dt>Problem</dt>
+                <dd>Deno Deploy is scheduled to shut down about six months after 9 October 2026, and apps that use Deno KV need a new home. Workers KV is eventually consistent, so code that relies on <code translate="no">kv.atomic().check()</code> cannot move to it as is.</dd>
+                <dt>What I built</dt>
+                <dd>The same API (get, list, atomic check, set, sum, min, max, versionstamps, expiry) on a strongly consistent Durable Object, so most code changes one line. A CLI scans code for unsupported features (queues, watch, cron), exports KV to a file, imports it into the Worker and verifies the copy.</dd>
+                <dt>How I checked it</dt>
+                <dd><b>129 conformance cases pass on both targets</b>: real Deno KV as the oracle, and kvport inside Cloudflare’s local runtime. 225 Deno tests and 144 runtime tests pass. An end-to-end run moved 5,000 entries and the SHA-256 digests matched; a copy with one corrupted line was rejected. The key order of 500 random keys matches Deno’s. A security review and a code review found issues that I fixed with tests.</dd>
+                <dt>What I learned</dt>
+                <dd>Let the real thing be the specification. Where Deno’s behaviour (key order, limits, error types) disagreed with my assumptions, the case was rewritten to match Deno. The code review also caught an oversized expiry that was written before it was rejected.</dd>
+              </dl>
+              <p class="src">Not tested on a real Cloudflare account or against a real Deploy database, only locally. No queues, watch or cron; TTLs and versionstamps are not preserved on import. Not published, package name undecided.</p>
+            </div>
+          </details></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="skills" class="sec" aria-labelledby="skills-h">
+      <div class="wrap">
+        <header class="sec-head">
+          <span class="num" data-n="02" data-roman="II" aria-hidden="true"></span>
+          <h2 class="display" id="skills-h">What I use, and where</h2>
+          <p>Only tools from the projects on this page, so you can ask me about any of them.</p>
+        </header>
+        <table class="uses">
+          <tbody>
+            <tr><th scope="row">Python</th><td>Standard-library CLIs and web servers, SQLite with FTS5 search, <code>unittest</code>, Certificate Transparency parsing, Telegram bots (StillSolved, the shutdown registry, certcadence, my agent setup).</td></tr>
+            <tr><th scope="row">TypeScript / Node</th><td>An MCP security gateway and a GitHub Action in TypeScript (Firebreak, CodeAtlas); a zero-dependency Node CLI tested with <code>node:test</code>; a Deno KV library for Cloudflare Workers (kvport); a Chrome MV3 extension; an offline-first PWA tested with Playwright (Bleibe).</td></tr>
+            <tr><th scope="row">AI automation</th><td>Claude API and Claude Code in headless mode with an exact tool list, spend caps checked before every call, and model output validated before it reaches files or the database.</td></tr>
+            <tr><th scope="row">Ops and testing</th><td>GitHub Actions CI, launchd and systemd jobs, Caddy, load tests, deploy and rollback rehearsed in a container. I audited 23 of my own repos for security issues and fixed the findings on branches.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="also" class="sec" aria-labelledby="also-h">
+      <div class="wrap">
+        <header class="sec-head">
+          <span class="num" data-n="03" data-roman="III" aria-hidden="true"></span>
+          <h2 class="display" id="also-h">Also built</h2>
+          <p>Four more, in short: problem, what I built, how I checked it, what I learned.</p>
+        </header>
+        <ul class="index">
+          <li><details>
+            <summary><span class="idx data">03.1</span><h3 class="display">CRA role wizard</h3><span class="chip chip--launch">Launching soon · legal review pending</span><span class="tog" aria-hidden="true"></span></summary>
+            <p><b>Problem:</b> the EU Cyber Resilience Act applies in stages, and the free tools I found tell you whether a product is in scope, not which role you have or from when. <b>Built:</b> a bilingual static page with yes/no questions, working without JavaScript, where every reason links to the article on EUR-Lex. <b>Checked:</b> 38 tests, including a hand-written decision table for every path, and an independent audit of the wording against EUR-Lex. <b>Also added:</b> a second module on product liability for software, under the new EU Directive 2024/2853 and the German Produkthaftungsgesetz that applies from 9 December 2026: questions lead to a likely role and a cited to-do list. <b>Learned:</b> the dates differ by role: reporting (Article 14) applies from 11 September 2026, open-source steward duties from 11 December 2027. I am not a lawyer: both modules are a reading aid, not legal advice, and nobody with legal training has reviewed them yet. The German text is mine and needs a native reader.</p>
+          </details></li>
+          <li><details>
+            <summary><span class="idx data">03.2</span><h3 class="display">scamcheck</h3><span class="chip chip--launch">Launching soon</span><span class="tog" aria-hidden="true"></span></summary>
+            <p><b>Problem:</b> students and newcomers get flat ads and messages that follow known scam patterns, and the warnings are spread over many official pages. <b>Built:</b> a static page in German, English and Turkish where you paste a text and see which patterns it contains; it runs in the browser, so the text is never sent anywhere, and each rule cites a consumer-protection or police source. <b>Checked:</b> precision 0.95 and recall 0.90, but only on 37 invented messages that I wrote myself, so real-world accuracy will be lower; nothing was measured on real messages. <b>Learned:</b> keyword rules miss new wording, so a clean result does not mean an offer is safe, and the page says so.</p>
+          </details></li>
+          <li><details>
+            <summary><span class="idx data">03.3</span><h3 class="display">Bleibe</h3><span class="chip chip--private">Private · release pending</span><span class="tog" aria-hidden="true"></span></summary>
+            <p><b>Problem:</b> internationals in Germany juggle residence-permit deadlines, document lists and official letters in a language they are still learning. <b>Built:</b> an offline-first PWA in Turkish, English and German with holiday-aware deadlines, document checklists, a letter decoder, routine letter templates and a Karlsruhe first-30-days list; no account, no server, data stays in the browser. <b>Checked:</b> 78 unit tests plus Playwright runs on desktop and mobile in CI. <b>Learned:</b> templates that argue a legal position stay unshipped until a Migrationsberatung or lawyer has read them; the app is not legal advice.</p>
+          </details></li>
+          <li><details>
+            <summary><span class="idx data">03.4</span><h3 class="display">A small company of sandboxed Claude agents</h3><span class="chip chip--private">Private · runs on my Mac</span><span class="tog" aria-hidden="true"></span></summary>
+            <p><b>Problem:</b> unattended automations, with no view of what they did or cost. <b>Built:</b> a Telegram inbox and a capped Claude Code agent that writes sourced notes under a five-rule constitution it cannot edit. <b>Checked:</b> a normal link run cost $0.09, a page with an injected instruction $0.07 (not followed, reported); caps of $0.50 and 15 minutes per run; 17 selftests in CI. <b>Learned:</b> permission rules alone did not contain the agent; an exact tool list and a pinned version did.</p>
+          </details></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="earlier" class="sec" aria-labelledby="earlier-h">
+      <div class="wrap">
+        <header class="sec-head">
+          <span class="num" data-n="04" data-roman="IV" aria-hidden="true"></span>
+          <h2 class="display" id="earlier-h">Earlier open-source work</h2>
+          <p>Public repos on keeping tool-using LLM agents safe, with the results that did not go my way included.</p>
+        </header>
+        <ul class="index index--open">
+          <li><span class="idx data">04.1</span><h3 class="display"><a href="https://github.com/basartuncay/firebreak">Firebreak</a></h3><span class="chip chip--open">Open source</span>
+            <p class="row-text">A TypeScript gateway for MCP servers that checks where each tool argument came from and holds risky calls for approval. It blocks 63 of 73 attacks in its suite; the ten it misses are documented.</p></li>
+          <li><span class="idx data">04.2</span><h3 class="display"><a href="https://github.com/basartuncay/Cordon">Cordon</a></h3><span class="chip chip--open">Open source</span>
+            <p class="row-text">A Python mail and calendar agent with provenance tracking and an 80-scenario attack corpus in English, Turkish and German. A content-trust rule raised blocked attacks from 22 to 33 of 37; the write-up reports the 4 still unblocked.</p></li>
+          <li><span class="idx data">04.3</span><h3 class="display"><a href="https://github.com/basartuncay/CodeAtlas">CodeAtlas</a></h3><span class="chip chip--open">Open source</span>
+            <p class="row-text">A TypeScript GitHub Action that ranks a codebase’s riskiest files by coupling, complexity and change history, and drops any LLM finding that cites a module or number that does not exist.</p></li>
+          <li><span class="idx data">04.4</span><h3 class="display"><a href="/automation/">Automation demos</a></h3>
+            <p class="row-text">Business automations (support inbox, price tracking, invoice processing and more), each recorded from the running software with a short demo video.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact" class="sec contact" aria-labelledby="c-h">
+      <div class="wrap">
+        <header class="sec-head">
+          <span class="num" data-n="05" data-roman="V" aria-hidden="true"></span>
+          <h2 class="display" id="c-h">Get in touch</h2>
+        </header>
+        <p>I’m happy to walk through any of these projects, run the tests live, or talk about what I would do differently.</p>
+        <div class="ctas">
+          <a class="btn btn--primary" href="mailto:b.tcay12@gmail.com">Email me</a>
+          <a class="btn" href="https://github.com/basartuncay">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Basar Tuncay</span>
+    <a href="/core/">Open the full map</a>
+    <button class="mood" type="button" id="mood" hidden>Switch to gothic</button>
+  </div>
+</footer>
+
+<script type="module">
+import data from "/assets/core/nodes.js";
+import { parse, nextText } from "/assets/core/schedule.js";
+const root = document.documentElement, $ = (id) => document.getElementById(id);
+const reduce = root.classList.contains("rm");
+const qs = new URLSearchParams(location.search);
+const groupLabel = Object.fromEntries(data.groups.map((g) => [g.key, g.label]));
+const snap = new Date(data.snapshot + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+$("chip-jobs").textContent = data.nodes.length + " jobs";
+$("chip-snap").textContent = "Snapshot " + snap;
+
+const posterFor = (m) => "/assets/core/poster-" + m + ".webp";
+let scene = null;
+const moodBtn = $("mood");
+const moodLabel = () => (moodBtn.textContent = root.dataset.mood === "gothic" ? "Switch to HUD" : "Switch to gothic");
+moodBtn.hidden = false; moodLabel();
+moodBtn.addEventListener("click", () => {
+  const m = root.dataset.mood === "gothic" ? "hud" : "gothic";
+  root.dataset.mood = m; moodLabel();
+  const u = new URL(location.href); u.searchParams.set("mood", m); history.replaceState(null, "", u);
+  $("poster").src = posterFor(m);
+  if (scene) scene.setMood(m);
+});
+if (root.dataset.mood === "gothic") $("poster").src = posterFor("gothic");
+
+const hero = $("hero"), canvas = $("core"), reticle = $("reticle"), top = $("top"), job = $("job");
+const phone = () => innerWidth <= 760;
+let heroH = hero.offsetHeight;
+const heroAnchor = () => (phone() ? { x: innerWidth * 0.5, y: innerHeight * 0.2 } : { x: innerWidth * 0.7, y: innerHeight * 0.45 });
+function placeReticle() {
+  heroH = hero.offsetHeight; root.style.setProperty("--hero-h", heroH + "px");
+  const a = heroAnchor(), s = phone() ? Math.min(innerWidth * 0.86, 360) : Math.min(innerHeight * 0.62, 560);
+  reticle.style.setProperty("--ax", a.x + "px"); reticle.style.setProperty("--ay", a.y + "px"); reticle.style.setProperty("--rs", s + "px");
+}
+placeReticle();
+addEventListener("resize", placeReticle);
+const solid = () => top.classList.toggle("solid", scrollY > heroH - 80);
+addEventListener("scroll", solid, { passive: true }); solid();
+
+function webgl() { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (_) { return false; } }
+const saveData = !!(navigator.connection && navigator.connection.saveData);
+if (!webgl() || saveData || qs.has("poster-only")) root.classList.add("no-scene");
+else {
+  try {
+    const { createCore } = await import("/assets/core/scene.js");
+    let docked = false, fullSize = { w: innerWidth, h: innerHeight };
+    const slot = () => document.querySelector(".emblem").getBoundingClientRect();
+    function dock(on) {
+      docked = on; canvas.classList.toggle("docked", on); root.classList.toggle("docked-on", on);
+      if (on) { const r = slot(); canvas.style.left = r.left + "px"; canvas.style.top = r.top + "px"; }
+      else { canvas.style.left = canvas.style.top = ""; }
+    }
+    scene = createCore({
+      canvas, data, mood: root.dataset.mood, reduce, mode: "hero", phone: phone(), perf: qs.get("perf") === "1",
+      beforeFrame(api) {
+        const v = api.view;
+        if (!docked) fullSize = { w: canvas.clientWidth, h: canvas.clientHeight };
+        const a = heroAnchor();
+        if (reduce) { v.anchor = a; return; }
+        const e = Math.min(1, Math.max(0, scrollY / (heroH * 0.75))), ee = e * e * (3 - 2 * e);
+        if (e >= 1 && !docked) dock(true); else if (e < 1 && docked) dock(false);
+        const r = slot(), sx = r.left + r.width / 2, sy = r.top + r.height / 2;
+        v.pull = e; v.endSize = 40; v.full = fullSize;
+        v.anchor = { x: a.x + (sx - a.x) * ee, y: a.y + (sy - a.y) * ee };
+        v.crop = docked ? { x: r.left, y: r.top } : null;
+        reticle.style.opacity = Math.max(0, 1 - e * 2.5);
+        if (e > 0.12 && !job.hidden) job.hidden = true;
+      },
+      onFrame(api) {
+        if (api.frames === 2) root.classList.add("scene-ready");
+        if (job.hidden || phone() || api.selected < 0) return;
+        const p = api.screen(api.selected);
+        const x = Math.min(innerWidth - job.offsetWidth - 16, p.x + 22), y = Math.min(heroH - job.offsetHeight - 16, Math.max(72, p.y - 40));
+        job.style.left = x + "px"; job.style.top = y + "px";
+      },
+      onSelect(i, user) {
+        if (i < 0 || !user) { job.hidden = true; return; }
+        const n = data.nodes[i];
+        $("job-name").textContent = n.name; $("job-does").textContent = n.does;
+        $("job-group").textContent = groupLabel[n.group]; $("job-sched").textContent = n.schedule + (n.state === "paused" ? " (paused)" : "");
+        $("job-next").textContent = nextText(parse(n.schedule), new Date(), n.state); $("job-runs").textContent = n.runsOn;
+        job.hidden = false;
+      },
+    });
+    $("job-x").addEventListener("click", () => scene.select(-1));
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && !job.hidden) scene.select(-1); });
+    window.__core = scene;
+  } catch (err) {
+    console.warn("Core scene unavailable, showing the poster:", err);
+    root.classList.add("no-scene");
   }
+}
 </script>
-<script type="module" src="/assets/glass/enhance.js"></script>
 </body>
 </html>
