@@ -14,7 +14,7 @@ THREE.ColorManagement.enabled = false;
 export const MARKS = {
   core: "the machine all jobs run on; its surface flow speed follows the total scheduled starts per minute",
   orbits: "one ring per group (5); orbit speed follows that group's scheduled starts per day (log scale)",
-  nodes: "one per job (22); paused jobs are hollow red and carry no packets",
+  nodes: "one per job; paused jobs are hollow red and carry no packets",
   packets: "travel from a job to the core; count and speed follow how often the job is scheduled; none for on-demand or paused jobs",
   glass: "the shell the core sits in: real refraction and colour dispersion of what is inside, reflecting the five orbits (high quality tier only)",
   gyro: "three rings around the core, one per runner (launchd, cron, manual); spin rate follows how many jobs it runs",

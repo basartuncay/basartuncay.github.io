@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="An interactive 3D map of a personal automation system: a glowing core with its 22 scheduled jobs in orbit, from a snapshot of 22 November 2026.">
+<meta name="description" content="An interactive 3D map of a personal automation system: a glowing core with its 20 scheduled jobs in orbit, from a snapshot of 22 November 2026.">
 <meta name="theme-color" content="#04070c">
 <meta name="color-scheme" content="dark">
 <title>System Core</title>
@@ -150,7 +150,7 @@ ol { padding: 0; list-style: none; }
 <div class="app" id="app">
   <picture>
     <source id="poster-phone" media="(max-width: 760px)" srcset="/assets/core/poster-hud-phone.webp" width="780" height="1688">
-    <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 22 scheduled jobs in five orbits around a glowing core, above a 24-hour dial.">
+    <img class="poster" id="poster" src="/assets/core/poster-hud.webp" width="1280" height="800" alt="System Core: 20 scheduled jobs in five orbits around a glowing core, above a 24-hour dial.">
   </picture>
   <canvas id="gl" aria-hidden="true"></canvas>
   <div class="fx" aria-hidden="true"></div>
@@ -161,7 +161,7 @@ ol { padding: 0; list-style: none; }
     <header class="head">
       <p class="eyebrow">SYS-01 // CORE <a href="/">Portfolio</a></p>
       <h1>System Core</h1>
-      <p class="chips"><span class="chip" id="c-jobs">22 JOBS</span><span class="chip chip--paused" id="c-paused">1 PAUSED</span><span class="chip" id="c-snap">SNAPSHOT 22 NOV 2026</span><button class="mood" type="button" id="mood" hidden>Gothic</button></p>
+      <p class="chips"><span class="chip" id="c-jobs">20 JOBS</span><span class="chip chip--paused" id="c-paused" hidden></span><span class="chip" id="c-snap">SNAPSHOT 22 NOV 2026</span><button class="mood" type="button" id="mood" hidden>Gothic</button></p>
     </header>
 
     <div class="clock panel">
@@ -201,7 +201,6 @@ ol { padding: 0; list-style: none; }
   <h3>Study</h3>
   <ul>
     <li><b>Study Sync</b> <span>hourly, runs on launchd</span><br>Pulls course files and deadlines into the notes vault.</li>
-    <li><b>Library Booking</b> <span>20:00 daily, runs on launchd</span><br>Reserves a study spot a few days ahead.</li>
     <li><b>Exam Flashcards</b> <span>on demand, runs on launchd</span><br>Spaced-repetition flashcards delivered through chat.</li>
   </ul>
   <h3>System</h3>
@@ -233,7 +232,6 @@ ol { padding: 0; list-style: none; }
   <h3>Income</h3>
   <ul>
     <li><b>Idea Radar</b> <span>22:00 daily, runs on launchd</span><br>Scans public forums for product ideas and scores them.</li>
-    <li><b>Opportunity Scout</b> <span>10:30 daily (paused), runs on launchd</span><br>Finds matching job and freelance listings and drafts applications.</li>
   </ul>
 </section>
 </noscript>

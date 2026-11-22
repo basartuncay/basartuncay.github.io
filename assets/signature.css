@@ -76,6 +76,7 @@ html { scrollbar-color: var(--line-strong) var(--ground); }
   border: 1px solid var(--line-strong);
 }
 .chip::before { content: ""; width: 7px; height: 7px; background: currentColor; flex: none; }
+.chip[hidden] { display: none; } /* the display rule above would otherwise win over the hidden attribute */
 .chip--launch { color: var(--signal); border-color: rgb(111 227 255 / .5); }
 .chip--private { color: var(--muted); }
 .chip--open { color: var(--ok); border-color: rgb(125 255 176 / .45); }

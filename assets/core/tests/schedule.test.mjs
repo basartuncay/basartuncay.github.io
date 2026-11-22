@@ -23,6 +23,6 @@ assert.equal(nextText(parse("daily"), now), "Once a day, time not fixed");
 assert.equal(nextText(parse("every 60 seconds"), now), "Within a minute");
 assert.equal(perDay(parse("every 10 minutes")), 144);
 const up = upcoming(data.nodes, now);
-assert.equal(up[0].node.id, "library-booking"); // 20:00 is the first fixed start after 13:00
+assert.equal(up[0].node.id, "idea-verifier"); // Sun 21:00 is the first fixed start after 13:00
 assert.ok(!up.some((x) => x.node.state === "paused"));
 console.log("schedule: all checks pass");
