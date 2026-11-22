@@ -1,684 +1,545 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-mood="hud">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Basar Tuncay · Automation engineer</title>
 <meta name="description" content="Back-office automations that run unattended: AI support inboxes, competitor price tracking, invoice processing and integrations between tools. Every project tested end to end.">
 <meta property="og:title" content="Basar Tuncay: automation that runs your back office">
 <meta property="og:description" content="Back-office AI agent, AI support inbox, competitor price tracking, invoice automation. Real systems, each with a 1-minute demo.">
 <meta property="og:image" content="https://basartuncay.github.io/automation/media/support-desk.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-/* Liquid Glass material + motion (from the liquid-glass skill), inlined to avoid two render-blocking requests */
-:root {
-  --glass-tint-rgb: 255 255 255;
-  --glass-tint-a: .55;
-  --glass-blur: 18px;
-  --glass-sat: 175%;
-  --glass-radius: 22px;
-  --glass-rim-top: rgb(255 255 255 / .75);
-  --glass-rim-bottom: rgb(255 255 255 / .18);
-  --glass-shadow: 0 1px 1px rgb(0 0 0 / .04), 0 8px 32px rgb(0 0 0 / .12);
-  --glass-shadow-float: 0 2px 4px rgb(0 0 0 / .06), 0 24px 64px rgb(0 0 0 / .22);
-  --glass-ink: rgb(0 0 0 / .88);
-  --glass-ink-2: rgb(0 0 0 / .56);
-}
-.glass, .glass--hero, .glass--thin {
-  position: relative;
-  color: var(--glass-ink);
-  background: rgb(var(--glass-tint-rgb) / var(--glass-tint-a));
-  border-radius: var(--glass-radius);
-  box-shadow: inset 0 1px 0 var(--glass-rim-top), inset 0 -1px 0 var(--glass-rim-bottom), var(--glass-shadow);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  isolation: isolate;
-}
-.glass::before, .glass--hero::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: linear-gradient(135deg, var(--glass-rim-top), transparent 40%, transparent 60%, var(--glass-rim-bottom));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-}
-.glass--hero::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
-  background: radial-gradient(120% 80% at var(--mx, 30%) var(--my, 0%), rgb(255 255 255 / .35), transparent 55%);
-  transition: opacity .4s;
-}
-.glass--hero:hover::after { opacity: 1; }
-.glass--hero { box-shadow: inset 0 1px 0 var(--glass-rim-top), inset 0 -1px 0 var(--glass-rim-bottom), var(--glass-shadow-float); }
-.glass--hero[data-refract] {
-  -webkit-backdrop-filter: var(--glass-refract) blur(calc(var(--glass-blur) * .4)) saturate(var(--glass-sat));
-  backdrop-filter: var(--glass-refract) blur(calc(var(--glass-blur) * .4)) saturate(var(--glass-sat));
-}
-.glass--thin { --glass-blur: 6px; box-shadow: inset 0 1px 0 var(--glass-rim-top), 0 1px 2px rgb(0 0 0 / .06); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass, .glass--hero, .glass--thin { background: rgb(var(--glass-tint-rgb) / .92); }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .glass, .glass--hero, .glass--thin { background: rgb(var(--glass-tint-rgb) / .96); backdrop-filter: none; -webkit-backdrop-filter: none; }
-}
-:root[data-glass="fallback"] .glass--hero[data-refract] {
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-}
-:root {
-  --spring-snappy: linear(0, 0.027, 0.096, 0.191, 0.297, 0.407, 0.513, 0.611, 0.698, 0.774, 0.838, 0.89, 0.932, 0.964, 0.988, 1.005, 1.017, 1.024, 1.027, 1.028, 1.028, 1.026, 1.023, 1.02, 1.017, 1.014, 1.011, 1.009, 1.007, 1.005, 1.003, 1.002, 1);
-  --spring-snappy-ms: 400ms;
-  --spring-smooth: linear(0, 0.034, 0.113, 0.212, 0.317, 0.419, 0.512, 0.595, 0.667, 0.728, 0.78, 0.822, 0.858, 0.886, 0.909, 0.928, 0.943, 0.955, 0.965, 0.972, 0.978, 0.983, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.999, 1);
-  --spring-smooth-ms: 700ms;
-  --ease-out-soft: cubic-bezier(.22, 1, .36, 1);
-}
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-group(*) { animation-duration: var(--spring-smooth-ms); animation-timing-function: var(--spring-smooth); }
-  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; }
-  @supports (animation-timeline: view()) {
-    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
-  }
-  @keyframes reveal { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .15s !important; }
-  ::view-transition-group(*) { animation-duration: .15s; }
-}
-/* Cinematic motion recipes (studied from developer.x.com, 2026-11-12). Pair with fx.js.
-   One orchestrated load per page: .fx-drop on the header and hero pieces, nothing else on load. */
-@keyframes fx-drop { from { opacity: 0; translate: 0 -30px; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: none; } }
-@keyframes fx-sway { from { rotate: -9deg; } to { rotate: -4deg; } }
-@keyframes fx-ping { 75%, 100% { transform: scale(2.4); opacity: 0; } }
-@keyframes fx-up { to { translate: 0 -50%; } }
-/* spotlight beam: a blurred conic wedge, screen-blended over a dark hero; parent needs position:relative + overflow:clip */
-.fx-beam { position: absolute; z-index: -1; pointer-events: none; right: -26vw; top: -70vmax; width: 140vmax; height: 140vmax; rotate: -8deg;
-  background: conic-gradient(from 200deg at 70% 50%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 0%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 6%,
-    rgb(var(--fx-beam-rgb, 255 255 255) / .5) 8%, rgb(var(--fx-beam-rgb, 255 255 255) / .18) 10%, rgb(var(--fx-beam-rgb, 255 255 255) / 0) 14%);
-  filter: blur(28px); mix-blend-mode: var(--fx-beam-blend, screen);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 70%, transparent 92%); }
-.fx-ping { position: relative; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.fx-ping::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; }
-/* endless feed: fx.js wraps the list in .fx-feed and doubles its items */
-.fx-feed { overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
-.fx-feed:hover > *, .fx-feed:focus-within > * { animation-play-state: paused; }
-@media (prefers-reduced-motion: no-preference) {
-  .fx-drop { animation: fx-drop .7s cubic-bezier(.25, .46, .45, .94) both; animation-delay: calc(var(--i, 0) * 90ms); }
-  .fx-beam { animation: fx-sway 14s ease-in-out infinite alternate; }
-  .fx-ping::after { animation: fx-ping 1.4s cubic-bezier(0, 0, .2, 1) infinite; }
-  .fx-feed.run > * { animation: fx-up var(--fx-feed-s, 40s) linear infinite; }
-}
-</style>
-<style>
-@view-transition { navigation: auto; }
-:root {
-  --paper: #eef1ec;      /* ledger paper */
-  --sheet: #f8faf6;      /* raised surfaces */
-  --ink: #1b2421;
-  --ink-soft: #4d5a55;
-  --rule: #cfd6cf;
-  --signal: #d99a00;     /* the one accent: things that need a person's attention */
-  --ok: #2f7d5b;
-  --flag: #b5402f;
-  --console: #17201d;
-  --console-ink: #d8e2dc;
-  --display: "Bricolage Grotesque", "Avenir Next", sans-serif;
-  --text: "Instrument Sans", "Helvetica Neue", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, monospace;
-}
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--text); -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { color: var(--ok); }
-:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
-
-/* top bar */
-/* top bar: a floating glass capsule (refraction in Chromium, frost elsewhere) */
-.top { display: flex; justify-content: space-between; align-items: center; gap: 8px; position: sticky; top: 12px; z-index: 10;
-       margin-top: 12px; padding: 4px 4px 4px 22px; --glass-radius: 999px; --glass-tint-rgb: 238 241 236; --glass-tint-a: .72; color: var(--ink);
-       view-transition-name: site-nav; }
-.top .name { font: 700 19px var(--display); text-decoration: none; letter-spacing: -.01em; view-transition-name: brand; }
-.top nav { display: flex; gap: 2px; font-size: 15px; }
-/* links stay ink on glass: the softer grey fails AA over the dark consoles and video posters that scroll under the bar */
-.top nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 13px; border-radius: 999px; text-decoration: none; color: var(--ink); }
-.top nav a:hover { background: rgb(27 36 33 / .08); color: var(--ink); }
-.top nav a.go { background: var(--ink); color: var(--paper); font-weight: 600; }
-.top nav a.go:hover { background: var(--ok); color: #fff; }
-@media (max-width: 760px) { .top nav a:not(.go) { display: none; } }
-.glass--hero::after { z-index: -1; } /* pointer sheen stays under the text */
-
-/* hero */
-.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; padding: 48px 0 88px; position: relative; }
-/* soft light behind the hero so the glass bar has something to bend; static, no filter */
-.hero::before { content: ""; position: absolute; z-index: -1; pointer-events: none; top: -170px; right: calc((100% - 100vw) / 2 + 16px); width: min(860px, 92vw); height: 700px;
-  background: radial-gradient(closest-side at 64% 38%, rgb(47 125 91 / .28), transparent),
-              radial-gradient(closest-side at 32% 64%, rgb(217 154 0 / .30), transparent); }
-.hero h1 { font: 800 clamp(40px, 5.6vw, 72px)/1.02 var(--display); letter-spacing: -.035em; margin: 0 0 26px; max-width: 13ch; }
-.hero p { font-size: 19px; color: var(--ink-soft); max-width: 46ch; margin: 0 0 32px; }
-.actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.btn { display: inline-block; padding: 13px 22px; border-radius: 6px; font: 600 16px var(--text); text-decoration: none; border: 1.5px solid var(--ink); }
-.btn.solid { background: var(--ink); color: var(--paper); }
-.btn.solid:hover { background: var(--ok); border-color: var(--ok); color: #fff; }
-.btn.line:hover { background: var(--ink); color: var(--paper); }
-
-/* the operations log: the one memorable element */
-.log { background: var(--console); color: var(--console-ink); border-radius: 10px; padding: 18px 0 14px; font: 13px/1.55 var(--mono);
-       box-shadow: 0 30px 60px -30px rgba(23, 32, 29, .55); min-height: 432px; }
-.log .bar { display: flex; justify-content: space-between; padding: 0 20px 12px; color: #8a9a93; border-bottom: 1px solid #2a3531; }
-.log .live .fx-ping { color: var(--ok); margin-right: 4px; vertical-align: 1px; }
-.log ol { list-style: none; margin: 0; padding: 10px 0 0; }
-.log li { display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 5px 20px; }
-.log li.on { animation: tick .35s ease-out both; }
-.log time { color: #6f807a; }
-.log .sys { color: #8fb3a4; }
-.log .need { color: var(--signal); }
-.log .bad { color: #e48a7b; }
-.log .done { color: #7fcca6; }
-@keyframes tick { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-.log .note { padding: 12px 20px 0; color: #6f807a; font: 12px var(--text); }
-
-/* sections */
-section { padding: 84px 0; border-top: 1px solid var(--rule); }
-h2 { font: 700 clamp(30px, 3.4vw, 42px)/1.1 var(--display); letter-spacing: -.025em; margin: 0 0 14px; }
-.lede { color: var(--ink-soft); max-width: 60ch; margin: 0 0 48px; font-size: 18px; }
-
-/* case studies */
-.case { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: start; padding: 0 0 72px; }
-.case:last-child { padding-bottom: 0; }
-.case:nth-child(even) .media { order: 2; }
-.media video { width: 100%; display: block; border-radius: 8px; background: var(--console); aspect-ratio: 16 / 9; box-shadow: 0 24px 48px -28px rgba(27, 36, 33, .45); }
-.media .cap { font-size: 14px; color: var(--ink-soft); margin-top: 10px; }
-/* glass play pill over the poster (added by the script; without JS the native controls stay) */
-.frame { position: relative; border-radius: 8px; }
-.glass-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; font: inherit; color: inherit; cursor: pointer; }
-.play { position: absolute; left: 14px; bottom: 14px; --glass-tint-a: .72; --glass-radius: 999px; font-weight: 600; font-size: 15px; color: var(--ink); }
-.play svg { width: 14px; height: 14px; fill: currentColor; }
-.case h3 { font: 700 30px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 10px; }
-.case .for { color: var(--ink-soft); margin: 0 0 22px; font-size: 18px; }
-.case dl { margin: 0 0 22px; }
-.case dt { font-weight: 600; margin-top: 14px; }
-.case dd { margin: 3px 0 0; color: var(--ink-soft); }
-.case .proof { font-size: 15px; padding: 12px 14px; background: var(--sheet); border-left: 3px solid var(--ok); border-radius: 0 6px 6px 0; margin-bottom: 16px; }
-.case .links a { margin-right: 18px; font-weight: 600; font-size: 15px; }
-
-/* services: plain rows, not cards */
-.services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 56px; }
-.service { padding: 22px 0; border-top: 1px solid var(--rule); }
-.service h3 { font: 700 21px var(--display); margin: 0 0 6px; letter-spacing: -.01em; }
-.service p { margin: 0; color: var(--ink-soft); }
-.service .ex { font-size: 15px; margin-top: 8px; }
-
-/* other work table */
-table { width: 100%; border-collapse: collapse; font-size: 15.5px; }
-th { text-align: left; font: 600 14px var(--text); color: var(--ink-soft); padding: 0 14px 10px 0; border-bottom: 1.5px solid var(--ink); }
-td { padding: 13px 14px 13px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
-td:first-child { font-weight: 600; white-space: nowrap; }
-td.stack { color: var(--ink-soft); font-size: 14.5px; }
-
-/* process: a real sequence, so it's numbered */
-.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: s; }
-.steps li { counter-increment: s; }
-.steps li::before { content: counter(s); display: block; font: 800 44px/1 var(--display); color: var(--signal); margin-bottom: 12px; }
-.steps b { display: block; font: 700 19px var(--display); margin-bottom: 6px; }
-.steps span { color: var(--ink-soft); font-size: 16px; }
-
-/* contact */
-.contact { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
-.contact h2 { color: #fff; max-width: 18ch; }
-.contact p { color: #b8c4bf; margin: 0; max-width: 48ch; }
-.contact .actions { justify-content: flex-end; }
-.contact .btn { border-color: var(--paper); color: var(--paper); }
-.contact .btn.solid { background: var(--signal); border-color: var(--signal); color: var(--ink); }
-.contact .btn:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
-footer { padding: 36px 0 48px; color: var(--ink-soft); font-size: 14px; }
-
-@media (max-width: 900px) {
-  .hero, .case, .contact { grid-template-columns: 1fr; }
-  .case:nth-child(even) .media { order: 0; }
-  .services { grid-template-columns: 1fr; }
-  .steps { grid-template-columns: 1fr 1fr; }
-  .contact { padding: 36px 24px; } .contact .actions { justify-content: flex-start; }
-  .log { min-height: 0; }
-}
-@media (max-width: 600px) {
-  .wrap { padding: 0 16px; }
-  .steps { grid-template-columns: 1fr; }
-  td.stack, th.stack { display: none; }
-  td:first-child { white-space: normal; }
-  .log li { grid-template-columns: 1fr; gap: 0; }
-}
-@media (prefers-reduced-motion: reduce) { .log li.on { animation: none; } html { scroll-behavior: auto; } }
-@media (prefers-reduced-motion: no-preference) {
-  .frame { transition: translate var(--spring-smooth-ms) var(--spring-smooth); }
-  .frame:hover { translate: 0 -4px; }
-  .play { transition: scale var(--spring-snappy-ms) var(--spring-snappy); }
-  .play:hover { scale: 1.04; }
-  .play:active, .btn:active { scale: .97; transition-duration: 90ms; }
-  .btn { transition: scale var(--spring-snappy-ms) var(--spring-snappy), background-color .2s, color .2s, border-color .2s; }
-  /* the one load moment: the ops log settles in, then its lines arrive */
-  .log { animation: settle var(--spring-smooth-ms) var(--spring-smooth) .1s both; }
-  @keyframes settle { from { opacity: 0; translate: 0 18px; scale: .97; } }
-}
-</style>
+<meta name="theme-color" content="#04070c">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2304070c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%236fe3ff' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%236fe3ff'/%3E%3C/svg%3E">
+<script>(function(){var m=new URLSearchParams(location.search).get("mood");if(m==="gothic"||m==="hud")document.documentElement.dataset.mood=m;})();</script>
+<link rel="preload" href="/assets/fonts/dm-sans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/signature.css">
+<link rel="stylesheet" href="/assets/automation.css">
 </head>
 <body>
-<div class="wrap">
-  <header class="top glass--hero fx-drop">
-    <a class="name" href="/automation/">Basar Tuncay</a>
-    <nav aria-label="Sections">
-      <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="/">Agent security</a><a class="go" href="#contact">Contact</a>
-    </nav>
-  </header>
+<a class="skip" href="#main">Skip to content</a>
 
-  <main>
+<header class="top" id="top">
+  <a class="emblem" href="/core/" aria-label="Open the full map" title="Open the full map">
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <ellipse cx="20" cy="20" rx="7" ry="6.2" transform="rotate(12 20 20)"/><ellipse cx="20" cy="20" rx="9.6" ry="8.4" transform="rotate(-20 20 20)"/>
+      <ellipse cx="20" cy="20" rx="12.2" ry="11.2" transform="rotate(30 20 20)"/><ellipse cx="20" cy="20" rx="15" ry="13.6" transform="rotate(-8 20 20)"/>
+      <ellipse cx="20" cy="20" rx="18" ry="16.2" transform="rotate(18 20 20)"/><circle cx="20" cy="20" r="3.2" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+  <a class="brand" href="/automation/">Basar Tuncay</a>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a><a href="#services">What I build</a><a href="#more">All projects</a><a href="/">Agent security</a><a class="go" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="wrap">
     <div class="hero">
-      <div>
-        <h1 class="fx-drop" style="--i:1">Automation for the work your team does by hand.</h1>
-        <p class="fx-drop" style="--i:2">I build systems that read your inbox, watch your competitors, process your invoices and keep your tools in sync. They run unattended and ask a person only when it matters.</p>
-        <div class="actions fx-drop" style="--i:3">
-          <a class="btn solid" href="#work">Watch the 1-minute demos</a>
-          <a class="btn line" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
+      <div class="hero-copy">
+        <h1 class="display">Automation for the work your team does by hand.</h1>
+        <p class="lead">I build systems that read your inbox, watch your competitors, process your invoices and keep your tools in sync. They run unattended and ask a person only when it matters.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#work">Watch the 1-minute demos</a>
+          <a class="btn" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
         </div>
       </div>
-      <div class="log fx-drop" style="--i:4" aria-label="Example events from the systems below">
-        <div class="bar"><span class="live"><span class="fx-ping" aria-hidden="true"></span> ops log</span><span>16 systems</span></div>
-        <ol id="log">
-          <li><time>09:00:03</time><span><span class="sys">support</span> 6 emails in from the support inbox</span></li>
-          <li><time>09:00:04</time><span><span class="sys">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
-          <li><time>09:00:04</time><span><span class="sys">support</span> "Order 5521" <span class="bad">prompt injection: no AI draft</span></span></li>
-          <li><time>09:00:05</time><span><span class="sys">support</span> "Can I pay with PayPal?" <span class="need">not in the docs: needs a person</span></span></li>
-          <li><time>09:02:11</time><span><span class="sys">invoices</span> INV-01042 scanned PDF <span class="need">read by OCR: check the numbers</span></span></li>
-          <li><time>09:02:12</time><span><span class="sys">data</span> ad spend row −€250 <span class="bad">test failed: not published</span></span></li>
-          <li><time>09:05:40</time><span><span class="sys">prices</span> VoltMart undercuts you on Headphones X200: €119.00 vs €128.99 <span class="need">sent to Slack</span></span></li>
-          <li><time>09:05:41</time><span><span class="sys">sync</span> phone changed in store and CRM <span class="need">conflict: a person decides</span></span></li>
-          <li><time>09:14:02</time><span><span class="sys">agent</span> refund €120 on order 1012 <span class="need">over €50: held for a manager</span></span></li>
-          <li><time>09:16:30</time><span><span class="sys">stock</span> last 3 kettles sold on Shopify <span class="done">Amazon at 0 in 0.8 s</span></span></li>
-          <li><time>09:18:02</time><span><span class="sys">bank</span> €2,332.40 "Rechnung 2026 0102 abzgl. 2% Skonto" <span class="done">matched, discount booked</span></span></li>
-          <li><time>09:18:02</time><span><span class="sys">bank</span> €560.00 "Danke!" from a private account <span class="need">two invoices fit: a person decides</span></span></li>
-          <li><time>09:19:40</time><span><span class="sys">access</span> Jonas K. left, immediate <span class="done">removed from Google, Slack, GitHub in 2.1 s</span></span></li>
-          <li><time>09:20:17</time><span><span class="sys">invoices</span> INV-01042 approved by Alex, paid by Pat <span class="done">four-eyes rule kept</span></span></li>
+      <details class="log frame" id="logbox" aria-label="Example events from the systems below">
+        <summary class="label"><span>ops log</span><span>16 systems</span></summary>
+        <ol tabindex="0" aria-label="Log lines">
+            <li><time class="data">09:00:03</time><span><span class="sys data">support</span> 6 emails in from the support inbox</span></li>
+            <li><time class="data">09:00:04</time><span><span class="sys data">support</span> "Refund for my returned headphones" <span class="done">drafted from returns-policy.md</span></span></li>
+            <li><time class="data">09:00:04</time><span><span class="sys data">support</span> "Order 5521" <span class="bad">prompt injection: no AI draft</span></span></li>
+            <li><time class="data">09:00:05</time><span><span class="sys data">support</span> "Can I pay with PayPal?" <span class="need">not in the docs: needs a person</span></span></li>
+            <li><time class="data">09:02:11</time><span><span class="sys data">invoices</span> INV-01042 scanned PDF <span class="need">read by OCR: check the numbers</span></span></li>
+            <li><time class="data">09:02:12</time><span><span class="sys data">data</span> ad spend row −€250 <span class="bad">test failed: not published</span></span></li>
+            <li><time class="data">09:05:40</time><span><span class="sys data">prices</span> VoltMart undercuts you on Headphones X200: €119.00 vs €128.99 <span class="need">sent to Slack</span></span></li>
+            <li><time class="data">09:05:41</time><span><span class="sys data">sync</span> phone changed in store and CRM <span class="need">conflict: a person decides</span></span></li>
+            <li><time class="data">09:14:02</time><span><span class="sys data">agent</span> refund €120 on order 1012 <span class="need">over €50: held for a manager</span></span></li>
+            <li><time class="data">09:16:30</time><span><span class="sys data">stock</span> last 3 kettles sold on Shopify <span class="done">Amazon at 0 in 0.8 s</span></span></li>
+            <li><time class="data">09:18:02</time><span><span class="sys data">bank</span> €2,332.40 "Rechnung 2026 0102 abzgl. 2% Skonto" <span class="done">matched, discount booked</span></span></li>
+            <li><time class="data">09:18:02</time><span><span class="sys data">bank</span> €560.00 "Danke!" from a private account <span class="need">two invoices fit: a person decides</span></span></li>
+            <li><time class="data">09:19:40</time><span><span class="sys data">access</span> Jonas K. left, immediate <span class="done">removed from Google, Slack, GitHub in 2.1 s</span></span></li>
+            <li><time class="data">09:20:17</time><span><span class="sys data">invoices</span> INV-01042 approved by Alex, paid by Pat <span class="done">four-eyes rule kept</span></span></li>
         </ol>
-        <div class="note">Real events from the automated tests of the systems below.</div>
-      </div>
+        <p class="label note">Real events from the automated tests of the systems below.</p>
+      </details>
     </div>
+  </div>
 
-    <section id="work">
-      <h2>Sixteen systems, recorded running</h2>
-      <p class="lede">Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
-
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/ops-agent.jpg" aria-label="Ops Agent demo"><source src="media/ops-agent.mp4" type="video/mp4"></video>
-          <div class="cap">70 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Ops Agent</h3>
+  <section id="work" class="sec" aria-labelledby="work-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="num" data-n="01" data-roman="I" aria-hidden="true"></span>
+        <h2 class="display" id="work-h">Sixteen systems, recorded running</h2>
+        <p>Each one starts with one command, is tested end to end on every change, and was recorded from the real running software. No mock-ups.</p>
+      </header>
+      <div class="demos">
+      <article class="demo" id="ops-agent">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">01</span>
+          <h3 class="display">Ops Agent</h3>
           <p class="for">For teams that want an AI agent to do real work in their systems, safely.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/ops-agent.jpg" aria-label="Ops Agent demo"><source src="media/ops-agent.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">70 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Staff give it back-office tasks in plain words: refunds, cancellations, address changes, restocks. It checks the facts through tools, acts, emails the customer and reports back. The same tools are available to Claude Desktop through an MCP server.</dd>
             <dt>Where it's careful</dt>
             <dd>The limits are in code, not in the prompt. Refunds over €50 and every cancellation wait for a manager, and the run resumes on its own afterwards. Impossible actions are refused, every step is kept in a trace, and text written by customers is treated as data.</dd>
           </dl>
-          <div class="proof">Verified on every change: 14 evaluation cases check what changed in the data after each run, not the wording of the reply.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ops-agent">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: 14 evaluation cases check what changed in the data after each run, not the wording of the reply.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ops-agent">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/sync-hub.jpg" aria-label="Sync Hub demo"><source src="media/sync-hub.mp4" type="video/mp4"></video>
-          <div class="cap">68 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Sync Hub</h3>
+      <article class="demo" id="sync-hub">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">02</span>
+          <h3 class="display">Sync Hub</h3>
           <p class="for">For shops whose customer data lives in both the store and the CRM.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/sync-hub.jpg" aria-label="Sync Hub demo"><source src="media/sync-hub.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">68 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Keeps customers identical in a Shopify-style store and a HubSpot-style CRM, in both directions: signups, edits, order totals, VIP flags. Connects over OAuth and signed webhooks.</dd>
             <dt>Where it's careful</dt>
             <dd>When both systems change the same field, it overwrites neither and asks a person. Its own writes never bounce back and forth. If a system is down, changes retry, then wait in a list you can replay. Nothing is lost.</dd>
           </dl>
-          <div class="proof">Verified on every change: OAuth, edits on both sides at once, a conflict, an outage and a forged webhook, end to end.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/sync-hub">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: OAuth, edits on both sides at once, a conflict, an outage and a forged webhook, end to end.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/sync-hub">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/revenue-pipeline.jpg" aria-label="Revenue Pipeline demo"><source src="media/revenue-pipeline.mp4" type="video/mp4"></video>
-          <div class="cap">64 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Revenue Pipeline</h3>
+      <article class="demo" id="revenue-pipeline">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">03</span>
+          <h3 class="display">Revenue Pipeline</h3>
           <p class="for">For teams whose revenue, payments and ad spend live in different tools.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/revenue-pipeline.jpg" aria-label="Revenue Pipeline demo"><source src="media/revenue-pipeline.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">64 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Pulls Shopify orders, Stripe payments and Google and Meta ad spend every hour into one warehouse built with dbt, and shows net revenue, ROAS and CAC per channel, refund rate and repeat customers.</dd>
             <dt>Where it's careful</dt>
             <dd>20 data tests run on every build, including store-versus-payments reconciliation. A build that fails any of them is never shown: the dashboard keeps the last verified numbers and says why. Late refunds correct the right past day.</dd>
           </dl>
-          <div class="proof">Verified on every change: the warehouse matches the sources' own totals to the cent, and bad data, a renamed column and a late refund are each handled.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/revenue-pipeline">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: the warehouse matches the sources' own totals to the cent, and bad data, a renamed column and a late refund are each handled.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/revenue-pipeline">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/stock-sync.jpg" aria-label="Stock Sync demo"><source src="media/stock-sync.mp4" type="video/mp4"></video>
-          <div class="cap">55 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Stock Sync</h3>
+      <article class="demo" id="stock-sync">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">04</span>
+          <h3 class="display">Stock Sync</h3>
           <p class="for">For shops selling the same stock on their own site and on Amazon.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/stock-sync.jpg" aria-label="Stock Sync demo"><source src="media/stock-sync.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">55 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Keeps one stock count for Shopify, Amazon and the warehouse. Every order, shipment and delivery updates it, and each channel is told what it may still sell, with a safety margin and bundles worked out from their parts.</dd>
             <dt>Where it's careful</dt>
             <dd>When the last units sell on one channel, the other shows zero about a second later. If two channels still sell the same item, the order is flagged with exactly what's missing instead of being half-filled. A stock count is only corrected when the difference shows up twice.</dd>
           </dl>
-          <div class="proof">Verified on every change: a sell-out, an oversell, a late webhook, Amazon throttling and a hand-edited quantity, end to end.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stock-sync">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: a sell-out, an oversell, a late webhook, Amazon throttling and a hand-edited quantity, end to end.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stock-sync">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/paymatch.jpg" aria-label="Paymatch demo"><source src="media/paymatch.mp4" type="video/mp4"></video>
-          <div class="cap">48 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Paymatch</h3>
+      <article class="demo" id="paymatch">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">05</span>
+          <h3 class="display">Paymatch</h3>
           <p class="for">For finance teams matching bank payments to invoices every morning.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/paymatch.jpg" aria-label="Paymatch demo"><source src="media/paymatch.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">48 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Reads the bank statement (CAMT.053 or the bank's CSV), matches each payment to open invoices and books it in the accounting system. Then it sends reminders for what's really overdue.</dd>
             <dt>Where it's careful</dt>
             <dd>Every match says why. Discounts, bank fees, part payments and one transfer for two invoices are recognised. A payment is only booked on its own when the match is clear; the rest waits for a person. Nobody gets a reminder for money that may already have arrived.</dd>
           </dl>
-          <div class="proof">Verified on every change: two statements in, six payments booked through an outage, two decided by a person, reminders to the right two customers only.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/paymatch">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: two statements in, six payments booked through an outage, two decided by a person, reminders to the right two customers only.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/paymatch">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/kickoff.jpg" aria-label="Kickoff demo"><source src="media/kickoff.mp4" type="video/mp4"></video>
-          <div class="cap">61 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Kickoff</h3>
+      <article class="demo" id="kickoff">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">06</span>
+          <h3 class="display">Kickoff</h3>
           <p class="for">For agencies and freelancers losing days between "yes" and the first working hour.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/kickoff.jpg" aria-label="Kickoff demo"><source src="media/kickoff.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">61 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Turns an enquiry into a proposal, lets the client sign it online and pay the deposit with Stripe, then sets up the project board, a shared folder and the welcome email by itself.</dd>
             <dt>Where it's careful</dt>
             <dd>The signature is tied to a fingerprint of the exact text that was signed, and the client gets a signed PDF. Payments count only when Stripe confirms them. Reminders stop the moment they no longer fit, and setup steps can be retried without creating duplicates.</dd>
           </dl>
-          <div class="proof">Verified on every change: enquiry to onboarded client by real email, through two outages, with forged and replayed payment messages refused.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kickoff">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: enquiry to onboarded client by real email, through two outages, with forged and replayed payment messages refused.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kickoff">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/lead-engine.jpg" aria-label="Lead Engine demo"><source src="media/lead-engine.mp4" type="video/mp4"></video>
-          <div class="cap">62 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Lead Engine</h3>
+      <article class="demo" id="lead-engine">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">07</span>
+          <h3 class="display">Lead Engine</h3>
           <p class="for">For sales teams turning exported lead lists into conversations.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/lead-engine.jpg" aria-label="Lead Engine demo"><source src="media/lead-engine.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">62 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Imports lead exports, removes duplicates, checks each address, looks up the company and scores the lead with reasons. Good leads get a short, personal email sequence, replies are read and sorted, and interested people go to the CRM.</dd>
             <dt>Where it's careful</dt>
             <dd>Sending stays in office hours and under a daily limit. Anyone who replies, is out of office, asks to stop or bounces is handled correctly, and every email has a one-click unsubscribe. Nobody who said no is contacted again.</dd>
           </dl>
-          <div class="proof">Verified on every change: two exports, real emails out, five kinds of reply in, and only the interested lead in the CRM.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/lead-engine">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: two exports, real emails out, five kinds of reply in, and only the interested lead in the CRM.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/lead-engine">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/table-desk.jpg" aria-label="Table Desk demo"><source src="media/table-desk.mp4" type="video/mp4"></video>
-          <div class="cap">57 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Table Desk</h3>
+      <article class="demo" id="table-desk">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">08</span>
+          <h3 class="display">Table Desk</h3>
           <p class="for">For restaurants losing bookings between the phone, the website and paper.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/table-desk.jpg" aria-label="Table Desk demo"><source src="media/table-desk.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">57 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>One reservation book for an AI phone agent, the website, text messages and the staff. Guests get a confirmation and a reminder, can cancel by replying STORNO, and freed tables are offered to the waitlist.</dd>
             <dt>Where it's careful</dt>
             <dd>Two guests can never get the same table, even at the same second. Tables are joined for bigger groups, a retried phone-agent call never books twice, and guests' details are removed 30 days after the visit.</dd>
           </dl>
-          <div class="proof">Verified on every change: a web booking, a phone-agent booking, a cancellation by text and a waitlist table taken with "JA", end to end.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/table-desk">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: a web booking, a phone-agent booking, a cancellation by text and a waitlist table taken with "JA", end to end.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/table-desk">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/chatline.jpg" aria-label="Chatline demo"><source src="media/chatline.mp4" type="video/mp4"></video>
-          <div class="cap">65 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Chatline</h3>
+      <article class="demo" id="chatline">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">09</span>
+          <h3 class="display">Chatline</h3>
           <p class="for">For shops answering "where is my order?" on WhatsApp all day.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/chatline.jpg" aria-label="Chatline demo"><source src="media/chatline.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">65 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Answers order tracking and return requests on WhatsApp with buttons and lists, registers returns with the shop and sends the label. Everything else goes to a team inbox, where a person replies on the same chat.</dd>
             <dt>Where it's careful</dt>
             <dd>Order details go only to the phone number the order belongs to. The bot stays quiet while a person has the chat. It follows WhatsApp's rules: free replies only within 24 hours of the customer's last message, then approved templates, and shipping updates only for customers who opted in.</dd>
           </dl>
-          <div class="proof">Verified on every change: tracking, a return, a handoff, the 24-hour rule, opt-in updates and a forged webhook, end to end.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/chatline">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: tracking, a return, a handoff, the 24-hour rule, opt-in updates and a forged webhook, end to end.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/chatline">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/accessflow.jpg" aria-label="Accessflow demo"><source src="media/accessflow.mp4" type="video/mp4"></video>
-          <div class="cap">58 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Accessflow</h3>
+      <article class="demo" id="accessflow">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">10</span>
+          <h3 class="display">Accessflow</h3>
           <p class="for">For companies whose leavers still have a Slack account three months later.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/accessflow.jpg" aria-label="Accessflow demo"><source src="media/accessflow.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">58 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Reads joiners, team changes and leavers from the HR system and keeps Google Workspace, Slack and GitHub in line: accounts ready the day before someone starts, groups moved when they change teams, everything removed after their last day.</dd>
             <dt>Where it's careful</dt>
             <dd>Admin rights are never given automatically: only the person's manager can approve them, from a signed link in Slack. Leavers' files go to their manager and their sessions end. A scan finds accounts nobody planned, and every change is in an audit export.</dd>
           </dl>
-          <div class="proof">Verified on every change: a joiner, a mover, an approval, an immediate leaver removed everywhere in about 2 seconds, and drift found and fixed.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/accessflow">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: a joiner, a mover, an approval, an immediate leaver removed everywhere in about 2 seconds, and drift found and fixed.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/accessflow">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/meter.jpg" aria-label="Meter demo"><source src="media/meter.mp4" type="video/mp4"></video>
-          <div class="cap">63 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Meter</h3>
+      <article class="demo" id="meter">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">11</span>
+          <h3 class="display">Meter</h3>
           <p class="for">For SaaS teams charging per API call, document or minute.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/meter.jpg" aria-label="Meter demo"><source src="media/meter.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">63 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Counts your product's usage, reports it to Stripe Billing and shows each customer's next invoice as it grows. Plans include a set amount of usage; beyond it, overage is billed per 1,000.</dd>
             <dt>Where it's careful</dt>
             <dd>Retried batches are never billed twice. Customers are emailed at 80% and 100% of what's included and can set a spend cap. A declined card starts a grace period instead of cutting a paying customer off, and our count is reconciled against Stripe's.</dd>
           </dl>
-          <div class="proof">Verified on every change: usage counted once, matched against Stripe, a failed payment through grace and restriction, then paid and restored.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/meter">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: usage counted once, matched against Stripe, a failed payment through grace and restriction, then paid and restored.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/meter">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/shipflow.jpg" aria-label="Shipflow demo"><source src="media/shipflow.mp4" type="video/mp4"></video>
-          <div class="cap">50 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Shipflow</h3>
+      <article class="demo" id="shipflow">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">12</span>
+          <h3 class="display">Shipflow</h3>
           <p class="for">For shops copying addresses into a carrier portal every afternoon.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/shipflow.jpg" aria-label="Shipflow demo"><source src="media/shipflow.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">50 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Takes each paid order, picks the carrier by your rules, creates the label (with customs data outside the EU), prints the day's labels as one PDF, and marks the order shipped in your shop with tracking.</dd>
             <dt>Where it's careful</dt>
             <dd>Orders with a missing house number, a wrong postcode or a product without a customs code wait with the reason, instead of coming back a week later. A label is never bought twice, and parcels the carrier can't deliver or hasn't scanned for days come to you.</dd>
           </dl>
-          <div class="proof">Verified on every change: six orders across four carriers, a held address fixed, one PDF printed, tracking back in the shop, a delivery and a problem scanned.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/shipflow">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: six orders across four carriers, a held address fixed, one PDF printed, tracking back in the shop, a delivery and a problem scanned.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/shipflow">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/reviewdesk.jpg" aria-label="Reviewdesk demo"><source src="media/reviewdesk.mp4" type="video/mp4"></video>
-          <div class="cap">48 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Reviewdesk</h3>
+      <article class="demo" id="reviewdesk">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">13</span>
+          <h3 class="display">Reviewdesk</h3>
           <p class="for">For restaurants and shops that mean to answer every Google review.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/reviewdesk.jpg" aria-label="Reviewdesk demo"><source src="media/reviewdesk.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">48 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Reads new reviews for every location and drafts a reply in the reviewer's language that answers what they wrote. Praise is answered by itself; criticism waits for the manager to approve or edit.</dd>
             <dt>Where it's careful</dt>
             <dd>Anything about health, safety or legal threats triggers a Slack alert, and the draft takes it to a private conversation instead of discussing it in public. Reviews already answered in the Google app are left alone.</dd>
           </dl>
-          <div class="proof">Verified on every change: eight reviews across two locations, four answered on their own, a food-poisoning claim held with an alert, an edited reply posted.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/reviewdesk">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: eight reviews across two locations, four answered on their own, a food-poisoning claim held with an alert, an edited reply posted.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/reviewdesk">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video>
-          <div class="cap">64 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Support Desk</h3>
+      <article class="demo" id="support-desk">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">14</span>
+          <h3 class="display">Support Desk</h3>
           <p class="for">For teams answering the same customer questions every day.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/support-desk.jpg" aria-label="Support Desk demo"><source src="media/support-desk.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">64 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Sorts incoming support email, drafts a reply from your own help docs and shows the source of every sentence. An agent reviews it and sends it in the same thread.</dd>
             <dt>Where it's careful</dt>
             <dd>Emails that try to manipulate the AI never get a draft. Urgent replies need a team lead. Questions your docs can't answer become a list of what to write next.</dd>
           </dl>
-          <div class="proof">Verified on every change: real email in, the reply lands in the customer's mailbox as a threaded answer.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/support-desk">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: real email in, the reply lands in the customer's mailbox as a threaded answer.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/support-desk">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/price-watch.jpg" aria-label="Price Watch demo"><source src="media/price-watch.mp4" type="video/mp4"></video>
-          <div class="cap">56 seconds, no sound. <a href="media/price-watch-live.jpg">See it running on a real website</a>.</div>
-        </div>
-        <div>
-          <h3>Price Watch</h3>
+      <article class="demo" id="price-watch">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">15</span>
+          <h3 class="display">Price Watch</h3>
           <p class="for">For shops that need to know when a competitor goes cheaper.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/price-watch.jpg" aria-label="Price Watch demo"><source src="media/price-watch.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">56 seconds, no sound. <a href="media/price-watch-live.jpg">See it running on a real website</a>.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Checks competitor sites on a schedule and keeps a price history for each product. It alerts Slack or Telegram when someone undercuts you, cuts a price sharply or runs out of stock, and emails a weekly summary.</dd>
             <dt>Where it's careful</dt>
             <dd>When a competitor redesigns their site, most scrapers report every product as removed. This one notices, changes nothing, and sends a single "check the scraper" alert.</dd>
           </dl>
-          <div class="proof">Verified on every change, and tried on a real public catalogue: 11 products, 0 errors.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/price-watch">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change, and tried on a real public catalogue: 11 products, 0 errors.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/price-watch">Code and design notes</a></p>
+        </details>
       </article>
 
-      <article class="case reveal">
-        <div class="media">
-          <video controls preload="none" poster="media/invoice-platform.jpg" aria-label="Invoice Platform demo"><source src="media/invoice-platform.mp4" type="video/mp4"></video>
-          <div class="cap">58 seconds, no sound.</div>
-        </div>
-        <div>
-          <h3>Invoice Platform</h3>
+      <article class="demo" id="invoice-platform">
+        <header class="demo-head">
+          <span class="data idx" aria-hidden="true">16</span>
+          <h3 class="display">Invoice Platform</h3>
           <p class="for">For finance teams typing supplier invoices into a system by hand.</p>
+        </header>
+        <figure class="demo-media">
+          <div class="frame"><video controls preload="none" playsinline width="1920" height="1080" poster="media/invoice-platform.jpg" aria-label="Invoice Platform demo"><source src="media/invoice-platform.mp4" type="video/mp4"></video></div>
+          <figcaption class="label cap">58 seconds, no sound.</figcaption>
+        </figure>
+        <details class="demo-more">
+          <summary>How it works</summary>
           <dl>
             <dt>What it does</dt>
             <dd>Picks up invoices emailed as PDFs, including scanned ones, reads them, checks the totals add up and files them in an approval panel. Anything doubtful waits for review with the reason.</dd>
             <dt>Where it's careful</dt>
             <dd>The person who approves an invoice can't also pay it. Every change is kept in a history no one can edit. If a service is down, nothing is lost: it retries.</dd>
           </dl>
-          <div class="proof">Verified on every change: five real emails in, each invoice filed with the right status.</div>
-          <div class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/invoice-platform">Code and design notes</a></div>
-        </div>
+          <p class="proof">Verified on every change: five real emails in, each invoice filed with the right status.</p>
+          <p class="links"><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/invoice-platform">Code and design notes</a></p>
+        </details>
       </article>
-    </section>
-
-    <section id="services">
-      <h2>What I can build for you</h2>
-      <p class="lede">Usually a fixed-scope project of one to four weeks, delivered with tests and a short handover video.</p>
-      <div class="services">
-        <div class="service"><h3>AI agents and AI on your inbox</h3><p>Agents that act in your systems within limits you set, email triage, reply drafts grounded in your docs, data pulled out of PDFs. A person stays in control of what matters.</p><p class="ex">Like <a href="#work">Ops Agent</a>, <a href="#work">Support Desk</a>, <a href="#work">Chatline</a></p></div>
-        <div class="service"><h3>Data pipelines and dashboards</h3><p>Orders, payments, ad spend and CRM data in one warehouse built with dbt, with tests that stop bad numbers before anyone sees them, and a dashboard your team reads every morning.</p><p class="ex">Like <a href="#work">Revenue Pipeline</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kpi-report">Weekly KPI Report</a></p></div>
-        <div class="service"><h3>Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#work">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></div>
-        <div class="service"><h3>Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#work">Invoice Platform</a>, <a href="#work">Paymatch</a></p></div>
-        <div class="service"><h3>Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#work">Sync Hub</a>, <a href="#work">Stock Sync</a>, <a href="#work">Shipflow</a>, <a href="#work">Accessflow</a></p></div>
-        <div class="service"><h3>Sales, billing and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, usage billed through Stripe, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#work">Lead Engine</a>, <a href="#work">Kickoff</a>, <a href="#work">Meter</a>, <a href="#work">Table Desk</a>, <a href="#work">Reviewdesk</a></p></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="more">
-      <h2>All projects</h2>
-      <p class="lede">Smaller pieces, several of which the systems above are built from. All open source and tested automatically.</p>
-      <table>
-        <thead><tr><th scope="col">Project</th><th scope="col">What it does</th><th scope="col" class="stack">Built with</th></tr></thead>
-        <tbody id="projects"></tbody>
-      </table>
-    </section>
+  <section id="services" class="sec" aria-labelledby="services-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="num" data-n="02" data-roman="II" aria-hidden="true"></span>
+        <h2 class="display" id="services-h">What I can build for you</h2>
+        <p>Usually a fixed-scope project of one to four weeks, delivered with tests and a short handover video.</p>
+      </header>
+      <ul class="svc">
+        <li><h3 class="display">AI agents and AI on your inbox</h3><p>Agents that act in your systems within limits you set, email triage, reply drafts grounded in your docs, data pulled out of PDFs. A person stays in control of what matters.</p><p class="ex">Like <a href="#ops-agent">Ops Agent</a>, <a href="#support-desk">Support Desk</a>, <a href="#chatline">Chatline</a></p></li>
+        <li><h3 class="display">Data pipelines and dashboards</h3><p>Orders, payments, ad spend and CRM data in one warehouse built with dbt, with tests that stop bad numbers before anyone sees them, and a dashboard your team reads every morning.</p><p class="ex">Like <a href="#revenue-pipeline">Revenue Pipeline</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kpi-report">Weekly KPI Report</a></p></li>
+        <li><h3 class="display">Scraping and monitoring</h3><p>Prices, stock, listings or news from sites with or without an API, on a schedule, with alerts when something changes and checks for when a site breaks.</p><p class="ex">Like <a href="#price-watch">Price Watch</a>, <a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></p></li>
+        <li><h3 class="display">Document and approval workflows</h3><p>Invoices, orders or forms read automatically, checked, and routed to the right person, with roles and a history of who did what.</p><p class="ex">Like <a href="#invoice-platform">Invoice Platform</a>, <a href="#paymatch">Paymatch</a></p></li>
+        <li><h3 class="display">Connecting your tools</h3><p>Shopify, Stripe, Google Sheets, Airtable, Slack, n8n and custom APIs, kept in sync without duplicates or lost events when something retries.</p><p class="ex">Like <a href="#sync-hub">Sync Hub</a>, <a href="#stock-sync">Stock Sync</a>, <a href="#shipflow">Shipflow</a>, <a href="#accessflow">Accessflow</a></p></li>
+        <li><h3 class="display">Sales, billing and bookings</h3><p>Lead lists cleaned and scored, follow-ups that stop when someone answers, proposals signed and paid online, usage billed through Stripe, and reservations from phone, web and text in one place.</p><p class="ex">Like <a href="#lead-engine">Lead Engine</a>, <a href="#kickoff">Kickoff</a>, <a href="#meter">Meter</a>, <a href="#table-desk">Table Desk</a>, <a href="#reviewdesk">Reviewdesk</a></p></li>
+      </ul>
+    </div>
+  </section>
 
-    <section id="contact" style="border-top:0">
-      <div class="contact">
-        <div>
-          <h2>Questions about a project?</h2>
-          <p>Every system here is open source. Read the code or write to me about how it works.</p>
-        </div>
-        <div class="actions">
-          <a class="btn solid" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
-          <a class="btn" href="https://github.com/basartuncay">GitHub</a>
-        </div>
+  <section id="more" class="sec" aria-labelledby="more-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="num" data-n="03" data-roman="III" aria-hidden="true"></span>
+        <h2 class="display" id="more-h">All projects</h2>
+        <p>Smaller pieces, several of which the systems above are built from. All open source and tested automatically.</p>
+      </header>
+      <details class="projects" id="projbox">
+        <summary>Project list</summary>
+        <table>
+          <thead><tr><th scope="col">Project</th><th scope="col">What it does</th><th scope="col" class="stack">Built with</th></tr></thead>
+          <tbody>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/filament-ops-panel">Invoice Desk</a></td><td>Approval panel for supplier invoices: roles, four-eyes payments, audit history, an API for intake</td><td class="stack data">Laravel, Filament</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/invoice-extractor">Invoice Extractor</a></td><td>Turns PDF invoices, scanned ones too, into clean data and checks the arithmetic</td><td class="stack data">Python, OCR, FastAPI</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/n8n-invoice-flow">n8n Invoice Flow</a></td><td>An n8n workflow that calls a custom extraction API and routes by the result</td><td class="stack data">n8n, Python</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/email-triage">AI Email Triage</a></td><td>Sorts incoming email and pulls out the key fields, flagging manipulation attempts</td><td class="stack data">Python, Claude API</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/doc-qa">Document Q&A</a></td><td>Answers questions from company docs with sources, and says so when the answer isn't there</td><td class="stack data">Python, Claude API</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/stripe-fulfillment">Stripe Fulfillment</a></td><td>Issues license keys from verified Stripe payments, exactly once</td><td class="stack data">FastAPI, Stripe</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/shopify-sheets-sync">Shopify to Sheets</a></td><td>Live order sync from Shopify to Google Sheets without duplicates</td><td class="stack data">FastAPI, Google Sheets</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/sheet-to-crm">Spreadsheet to Airtable</a></td><td>Cleans, validates and de-duplicates spreadsheet rows, then loads them into Airtable</td><td class="stack data">Python, Airtable</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/price-monitor">Price Monitor</a></td><td>Daily catalogue crawl with validation and change detection</td><td class="stack data">Python, httpx</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/js-scraper">JS-Site Scraper</a></td><td>Scrapes JavaScript-heavy sites by rendering them or by using their hidden API</td><td class="stack data">Playwright, Python</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/alert-bot">Keyword Alert Bot</a></td><td>Watches feeds and sends one Slack or Telegram alert per new matching item</td><td class="stack data">Python, Slack, Telegram</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/kpi-report">Weekly KPI Report</a></td><td>Week-over-week numbers with anomaly flags, emailed with a chart</td><td class="stack data">Python, Google Sheets</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ai-extractor">AI Web Extractor</a></td><td>Any web page plus a list of fields in, clean JSON out, with no selectors to maintain</td><td class="stack data">Python, Claude API</td></tr>
+          <tr><td><a href="https://github.com/basartuncay/automation-portfolio/tree/main/projects/ai-extractor-actor">AI Extractor on Apify</a></td><td>The extractor packaged as an Apify actor</td><td class="stack data">Apify, Docker</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact" class="sec" aria-labelledby="contact-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="num" data-n="04" data-roman="IV" aria-hidden="true"></span>
+        <h2 class="display" id="contact-h">Questions about a project?</h2>
+        <p>Every system here is open source. Read the code or write to me about how it works.</p>
+      </header>
+      <div class="actions">
+        <a class="btn btn--primary" href="https://github.com/basartuncay/automation-portfolio">Read the code</a>
+        <a class="btn" href="https://github.com/basartuncay">GitHub</a>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
 
-  <footer>© 2026 Basar Tuncay. Every system on this page was recorded from real running software. I also work on Claude agent security: <a href="/">agent security projects</a>.</footer>
-</div>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Basar Tuncay. Every system on this page was recorded from real running software. I also work on Claude agent security: <a href="/">agent security projects</a>.</span>
+    <button class="mood" type="button" id="mood" hidden>Switch to gothic</button>
+  </div>
+</footer>
 
 <script>
-const GH = "https://github.com/basartuncay/automation-portfolio/tree/main/projects/";
-const projects = [
-  ["Invoice Desk", "filament-ops-panel", "Approval panel for supplier invoices: roles, four-eyes payments, audit history, an API for intake", "Laravel, Filament"],
-  ["Invoice Extractor", "invoice-extractor", "Turns PDF invoices, scanned ones too, into clean data and checks the arithmetic", "Python, OCR, FastAPI"],
-  ["n8n Invoice Flow", "n8n-invoice-flow", "An n8n workflow that calls a custom extraction API and routes by the result", "n8n, Python"],
-  ["AI Email Triage", "email-triage", "Sorts incoming email and pulls out the key fields, flagging manipulation attempts", "Python, Claude API"],
-  ["Document Q&A", "doc-qa", "Answers questions from company docs with sources, and says so when the answer isn't there", "Python, Claude API"],
-  ["Stripe Fulfillment", "stripe-fulfillment", "Issues license keys from verified Stripe payments, exactly once", "FastAPI, Stripe"],
-  ["Shopify to Sheets", "shopify-sheets-sync", "Live order sync from Shopify to Google Sheets without duplicates", "FastAPI, Google Sheets"],
-  ["Spreadsheet to Airtable", "sheet-to-crm", "Cleans, validates and de-duplicates spreadsheet rows, then loads them into Airtable", "Python, Airtable"],
-  ["Price Monitor", "price-monitor", "Daily catalogue crawl with validation and change detection", "Python, httpx"],
-  ["JS-Site Scraper", "js-scraper", "Scrapes JavaScript-heavy sites by rendering them or by using their hidden API", "Playwright, Python"],
-  ["Keyword Alert Bot", "alert-bot", "Watches feeds and sends one Slack or Telegram alert per new matching item", "Python, Slack, Telegram"],
-  ["Weekly KPI Report", "kpi-report", "Week-over-week numbers with anomaly flags, emailed with a chart", "Python, Google Sheets"],
-  ["AI Web Extractor", "ai-extractor", "Any web page plus a list of fields in, clean JSON out, with no selectors to maintain", "Python, Claude API"],
-  ["AI Extractor on Apify", "ai-extractor-actor", "The extractor packaged as an Apify actor", "Apify, Docker"],
-];
-document.getElementById("projects").innerHTML = projects.map(([name, dir, what, stack]) =>
-  `<tr><td><a href="${GH}${dir}">${name}</a></td><td>${what}</td><td class="stack">${stack}</td></tr>`).join("");
-
-// The one orchestrated moment: the log lines arrive one after another, then the feed keeps scrolling (enhance.js).
-const lines = [...document.querySelectorAll("#log li")];
-if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  lines.forEach(li => (li.style.visibility = "hidden"));
-  lines.forEach((li, i) => setTimeout(() => { li.style.visibility = ""; li.classList.add("on"); }, 350 + i * 420));
-}
+(function () {
+  var root = document.documentElement, top = document.getElementById("top");
+  var onScroll = function () { top.classList.toggle("solid", window.scrollY > 8); };
+  onScroll(); addEventListener("scroll", onScroll, { passive: true });
+  // wide screens start with the log and the project list open; phones keep them closed to stay short
+  if (matchMedia("(min-width: 900px)").matches) { document.getElementById("logbox").open = true; document.getElementById("projbox").open = true; }
+  // a linked demo or project must be visible
+  var reveal = function () { var t = document.getElementById(location.hash.slice(1)); var d = t && t.closest("details"); if (d) d.open = true; };
+  reveal(); addEventListener("hashchange", reveal);
+  var btn = document.getElementById("mood");
+  var label = function () { btn.textContent = root.dataset.mood === "gothic" ? "Switch to HUD" : "Switch to gothic"; };
+  var carry = function (m) { document.querySelectorAll('a[href="/"],a[href="/core/"],a[href="/automation/"]').forEach(function (a) { var u = new URL(a.getAttribute("href"), location.origin); u.searchParams.set("mood", m); a.href = u.pathname + u.search; }); };
+  btn.hidden = false; label();
+  if (new URLSearchParams(location.search).get("mood")) carry(root.dataset.mood);
+  btn.addEventListener("click", function () {
+    var m = root.dataset.mood === "gothic" ? "hud" : "gothic";
+    root.dataset.mood = m; label(); carry(m);
+    var u = new URL(location.href); u.searchParams.set("mood", m); history.replaceState(null, "", u);
+  });
+})();
 </script>
-<script type="module" src="/assets/glass/enhance.js"></script>
 </body>
 </html>
