@@ -35,7 +35,7 @@
   --accent: #c1121f;          /* blood: marks and fills only, 2.1:1 on the ground */
   --accent-text: #ff5a64;     /* lightened blood for text, 6:1 on the ground */
   --on-accent: #f4efe4;
-  --display: "Grenze Gotisch", Georgia, serif;
+  --display: "Gothic T", "Grenze Gotisch", Georgia, serif; /* Grenze's capital T reads as a C ("Cuncay"), so T alone comes from DM Sans */
   --display-weight: 800;
   --display-case: none;
   --display-track: 0;
