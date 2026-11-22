@@ -76,7 +76,8 @@
   @media (max-width: 760px) { .job { position: fixed; left: 16px; right: 16px; top: 68px; width: auto; } }
 
   @media (max-width: 760px) {
-    .hero { height: 70svh; min-height: 600px; }
+    .hero { height: 70svh; min-height: 650px; }
+    .reticle { display: none; }
     .hero .poster { object-position: 68% 30%; }
     .hero::after { background: linear-gradient(to top, var(--ground) 0, rgb(4 7 12 / .88) 48%, rgb(4 7 12 / .2) 74%, transparent 88%); }
     .hero-name { margin-bottom: 10px; max-width: none; font-size: clamp(2.25rem, 10.4vw, 3rem); white-space: nowrap; }
@@ -103,6 +104,7 @@
   .dossier > summary { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto 44px; gap: 10px 28px; align-items: center; padding: 30px 0; }
   .d-year { grid-column: 1; grid-row: 1 / span 2; align-self: start; padding-top: .55em; color: var(--muted); font-size: .875rem; }
   .d-name { grid-column: 2; margin: 0; font-size: clamp(1.875rem, 4.4vw, 3.5rem); color: var(--text); }
+  :root[data-mood="gothic"] .d-name .sub { margin-top: 18px; }
   .d-name .sub { display: block; margin-top: 8px; font: 500 clamp(1.0625rem, 1.6vw, 1.25rem)/1.35 var(--sans); text-transform: none; letter-spacing: 0; color: var(--text); }
   .d-claim { grid-column: 2; margin: 0; max-width: 58ch; color: var(--muted); }
   .dossier .chip { grid-column: 3; grid-row: 1; }
@@ -143,7 +145,7 @@
   }
 
   /* 02 data table */
-  .uses { width: 100%; border-collapse: collapse; border-top: 1px solid var(--line); }
+  .uses { width: 100%; max-width: 56rem; border-collapse: collapse; border-top: 1px solid var(--line); } /* td ignores max-width, so the table carries the 65ch measure */
   .uses th, .uses td { text-align: left; vertical-align: top; padding: 20px 0; border-bottom: 1px solid var(--line); }
   .uses th { width: 15rem; padding-right: 32px; font: 500 1rem/1.5 var(--mono); color: var(--accent-text); white-space: nowrap; }
   .uses td { max-width: 65ch; }
@@ -154,7 +156,7 @@
   .index--open > li { grid-template-columns: 4.5rem minmax(0, 1fr) auto; }
   .idx { color: var(--muted); font-size: .875rem; }
   .index h3 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.25rem); }
-  .index h3 a { color: var(--text); text-decoration-color: var(--line-strong); }
+  .index h3 a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text); text-decoration-color: var(--line-strong); }
   .index h3 a:hover { color: var(--accent-text); }
   .index .chip { justify-self: end; }
   .index .row-text { grid-column: 2 / -1; margin: 0; max-width: 65ch; }
@@ -505,7 +507,7 @@ if (root.dataset.mood === "gothic") $("poster").src = posterFor("gothic");
 const hero = $("hero"), canvas = $("core"), reticle = $("reticle"), top = $("top"), job = $("job");
 const phone = () => innerWidth <= 760;
 let heroH = hero.offsetHeight;
-const heroAnchor = () => (phone() ? { x: innerWidth * 0.5, y: innerHeight * 0.2 } : { x: innerWidth * 0.7, y: innerHeight * 0.45 });
+const heroAnchor = () => (phone() ? { x: innerWidth * 0.5, y: Math.min(innerHeight * 0.16, 150) } : { x: innerWidth * 0.7, y: innerHeight * 0.45 });
 function placeReticle() {
   heroH = hero.offsetHeight; root.style.setProperty("--hero-h", heroH + "px");
   const a = heroAnchor(), s = phone() ? Math.min(innerWidth * 0.86, 360) : Math.min(innerHeight * 0.62, 560);
@@ -513,8 +515,11 @@ function placeReticle() {
 }
 placeReticle();
 addEventListener("resize", placeReticle);
-const solid = () => top.classList.toggle("solid", scrollY > heroH - 80);
-addEventListener("scroll", solid, { passive: true }); solid();
+const solid = () => top.classList.toggle("solid", reduce ? scrollY > 10 : scrollY > heroH - 80);
+// hero lines fade out as they reach the bar instead of sliding under it
+const copyParts = [...document.querySelectorAll(".hero-copy > *")];
+function fadeCopy() { for (const el of copyParts) { const t = el.getBoundingClientRect().top; el.style.opacity = t > 140 ? "" : Math.max(0, (t - 60) / 80).toFixed(2); } }
+addEventListener("scroll", () => { solid(); if (!reduce) fadeCopy(); }, { passive: true }); solid();
 
 function webgl() { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (_) { return false; } }
 const saveData = !!(navigator.connection && navigator.connection.saveData);
@@ -540,7 +545,10 @@ else {
         if (e >= 1 && !docked) dock(true); else if (e < 1 && docked) dock(false);
         const r = slot(), sx = r.left + r.width / 2, sy = r.top + r.height / 2;
         v.pull = e; v.endSize = 40; v.full = fullSize;
-        v.anchor = { x: a.x + (sx - a.x) * ee, y: a.y + (sy - a.y) * ee };
+        // rise first (clear of the headline), then glide left along the bar into the emblem slot
+        const sm = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+        const ey = sm(e * 1.7), ex = sm((e - 0.3) / 0.7);
+        v.anchor = { x: a.x + (sx - a.x) * ex, y: a.y + (sy - a.y) * ey };
         v.crop = docked ? { x: r.left, y: r.top } : null;
         reticle.style.opacity = Math.max(0, 1 - e * 2.5);
         if (e > 0.12 && !job.hidden) job.hidden = true;

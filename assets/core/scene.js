@@ -304,6 +304,7 @@ export function createCore(opts) {
   canvas.addEventListener("pointermove", (e) => {
     if (drag) {
       const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY; drag.moved += Math.abs(dx) + Math.abs(dy);
+      if (reduce) return; // reduced motion: taps still select, but the camera never moves
       if (drag.moved > 6 && !drag.cap) { drag.cap = true; try { canvas.setPointerCapture(drag.id); } catch (_) {} }
       theta -= dx * 0.006; vth = -dx * 0.006;
       if (mode === "hero") theta = Math.min(theta0 + 0.9, Math.max(theta0 - 0.9, theta));
@@ -314,7 +315,7 @@ export function createCore(opts) {
   const release = (e) => { if (drag && drag.moved < 6) { const k = pick(e); select(k, true); } drag = null; };
   canvas.addEventListener("pointerup", release);
   canvas.addEventListener("pointercancel", () => { drag = null; });
-  if (mode === "full") canvas.addEventListener("wheel", (e) => { e.preventDefault(); zoom = Math.min(1.5, Math.max(0.7, zoom + e.deltaY * 0.0012)); wake(); }, { passive: false });
+  if (mode === "full") canvas.addEventListener("wheel", (e) => { if (reduce) return; e.preventDefault(); zoom = Math.min(1.5, Math.max(0.7, zoom + e.deltaY * 0.0012)); wake(); }, { passive: false });
   if (mode === "hero" && !reduce) window.addEventListener("pointermove", (e) => { if (e.pointerType !== "mouse") return; par.tx = (e.clientX / innerWidth - 0.5) * 2; par.ty = (e.clientY / innerHeight - 0.5) * 2; }, { passive: true });
 
   function select(i, fromUser) {
@@ -359,10 +360,12 @@ export function createCore(opts) {
 
   // loop: runs only while visible; under reduced motion one frame per change
   let running = false, raf = 0, t = 0, last = 0, visible = true;
-  function wake() { if (reduce) { if (!raf) raf = requestAnimationFrame((n) => { raf = 0; frame(n, true); }); return; } start(); }
-  function start() { if (running || document.hidden || !visible) return; running = true; last = 0; perf.reset(); raf = requestAnimationFrame(loop); }
+  function wake() { if (reduce) { if (!raf && (api.frames === 0 || !document.hidden)) raf = requestAnimationFrame((n) => { raf = 0; frame(n, true); }); return; } start(); }
+  function start() { if (reduce) { if (!api.frames) wake(); return; } // the one still frame; later frames only answer a tap or a mood change
+     if (running || document.hidden || !visible) return; running = true; last = 0; perf.reset(); raf = requestAnimationFrame(loop); }
   function stop() { running = false; cancelAnimationFrame(raf); raf = 0; }
   function loop(now) { if (!running) return; frame(now, false); raf = requestAnimationFrame(loop); }
+  if (reduce) window.addEventListener("resize", wake);
   document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
   if ("IntersectionObserver" in window) new IntersectionObserver((es) => { visible = es[es.length - 1].isIntersecting; visible ? start() : stop(); }).observe(canvas);
 

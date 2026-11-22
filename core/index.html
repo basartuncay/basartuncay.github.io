@@ -11,6 +11,7 @@
 <script>(function(){var m=new URLSearchParams(location.search).get("mood");if(m==="gothic"||m==="hud")document.documentElement.dataset.mood=m;})();</script>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/signature.css">
+<noscript><style>.poster { display: block !important; }</style></noscript>
 <script type="importmap">{"imports":{"three":"/assets/vendor/three-0.187.0/build/three.module.min.js","three/addons/":"/assets/vendor/three-0.187.0/examples/jsm/"}}</script>
 <style>
 /* One screen. The scene fills the frame; panels sit on a 3-column grid over it and leave the middle free for the core. */
@@ -50,7 +51,7 @@ ol { padding: 0; list-style: none; }
 :root[data-mood="gothic"] .head h1 { letter-spacing: 0; font-size: clamp(34px, 4.2vw, 52px); text-shadow: 0 0 22px rgb(193 18 31 / .55); }
 .chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .chips .chip { font-size: 12px; padding: 3px 8px; background: rgb(4 7 12 / .6); }
-.mood { min-height: 32px; padding: 0 10px; background: rgb(4 7 12 / .6); border: 1px solid var(--line-strong); color: var(--text); font: 500 12px/1 var(--mono); cursor: pointer; }
+.mood { min-height: 44px; padding: 0 10px; background: rgb(4 7 12 / .6); border: 1px solid var(--line-strong); color: var(--text); font: 500 12px/1 var(--mono); cursor: pointer; }
 
 .clock { grid-area: clock; justify-self: end; align-self: start; text-align: right; min-width: 170px; }
 .clock b { display: block; font: 500 26px/1.1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: .04em; color: var(--text); }
@@ -60,7 +61,7 @@ ol { padding: 0; list-style: none; }
 .list h2 { padding-left: 8px; }
 #rows { min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; }
 .grp { font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 12px 8px 4px; }
-.row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 9px; align-items: center; width: 100%; min-height: 36px;
+.row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 9px; align-items: center; width: 100%; min-height: 44px;
   background: none; border: 0; border-left: 2px solid transparent; color: var(--text); font: 500 14px/1.2 var(--display);
   padding: 5px 8px 5px 6px; text-align: left; cursor: pointer; }
 :root[data-mood="gothic"] .row { font: 500 15px/1.2 var(--sans); }
@@ -76,6 +77,7 @@ ol { padding: 0; list-style: none; }
 .next { grid-area: next; align-self: end; justify-self: center; width: min(100%, 440px); }
 .next li { display: grid; grid-template-columns: 5ch minmax(0, 1fr) auto; gap: 12px; font: 400 13px/1.85 var(--mono); color: var(--muted); }
 .next li b { color: var(--text); font-weight: 500; }
+.next li small { font-size: 12px; }
 .next li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
 .next p { font: 400 12px/1.4 var(--mono); color: var(--muted); margin-top: 6px; }
 
