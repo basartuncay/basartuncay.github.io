@@ -326,7 +326,7 @@ show(initial);
 
 /* mood */
 const moodBtn = $("mood"), label = () => (moodBtn.textContent = root.dataset.mood === "gothic" ? "HUD" : "Gothic");
-moodBtn.hidden = false; label();
+moodBtn.hidden = !new URLSearchParams(location.search).has("mood"); label(); // the switch shows only to someone who came in with ?mood=
 moodBtn.setAttribute("aria-label", "Switch mood");
 moodBtn.addEventListener("click", () => {
   const m = root.dataset.mood === "gothic" ? "hud" : "gothic"; root.dataset.mood = m; label();

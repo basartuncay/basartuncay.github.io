@@ -532,7 +532,7 @@
   var btn = document.getElementById("mood");
   var label = function () { btn.textContent = root.dataset.mood === "gothic" ? "Switch to HUD" : "Switch to gothic"; };
   var carry = function (m) { document.querySelectorAll('a[href="/"],a[href="/core/"],a[href="/automation/"]').forEach(function (a) { var u = new URL(a.getAttribute("href"), location.origin); u.searchParams.set("mood", m); a.href = u.pathname + u.search; }); };
-  btn.hidden = false; label();
+  btn.hidden = !new URLSearchParams(location.search).has("mood"); label(); // the switch shows only to someone who came in with ?mood=
   if (new URLSearchParams(location.search).get("mood")) carry(root.dataset.mood);
   btn.addEventListener("click", function () {
     var m = root.dataset.mood === "gothic" ? "hud" : "gothic";

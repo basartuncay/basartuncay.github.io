@@ -503,7 +503,7 @@ const posterFor = (m) => "/assets/core/poster-" + m + ".webp";
 let scene = null;
 const moodBtn = $("mood");
 const moodLabel = () => (moodBtn.textContent = root.dataset.mood === "gothic" ? "Switch to HUD" : "Switch to gothic");
-moodBtn.hidden = false; moodLabel();
+moodBtn.hidden = !new URLSearchParams(location.search).has("mood"); moodLabel(); // the switch shows only to someone who came in with ?mood=
 moodBtn.addEventListener("click", () => {
   const m = root.dataset.mood === "gothic" ? "hud" : "gothic";
   root.dataset.mood = m; moodLabel();
