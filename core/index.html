@@ -328,8 +328,11 @@ show(initial);
 const moodBtn = $("mood"), label = () => (moodBtn.textContent = root.dataset.mood === "gothic" ? "HUD" : "Gothic");
 moodBtn.hidden = !new URLSearchParams(location.search).has("mood"); label(); // the switch shows only to someone who came in with ?mood=
 moodBtn.setAttribute("aria-label", "Switch mood");
+// internal links follow the mood, so "Portfolio" opens the home page in the mood you are looking at
+const carryMood = (m) => document.querySelectorAll('a[href="/"],a[href^="/?"],a[href^="/automation/"]').forEach((a) => { const u = new URL(a.getAttribute("href"), location.origin); u.searchParams.set("mood", m); a.setAttribute("href", u.pathname + u.search + u.hash); });
+if (new URLSearchParams(location.search).has("mood")) carryMood(root.dataset.mood);
 moodBtn.addEventListener("click", () => {
-  const m = root.dataset.mood === "gothic" ? "hud" : "gothic"; root.dataset.mood = m; label();
+  const m = root.dataset.mood === "gothic" ? "hud" : "gothic"; root.dataset.mood = m; label(); carryMood(m);
   const u = new URL(location.href); u.searchParams.set("mood", m); history.replaceState(null, "", u);
   setPoster(m); if (scene) scene.setMood(m);
 });
