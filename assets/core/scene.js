@@ -176,6 +176,9 @@ export function createCore(opts) {
   let glassOn = false;
   function setGlass(on) {
     glassOn = on; shell.visible = on;
+    // the shell magnifies the core's bright centre, so full bloom and the hot sprite on top of it clip it to white
+    hot.material.opacity = on ? 0.05 : 0.12;
+    if (bloom) bloom.strength = P.bloom * (on ? 0.6 : 1);
     if (on && !glassMat.envMap) glassMat.envMap = buildEnv();
   }
   world.add(shell);
@@ -382,7 +385,7 @@ export function createCore(opts) {
     hand.material.color.setRGB(...P.now); sweepU.uColor.value.set(...P.now); dotU.uColor.value.set(...P.grid);
     nodes.forEach((n, k) => { objs[k].col.copy(nodeColor(n)); objs[k].m.material.color.copy(objs[k].col); objs[k].s.material.color.copy(objs[k].col); });
     paintTrails(); paintPackets();
-    if (bloom) bloom.strength = P.bloom;
+    if (bloom) bloom.strength = P.bloom * (glassOn ? 0.6 : 1);
     glassMat.color.set(P.glass); glassMat.attenuationColor.set(P.glass);
     if (glassMat.envMap) glassMat.envMap = buildEnv();
     wake();
