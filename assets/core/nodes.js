@@ -5,7 +5,7 @@ export default {"snapshot":"2026-11-22","groups":[
 {"key":"system","label":"System"},
 {"key":"publishing","label":"Publishing"},
 {"key":"knowledge","label":"Knowledge"},
-{"key":"income","label":"Income"}],
+{"key":"ideas","label":"Ideas"}],
 "nodes":[
 {"id":"study-sync","name":"Study Sync","group":"study","schedule":"hourly","runsOn":"launchd","does":"Pulls course files and deadlines into the notes vault.","state":"scheduled"},
 {"id":"exam-flashcards","name":"Exam Flashcards","group":"study","schedule":"on demand","runsOn":"launchd","does":"Spaced-repetition flashcards delivered through chat.","state":"scheduled"},
@@ -26,6 +26,6 @@ export default {"snapshot":"2026-11-22","groups":[
 {"id":"vault-indexer","name":"Vault Indexer","group":"knowledge","schedule":"hourly","runsOn":"launchd","does":"Rebuilds search and code-map indexes for the notes.","state":"scheduled"},
 {"id":"vault-map","name":"Vault Map","group":"knowledge","schedule":"hourly","runsOn":"launchd","does":"Generates hub pages for agents, courses and research.","state":"scheduled"},
 {"id":"archive-fetcher","name":"Archive Fetcher","group":"knowledge","schedule":"always on","runsOn":"manual","does":"Downloads archived forum threads into a local database.","state":"scheduled"},
-{"id":"idea-radar","name":"Idea Radar","group":"income","schedule":"22:00 daily","runsOn":"launchd","does":"Scans public forums for product ideas and scores them.","state":"scheduled"},
+{"id":"idea-radar","name":"Idea Radar","group":"ideas","schedule":"22:00 daily","runsOn":"launchd","does":"Scans public forums for product ideas and scores them.","state":"scheduled"},
 ]}
 ;
