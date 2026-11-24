@@ -7,7 +7,6 @@ export default {"snapshot":"2026-11-22","groups":[
 {"key":"knowledge","label":"Knowledge"},
 {"key":"ideas","label":"Ideas"}],
 "nodes":[
-{"id":"study-sync","name":"Study Sync","group":"study","schedule":"hourly","runsOn":"launchd","does":"Pulls course files and deadlines into the notes vault.","state":"scheduled"},
 {"id":"exam-flashcards","name":"Exam Flashcards","group":"study","schedule":"on demand","runsOn":"launchd","does":"Spaced-repetition flashcards delivered through chat.","state":"scheduled"},
 {"id":"health-check","name":"Health Check","group":"system","schedule":"hourly","runsOn":"launchd","does":"Checks that every automation is running and reports problems.","state":"scheduled"},
 {"id":"self-improver","name":"Self Improver","group":"system","schedule":"03:15 daily","runsOn":"launchd","does":"Proposes small code and note improvements overnight for review.","state":"scheduled"},
@@ -25,7 +24,6 @@ export default {"snapshot":"2026-11-22","groups":[
 {"id":"idea-verifier","name":"Idea Verifier","group":"knowledge","schedule":"Sun 21:00","runsOn":"launchd","does":"Fact-checks flagged notes against web sources weekly.","state":"scheduled"},
 {"id":"vault-indexer","name":"Vault Indexer","group":"knowledge","schedule":"hourly","runsOn":"launchd","does":"Rebuilds search and code-map indexes for the notes.","state":"scheduled"},
 {"id":"vault-map","name":"Vault Map","group":"knowledge","schedule":"hourly","runsOn":"launchd","does":"Generates hub pages for agents, courses and research.","state":"scheduled"},
-{"id":"archive-fetcher","name":"Archive Fetcher","group":"knowledge","schedule":"always on","runsOn":"manual","does":"Downloads archived forum threads into a local database.","state":"scheduled"},
 {"id":"idea-radar","name":"Idea Radar","group":"ideas","schedule":"22:00 daily","runsOn":"launchd","does":"Scans public forums for product ideas and scores them.","state":"scheduled"},
 ]}
 ;
